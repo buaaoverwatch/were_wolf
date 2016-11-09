@@ -28,10 +28,12 @@ import TabIcon from './src/components/TabIcon';
 
 //房间
 import RoomList from './src/components/RoomList';
-import Room from './src/components/Room';
 //游戏
 import CARoom from './src/components/Create_AddRoom';
 import GameRoom from './src/components/GameRoom';
+import GameSetting from './src/components/game_setting';
+import ChooseSeat from './src/components/ChooseSeat';
+import Test1 from './src/components/test1';
 //个人信息
 import MyInfo from './src/components/MyInfo';
 import EditInfo from './src/components/EditInfo';
@@ -83,6 +85,9 @@ class App extends Component {
                 <Scene key="GameTab" hideNavBar>
                   <Scene key="CARoom" component={CARoom} />
                   <Scene key="GameRoom" component={GameRoom} hideTabBar/>
+                  <Scene key="GameSetting" component={GameSetting} hideTabBar />
+                  <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar />
+                  <Scene key="Test1" component={Test1} hideTabBar />
                 </Scene>
               </Scene>
               <Scene

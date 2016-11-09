@@ -25,14 +25,15 @@ import WhiteSpace from 'antd-mobile/lib/white-space';
 
 
 const RoomList = (props) => {
-    const { dispatch, roomlist } = props;
+    const { dispatch, change } = props;
+    var n = 0;
     function getRoomList(i) {
         var roomname = '房间名:'+i.room_name;
         var roomid = '房间号:'+i.room_id;
         var roomholder = '房主名:'+i.room_holder;
         var gamestate = '进行到第'+i.nights+'夜';
         return (
-            <TouchableOpacity onPress={Actions.GameSetting}>
+            <TouchableOpacity key={n++} onPress={Actions.GameSetting}>
             <WingBlank size="lg">
                 <WhiteSpace size="lg" />
                 <Card>
@@ -51,7 +52,7 @@ const RoomList = (props) => {
         ) ;
     }
     var room_list = [];
-    for(let i = 0; i < roomlist.roomlist1.length; i++) {
+    for(let i = 0; i < change.roomlist1.length; i++) {
         room_list.push(getRoomList(change.roomlist1[i]));
     }
     return (
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         alignItems: 'center',
         backgroundColor: '#393a3f',//#0033ff
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     //标题文本
     headerText: {

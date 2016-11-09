@@ -14,7 +14,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import { Badge } from 'antd-mobile';
+import Badge from 'antd-mobile/lib/badge';
 
 const UserButton = (props) => {
     const { index,selected=false,vote,username,onPress,disabled,sheriff} = props.data;

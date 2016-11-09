@@ -69,7 +69,7 @@ const GameRoom = (props) => {
                 <Text style={styles.headerText}>
                     房间
                 </Text>
-                <TouchableOpacity onPress={() => { Toast.fail("对不起，您没有权限进行下一步！", 1) }}>
+                <TouchableOpacity onPress={Actions.Test1}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>
                             下一步
