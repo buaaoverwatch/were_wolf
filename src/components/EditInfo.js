@@ -19,46 +19,86 @@ import {
 import List from 'antd-mobile/lib/list';
 import InputItem from 'antd-mobile/lib/input-item';
 import { createForm } from 'rc-form';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
-var nickname, introduce;
+var nickname = information.nickname;
+var password = information.password;
+var introduce = information.introduce;
 var EditInfo = (props) => {
     const { dispatch, information } = props;
     const {getFieldProps} = props.form;
     function click() {
-        if(nickname) {
-            dispatch({
-                type: 'information/changeNickname',
-                payload: nickname
-            });
+        var Regx = /(^[A-Za-z0-9]$)/;
+        if(nickname == information.nickname &&
+        password == information.password &&
+        introduce == information.introduce) {
+            Toast.success("修改成功！", 1);
+            Actions.pop();
+            return;
         }
-        if(introduce) {
-            dispatch({
-                type: 'information/changeIntroduce',
-                payload: introduce
-            });
+        //密码是否符合规则
+        if(password.length < 6 || password > 12) {
+            Toast.fail("密码长度错误！", 1);
+            return;
+        }
+        if(Regx.test(password) == false) {
+            Toast.fail("密码格式错误！", 1);
+            return;
         }
         //TODO:发送http请求
+        //clickhttp();
         Actions.pop();
     }
-    function responseTest() {
-        fetch('https://mywebsite.com/endpoint/', {
+    function clickhttp() {
+        dispatch({
+            type: './information/loadingTrue'
+        });
+        fetch('http://10.138.73.83:8000/updataInfo/', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                //'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            body: JSON.stringify({
-                userID: information.userID,
-                nickname: information.nickname,
+            body:JSON.stringify({
+                user_id: information.userID,
+                nickname: nickname,
+                password: password,
+                introduce: introduce
             })
         })
             .then(function(data){
-                return data.text();
+                console.log(data.text());
+                return data;
             })
             .then((responseText) => {
+                dispatch({
+                    type: './information/loadingFalse'
+                });
+                if(responseText.result == 1) {
+                    Toast.fail("修改失败！", 1);
+                    Actions.pop();
+                    return responseText;
+                }
+                Toast.success("修改成功！" + responseText.result,1);
+                //TODO:这里服务器应该返回昵称和简介
+                dispatch({
+                    type: './information/editSuccess',
+                    payload: {
+                        nickname: nickname,
+                        password: password,
+                        introduce: introduce
+                    }
+                });
+                //这里应该有一个界面跳转
+                Actions.pop();
                 console.log(responseText);
+                return responseText;
             })
             .catch((error) => {
+                dispatch({
+                    type: './information/loadingFalse'
+                });
+                Toast.fail("网络错误！", 1);
                 console.warn(error);
             });
     }
@@ -97,9 +137,22 @@ var EditInfo = (props) => {
                             nickname=value;
                         }
                     })}
+                    maxLength="10"
                     clear={true}
                     placeholder={information.nickname}
                 >昵称</InputItem>
+                <InputItem
+                    {...getFieldProps('password', {
+                        initialValue: '',
+                        onChange(value){
+                            password=value;
+                        }
+                    })}
+                    type="password"
+                    maxLength="12"
+                    clear={true}
+                    placeholder="输入新密码,6-12位字母或数字"
+                >密码</InputItem>
                 <InputItem
                     {...getFieldProps('introduce', {
                         initialValue: '',
@@ -107,10 +160,16 @@ var EditInfo = (props) => {
                             introduce=value;
                         }
                     })}
+                    maxLength="20"
                     clear={true}
                     placeholder={information.introduce}
                 >简介</InputItem>
             </List>
+            <ActivityIndicator
+                toast
+                text="正在加载"
+                animating={props.loading}
+            />
         </View>
     );
 };

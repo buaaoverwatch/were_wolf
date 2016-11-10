@@ -12,6 +12,7 @@ import List from 'antd-mobile/lib/list';
 import InputItem from 'antd-mobile/lib/input-item';
 import WingBlank from 'antd-mobile/lib/wing-blank';
 import Toast from 'antd-mobile/lib/toast';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 import { createForm } from 'rc-form';
 
 import {
@@ -21,42 +22,86 @@ import {
 var username, password;
 class Login extends Component {
     onClick(){
-        if(username && password) {
-            Toast.success("注册成功！", 1);
-            this.props.dispatch({
-                type: 'information/register',
-                payload:{
-                    username: username,
-                    password: password
-                }
-            });
-            Actions.tabbar();
+        var Regx = /(^[A-Za-z0-9]$)/;
+        if(!(username && password)) {
+            Toast.fail("信息填写不完整！", 1);
+            return;
         }
-        else {
-            Toast.fail("输入错误！", 1);
+        //用户名是否符合规则
+        if(username.length < 6 || username.length > 12) {
+            Toast.fail("用户名长度错误！", 1);
+            return;
         }
+        if(Regx.test(username) == false) {
+            Toast.fail("用户名格式错误!", 1);
+            return;
+        }
+        //密码是否符合规则
+        if(password.length < 6 || password > 12) {
+            Toast.fail("密码长度错误！", 1);
+            return;
+        }
+        if(Regx.test(password) == false) {
+            Toast.fail("密码格式错误！", 1);
+            return;
+        }
+        //http
+        //clickhttp();
+        Actions.tabbar();
     }
-    responseTest() {
-        fetch('https://mywebsite.com/endpoint/', {
+    clickhttp() {
+        dispatch({
+            type: './information/loadingTrue'
+        });
+        fetch('http://10.138.73.83:8000/login/', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                //'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            body: JSON.stringify({
-                firstParam: 'yourValue',
-                secondParam: 'yourOtherValue',
+            body:JSON.stringify({
+                user_name: username,
+                password: password
             })
         })
-        .then(function(data){
-            return data.text();
-        })
-        .then((responseText) => {
-            console.log(responseText);
-        })
-        .catch((error) => {
-            console.warn(error);
-        });
+            .then(function(data){
+                console.log(data.text());
+                return data;
+            })
+            .then((responseText) => {
+                dispatch({
+                    type: './information/loadingFalse'
+                });
+                if(responseText.type == 1) {
+                    Toast.fail("用户名不存在！", 1);
+                    return responseText;
+                } else if (responseText.type == 2) {
+                    Toast.fail("密码错误！", 1);
+                    return responseText;
+                }
+                Toast.success("登录成功！" + responseText.type,1);
+                //TODO:这里服务器应该返回昵称和简介
+                dispatch({
+                    type: './information/loginSuccess',
+                    payload: {
+                        username: username,
+                        nickname: 'nickname',
+                        password: password,
+                        introduce: 'introduce'
+                    }
+                });
+                //这里应该有一个界面跳转
+                Actions.tabbar();
+                console.log(responseText);
+                return responseText;
+            })
+            .catch((error) => {
+                dispatch({
+                    type: './information/loadingFalse'
+                });
+                Toast.fail("网络错误！", 1);
+                console.warn(error);
+            });
     }
     render() {
         const {getFieldProps} = this.props.form;
@@ -94,6 +139,11 @@ class Login extends Component {
                     <Button type="default" >忘记密码</Button>
                 </WingBlank>
                 <WhiteSpace size="lg"/>
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={props.loading}
+                />
             </View>
         );
     }

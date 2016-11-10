@@ -27,6 +27,7 @@ export default{
         ],
         loading: false,
         roomID: "8501",
+        roomName: "",
         roomOwnerName: "dudu",
         roomMembers: [
             "测试一号玩家",
@@ -81,21 +82,32 @@ export default{
         // }
     },
     reducers: {
-        register(state, action) {
-          return { ...state, nickname: action.payload.username, usename: action.payload.username, password: action.payload.password};
+        registerSuccess(state, action) {
+          return { ...state, username: action.payload.username, nickname: action.payload.nickname
+              , password: action.payload.password, introduce: action.payload.introduce};
         },
-        changeNickname(state, action) {
-            return { ...state, nickname: action.payload};
+        loginSuccess(state, action) {
+          return { ...state, username: action.payload.username, nickname: action.payload.nickname
+              , password: action.payload.password, introduce: action.payload.introduce};
         },
-        changeIntroduce(state, action) {
-            return { ...state, introduce: action.payload};
+        editSuccess(state, action) {
+            return { ...state, nickname: action.payload.nickname,
+                password: action.payload.password, introduce: action.payload.introduce};
+        },
+        loadingTrue(state) {
+            return { ...state, loading: true};
+        },
+        loadingFalse(state) {
+            return { ...state, loading: false};
         },
         changeLoading(state) {
             return { ...state, loading: !state.loading};
         },
-        createRoomSuccess(state) {
-            Actions.GameRoom();
-            return { ...state, loading: false};
+        createRoomSuccess(state, action) {
+            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName};
+        },
+        addRoomSuccess(state, action) {
+            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName};
         },
         changeRoomID(state, action) {
             return { ...state, roomID: action.payload};
