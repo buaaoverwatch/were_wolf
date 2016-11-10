@@ -81,7 +81,7 @@ const GameSetting = (props) => {
 
             <List renderHeader={() => '继续'}>
             <Button type="default" onClick = {Actions.pop} inline>上一步</Button>
-            <Button type="primary" onClick = {Actions.ChooseSeat} inline>下一步</Button>
+            <Button type="primary" onClick = {Actions.Test1} inline>下一步</Button>
             </List>
             </ScrollView>
             </View>

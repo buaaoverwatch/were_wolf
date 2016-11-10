@@ -20,7 +20,7 @@ import {
 } from 'react-native-router-flux';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
-
+import Socket from '../services/websocket';
 
 
 const ChooseSeat = (props) => {
@@ -71,7 +71,17 @@ const ChooseSeat = (props) => {
             type:'room/changechooseseatloding',
             payload:true,
         });
-
+        if(socket!=null)
+            room.socket.send({"type":"2",
+                                "request_id":"asdas",
+                                "room_id":room.room_id,
+                                "user_id":room.client_id,
+                                "seat":n});
+        else
+        {
+            Socket.handlesocket();
+            room.socket.send();
+        }
     }
 
 

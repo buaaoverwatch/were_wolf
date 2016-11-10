@@ -21,14 +21,14 @@ import InputItem from 'antd-mobile/lib/input-item';
 import { createForm } from 'rc-form';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
-var nickname = information.nickname;
-var password = information.password;
-var introduce = information.introduce;
+var nickname;
+var password;
+var introduce;
 var EditInfo = (props) => {
     const { dispatch, information } = props;
     const {getFieldProps} = props.form;
     function click() {
-        var Regx = /(^[A-Za-z0-9]$)/;
+        var Regx = /(^[A-Za-z0-9]+$)/;
         if(nickname == information.nickname &&
         password == information.password &&
         introduce == information.introduce) {
@@ -102,6 +102,9 @@ var EditInfo = (props) => {
                 console.warn(error);
             });
     }
+    nickname = information.nickname;
+    password = information.password;
+    introduce = information.introduce;
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>

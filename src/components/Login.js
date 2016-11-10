@@ -22,7 +22,7 @@ import {
 var username, password;
 class Login extends Component {
     onClick(){
-        var Regx = /(^[A-Za-z0-9]$)/;
+        var Regx = /(^[A-Za-z0-9]+$)/;
         if(!(username && password)) {
             Toast.fail("信息填写不完整！", 1);
             return;
@@ -142,7 +142,7 @@ class Login extends Component {
                 <ActivityIndicator
                     toast
                     text="正在加载"
-                    animating={props.loading}
+                    animating={this.props.loading}
                 />
             </View>
         );

@@ -83,7 +83,7 @@ class Register extends Component {
             });
     }
     onClick(){
-        var Regx = /(^[A-Za-z0-9]$)/;
+        var Regx = /(^[A-Za-z0-9]+$)/;
         if(!(username && nickname && password && introduce)) {
             Toast.fail("信息填写不完整！", 1);
             return;
@@ -170,7 +170,7 @@ class Register extends Component {
                 <ActivityIndicator
                     toast
                     text="正在加载"
-                    animating={props.loading}
+                    animating={this.props.loading}
                 />
             </View>
         );
