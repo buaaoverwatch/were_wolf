@@ -127,7 +127,7 @@ const GameSetting = (props) => {
                 <Text style={styles.headerText}>
                     游戏设置
                 </Text>
-                <TouchableOpacity onPress={sendsetting()}>
+                <TouchableOpacity onPress={Actions.Test1}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>下一步
                         </Text>
