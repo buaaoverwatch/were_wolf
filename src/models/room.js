@@ -21,9 +21,10 @@ export default {
         sheriff_list:[],
         player_selectedid:"",
         round: null,
-        curstate: '',
+        curstate: 4,
         request_id:0,
         lastvote: {},
+        nextstep: false,
 
         Werewolf:4,
         Villager:4,
@@ -83,6 +84,9 @@ export default {
         {
             return{...state,socket:action.payload};
         },
+        changeNextStep(state) {
+            return { ...state, nextstep: !state.nextstep};
+        }
 
 
         //以下三个是change添加的，用于修改loading

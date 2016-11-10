@@ -14,7 +14,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 import { Card, Button ,List, ListItem} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux';
 import Modal from 'antd-mobile/lib/modal';
-import StateConst from '../consts/roomstate'
+import StateConst from '../../consts/roomstate';
 
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
