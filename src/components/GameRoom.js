@@ -90,6 +90,11 @@ const GameRoom = (props) => {
                             房间号
                         </List.Item>
                         <List.Item
+                            extra={information.roomName}
+                        >
+                            房间名
+                        </List.Item>
+                        <List.Item
                             extra={information.roomOwnerName}
                         >
                             房主

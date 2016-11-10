@@ -22,6 +22,7 @@ import gameModel from './src/models/room';
 import infoModel from './src/models/infoModle';
 
 //启动
+import Start from './src/components/start';
 import Launch from './src/components/Launch';
 //导航栏
 import TabIcon from './src/components/TabIcon';
@@ -58,7 +59,8 @@ class App extends Component {
     return (
         <Router>
           <Scene key="root">
-            <Scene key="Launch" component={Launch} initial={infoModel.state.ifLogin === false} hideNavBar/>
+            <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
+            <Scene key="Launch" component={Launch}  hideNavBar/>
             <Scene
                 key="tabbar"
                 tabs
