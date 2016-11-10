@@ -17,90 +17,100 @@ import Modal from 'antd-mobile/lib/modal';
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
 
-var TabView = React.createClass({
+export default class Tabview extends Component {
 
-    getInitialState() {
-        return {
-            visible: false ,
-            users:[
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-            ],
-            player_id:[
-                1,2,3,4,5,6,7,8,
-            ],
+    static defaultProps = {
+        users:[
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+        ],
+        player_id:[
+            1,2,3,4,5,6,7,8,
+        ],
+    }
+
+    constructor(props) {
+        // 继承父类的this对象和传入的外部属性
+        super(props)
+        // 设置初始状态
+        this.state = {
+            users: props.users,
+            player_id:props.player_id,
             msg:[],
             msg1_1:'1号玩家',
             msg1_2:'是',
             msg1_3:'村民',
             msg2_1:'1号玩家',
             msg2_2:'抗推',
-
-        };
-    },
+        }
+        this.showModal = this.showModal.bind(this);
+        this.onClose = this.onClose.bind(this);
+        //this._renderList = this._renderList.bind(this);
+        //this._renderModal = this._renderModal.bind(this);
+    };
     showModal() {
         this.setState({
             visible: true,
         });
-    },
+    };
     onClose() {
         this.setState({
             visible: false,
         });
-    },
+    };
     _renderPicker(list){
         return list.map((item, i) => {
             return (
                 <Picker.Item key={i} label={`${i+1}号玩家`} value={`${i+1}号玩家`}/>
             )
         });
-    },
+    };
     _renderMsg(list){
         return list.map((item, i) => {
             return (
@@ -112,10 +122,158 @@ var TabView = React.createClass({
                 />
             )
         });
-    },
+    };
+    _renderCard(list){
+        const witch_heal=(
+            <Card
+                title='救人'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是女巫，您拥有一瓶解药，可以救治一名被狼人杀死的玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const witch_kill=(
+            <Card
+                title='毒药'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是女巫，您拥有一瓶毒药，可以毒死一名存活的玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const seer=(
+            <Card
+                title='查看身份'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是预言家，您每天夜里可以查看一名玩家的身份。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const cupid=(
+            <Card
+                title='丘比特'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是丘比特，您可以链接两位玩家成为情侣，成为情侣之后，只要双方有一人死去，另一人也会死亡。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const hunter=(
+            <Card
+                title='开枪'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是猎人，在您死亡时，您可以选择开枪杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const guard=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是守卫，您每晚可以选择守护一名玩家，这名玩家如果晚上被狼人杀死可以逃过一劫，不能连续两天守护同一位玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const wolf_kill=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const wolf_=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        return list.map((item, i) => {
+            return (
+                <ListItem
+                    key={i}
+                    roundAvatar
+                    avatar={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                    title={item}
+                />
+            )
+        });
+    };
     prepend(arr, item) {
         return [item].concat(arr);
-    },
+    };
     render() {
         return (
             <ScrollableTabView
@@ -131,36 +289,8 @@ var TabView = React.createClass({
                           backgroundColor:'#f7f7f7',
                       }}
                 >
-                    <Card
-                        title='救人'
-                        image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                        containerStyle={{backgroundColor:'white',height:300}}>
-                        <Text style={{marginBottom: 10}}>
-                            您的身份是女巫，您拥有一瓶解药，可以救治一名被狼人杀死的玩家。
-                        </Text>
-                        <Button
-                            small
-                            icon={{name: 'code'}}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{}}
-                            title='使用技能'
-                            onPress={this.showModal}/>
-                    </Card>
-                    <Card
-                        title='毒药'
-                        image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                        containerStyle={{backgroundColor:'white',height:300}}>
-                        <Text style={{marginBottom: 10}}>
-                            您的身份是女巫，您拥有一瓶毒药，可以毒死一名存活的玩家。
-                        </Text>
-                        <Button
-                            small
-                            icon={{name: 'code'}}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{}}
-                            title='使用技能'
-                            onPress={this.showModal}/>
-                    </Card>
+
+
                     <Modal
                         title="确认"
                         closable
@@ -292,7 +422,7 @@ var TabView = React.createClass({
             </ScrollableTabView>
         );
     }
-});
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -302,4 +432,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
 });
-export default TabView
