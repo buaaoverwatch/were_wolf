@@ -14,6 +14,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 import { Card, Button ,List, ListItem} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux';
 import Modal from 'antd-mobile/lib/modal';
+import StateConst from '../consts/roomstate'
 
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
@@ -22,68 +23,15 @@ import GuessRole from './stateless/guessrole';
 export default class Tabview extends Component {
 
     static defaultProps = {
-        users:[
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brynn',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-        ],
-        player_id:[
-            1,2,3,4,5,6,7,8,
-        ],
-    }
+
+    };
 
     constructor(props) {
         // 继承父类的this对象和传入的外部属性
-        super(props)
+        super(props);
         // 设置初始状态
         this.state = {
-            users: props.users,
-            player_id:props.player_id,
+            player_id:props.data.player_id,
             room:props.data,
             dispatch:props.dispatch,
             msg:[],
@@ -92,7 +40,7 @@ export default class Tabview extends Component {
             msg1_3:'村民',
             msg2_1:'1号玩家',
             msg2_2:'抗推',
-        }
+        };
         this.showModal = this.showModal.bind(this);
         this.onClose = this.onClose.bind(this);
         //this._renderList = this._renderList.bind(this);
@@ -126,6 +74,101 @@ export default class Tabview extends Component {
                 />
             )
         });
+    };
+    _renderWolf(){
+        if(this.state.room.player_role[this.state.room.client_id]=='wolf')
+        {
+            return(
+                <View tabLabel='狼人'
+                      style={{
+                          flex: 1,
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          backgroundColor:'#f7f7f7'
+                      }}
+                >
+                    <View style={{flex:1,flexDirection:'row',height: 200,alignItems:'center',marginTop:20,
+                        backgroundColor:'white'}}>
+                        <ScrollView style={{flex:1,marginBottom:20}}>
+                            <List>
+                                { this._renderMsg(this.state.msg) }
+                            </List>
+                        </ScrollView>
+                    </View>
+                    <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
+                        backgroundColor:'white'}}>
+                        <View style={{flexDirection:'row',height: 200,alignItems:'center',marginTop:5,
+                        }}>
+                            <Picker
+                                selectedValue={this.state.msg1_1}
+                                onValueChange={(lang) => this.setState({msg1_1: lang})}
+                                style={{flex:2}}>
+                                {this._renderPicker(this.state.player_id)}
+                            </Picker>
+                            <Picker
+                                selectedValue={this.state.msg1_2}
+                                onValueChange={(lang) => this.setState({msg1_2: lang})}
+                                style={{flex:1}}>
+                                <Picker.Item label="是" value="是" />
+                            </Picker>
+                            <Picker
+                                selectedValue={this.state.msg1_3}
+                                onValueChange={(lang) => this.setState({msg1_3: lang})}
+                                style={{flex:2}}>
+                                <Picker.Item label="村民" value="村民" />
+                                <Picker.Item label="预言家" value="预言家" />
+                                <Picker.Item label="女巫" value="女巫" />
+                                <Picker.Item label="猎人" value="猎人" />
+                                <Picker.Item label="丘比特" value="丘比特" />
+                                <Picker.Item label="守卫" value="守卫" />
+                            </Picker>
+                        </View>
+                        <Button
+                            raised
+                            icon={{name: 'send'}}
+                            title='发送'
+                            backgroundColor='#2db7f5'
+                            buttonStyle={{marginTop:15,width:150}}
+                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg1_1+this.state.msg1_2+this.state.msg1_3)})}
+                        />
+                    </View>
+                    <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
+                        backgroundColor:'white'}}>
+                        <View style={{flexDirection:'row',height: 200,alignItems:'center',marginTop:5,
+                        }}>
+                            <Picker
+                                selectedValue={this.state.msg2_1}
+                                onValueChange={(lang) => this.setState({msg2_1: lang})}
+                                style={{flex:1}}>
+                                {this._renderPicker(this.state.player_id)}
+                            </Picker>
+                            <Picker
+                                selectedValue={this.state.msg2_2}
+                                onValueChange={(lang) => this.setState({msg2_2: lang})}
+                                style={{flex:1}}>
+                                <Picker.Item label="抗推" value="抗推" />
+                                <Picker.Item label="自爆" value="自爆" />
+                                <Picker.Item label="竞选警长" value="竞选警长" />
+                                <Picker.Item label="藏身份" value="藏身份" />
+                                <Picker.Item label="跳预言家" value="跳预言家" />
+                                <Picker.Item label="跳女巫" value="跳女巫" />
+                                <Picker.Item label="跳猎人" value="跳猎人" />
+                                <Picker.Item label="跳丘比特" value="跳丘比特" />
+                                <Picker.Item label="跳守卫" value="跳守卫" />
+                            </Picker>
+                        </View>
+                        <Button
+                            raised
+                            icon={{name: 'send'}}
+                            title='发送'
+                            backgroundColor='#fd661b'
+                            buttonStyle={{marginTop:15,width:150}}
+                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg2_1+this.state.msg2_2)})}
+                        />
+                    </View>
+                </View>
+            )
+        }
     };
     _renderCard(){
         const witch_heal=(
@@ -354,6 +397,7 @@ export default class Tabview extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
                             请选择您技能使用的对象</Text>
+                        <Text>{StateConst.gameend}</Text>
                     </Modal>
                 </View>
                 <View tabLabel='投票'
@@ -368,96 +412,7 @@ export default class Tabview extends Component {
                         containerStyle={{width:window.width}}
                     />
                 </View>
-                <View tabLabel='狼人'
-                      style={{
-                          flex: 1,
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          backgroundColor:'#f7f7f7'
-                      }}
-                >
-
-                    <View style={{flex:1,flexDirection:'row',height: 200,alignItems:'center',marginTop:20,
-                        backgroundColor:'white'}}>
-                        <ScrollView style={{flex:1,marginBottom:20}}>
-                            <List>
-                                { this._renderMsg(this.state.msg) }
-                            </List>
-                        </ScrollView>
-                    </View>
-                    <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
-                        backgroundColor:'white'}}>
-                        <View style={{flexDirection:'row',height: 200,alignItems:'center',marginTop:5,
-                        }}>
-                            <Picker
-                                selectedValue={this.state.msg1_1}
-                                onValueChange={(lang) => this.setState({msg1_1: lang})}
-                                style={{flex:2}}>
-                                {this._renderPicker(this.state.player_id)}
-                            </Picker>
-                            <Picker
-                                selectedValue={this.state.msg1_2}
-                                onValueChange={(lang) => this.setState({msg1_2: lang})}
-                                style={{flex:1}}>
-                                <Picker.Item label="是" value="是" />
-                            </Picker>
-                            <Picker
-                                selectedValue={this.state.msg1_3}
-                                onValueChange={(lang) => this.setState({msg1_3: lang})}
-                                style={{flex:2}}>
-                                <Picker.Item label="村民" value="村民" />
-                                <Picker.Item label="预言家" value="预言家" />
-                                <Picker.Item label="女巫" value="女巫" />
-                                <Picker.Item label="猎人" value="猎人" />
-                                <Picker.Item label="丘比特" value="丘比特" />
-                                <Picker.Item label="守卫" value="守卫" />
-                            </Picker>
-                        </View>
-                        <Button
-                            raised
-                            icon={{name: 'send'}}
-                            title='发送'
-                            backgroundColor='#2db7f5'
-                            buttonStyle={{marginTop:15,width:150}}
-                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg1_1+this.state.msg1_2+this.state.msg1_3)})}
-                        />
-                    </View>
-                    <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
-                        backgroundColor:'white'}}>
-                        <View style={{flexDirection:'row',height: 200,alignItems:'center',marginTop:5,
-                        }}>
-                            <Picker
-                                selectedValue={this.state.msg2_1}
-                                onValueChange={(lang) => this.setState({msg2_1: lang})}
-                                style={{flex:1}}>
-                                {this._renderPicker(this.state.player_id)}
-                            </Picker>
-                            <Picker
-                                selectedValue={this.state.msg2_2}
-                                onValueChange={(lang) => this.setState({msg2_2: lang})}
-                                style={{flex:1}}>
-                                <Picker.Item label="抗推" value="抗推" />
-                                <Picker.Item label="自爆" value="自爆" />
-                                <Picker.Item label="竞选警长" value="竞选警长" />
-                                <Picker.Item label="藏身份" value="藏身份" />
-                                <Picker.Item label="跳预言家" value="跳预言家" />
-                                <Picker.Item label="跳女巫" value="跳女巫" />
-                                <Picker.Item label="跳猎人" value="跳猎人" />
-                                <Picker.Item label="跳丘比特" value="跳丘比特" />
-                                <Picker.Item label="跳守卫" value="跳守卫" />
-                            </Picker>
-                        </View>
-                        <Button
-                            raised
-                            icon={{name: 'send'}}
-                            title='发送'
-                            backgroundColor='#fd661b'
-                            buttonStyle={{marginTop:15,width:150}}
-                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg2_1+this.state.msg2_2)})}
-                        />
-                    </View>
-
-                </View>
+                {this._renderWolf()}
                 <View tabLabel='身份'
                       style={{
                           flex: 1,
