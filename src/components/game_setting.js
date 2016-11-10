@@ -21,10 +21,10 @@ import {
 //此处应有一个fetch到的房间列表
 import List from 'antd-mobile/lib/list';
 import Stepper from 'antd-mobile/lib/stepper';
-import RadioItem from 'antd-mobile/lib/radio';
+import Radio from 'antd-mobile/lib/radio';
 import Button from 'antd-mobile/lib/button'
-
-
+import Socket from '../services/websocket';
+const RadioItem = Radio.RadioItem;
 const GameSetting = (props) => {
     const {dispatch,room} = props;
     function test(){
@@ -57,7 +57,7 @@ const GameSetting = (props) => {
     }
     function SetWitch(val) {
         dispatch({
-            type:'room/setwicth',
+            type:'room/setwitch',
             payload:val,
         });
     }
@@ -74,15 +74,65 @@ const GameSetting = (props) => {
 
         });
 
-    }
 
+
+    }
+    function handleChange(val){
+        dispatch({
+            type:'room/setwincondition',
+            payload:val,
+        });
+    }
+    function sendsetting(){
+        if(room.socket!=null)
+            ws = new WebSocket('ws://115.29.193.48:8088');
+            ws.send({
+                "Werewolf": room.Werewolf,
+                "Villager": room.Villager,
+                "Cupid": room.Cupid,
+                "Seer": room.Seer,
+                "Witch":room.Witch,
+                "Hunter":room.Hunter,
+                "Guard":room.Guard,
+                "WolfWinCondition":room.WolfWinCondition
+            });
+        else
+        {
+//          Socket.handlesocket();
+            room.socket.send({
+                "Werewolf": room.Werewolf,
+                "Villager": room.Villager,
+                "Cupid": room.Cupid,
+                "Seer": room.Seer,
+                "Witch":room.Witch,
+                "Hunter":room.Hunter,
+                "Guard":room.Guard,
+                "WolfWinCondition":room.WolfWinCondition
+            });
+        }
+        Actions.Test1();
+    }
 
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
+                <TouchableOpacity onPress={Actions.pop}>
+                    <View style={styles.backContainer}>
+                        <Image style={styles.backIcon}
+                               source={require('../images/back.png')}/>
+                        <Text style={styles.backText}>返回
+                        </Text>
+                    </View>
+                </TouchableOpacity>
                 <Text style={styles.headerText}>
-                    设置面板
+                    游戏设置
                 </Text>
+                <TouchableOpacity onPress={Actions.Test1}>
+                    <View style={styles.completeContainer}>
+                        <Text style={styles.completeText}>下一步
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
             <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
                         automaticallyAdjustContentInsets={false}
@@ -96,7 +146,7 @@ const GameSetting = (props) => {
                 <List.Item extra={<Stepper max={10} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
                 村民
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Cupido} readOnly = {false} onChange={(value)=>SetCupido(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Cupid} readOnly = {false} onChange={(value)=>SetCupido(value)} />}>
                 丘比特
                 </List.Item>
                 <List.Item extra={<Stepper max={1} min={0} value={room.Seer} readOnly = {false} onChange={(value)=>SetSeer(value)} />}>
@@ -113,20 +163,24 @@ const GameSetting = (props) => {
                 </List.Item>
             </List>
             <List renderHeader={() => '请选择狼人胜利判定'}>
-                <List.Item extra = {<RadioItem checked={room.WolfWinCondition === 1} onChange={this.handleChange}/> }>
+                <RadioItem checked={room.WolfWinCondition === 1}
+                                               onChange={(checked)=>{
+                                                   if(checked){
+                                                       handleChange(1)}}}>
                     全部人死亡
-                </List.Item>
-                <List.Item extra = {<RadioItem checked={room.WolfWinCondition === 2} onChange={this.handleChange2}/>}>
+                </RadioItem>
+
+                <RadioItem checked={room.WolfWinCondition === 2}
+                                               onChange={(checked)=>{
+                                                   if(checked){
+                                                        handleChange(2)}}}>
 
                     全部特殊角色死亡
-                </List.Item>
+                </RadioItem>
                 
             </List>
 
-            <List renderHeader={() => '继续'}>
-            <Button type="default" onClick = {Actions.pop} inline>上一步</Button>
-            <Button type="primary" onClick = {Actions.Test1} inline>下一步</Button>
-            </List>
+
             </ScrollView>
             </View>
     );
@@ -140,13 +194,41 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         alignItems: 'center',
         backgroundColor: '#393a3f',//#0033ff
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     //标题文本
     headerText: {
         color: '#ffffff',
         fontSize: 18,
     },
+    //返回区
+    backContainer: {
+        width: PixelRatio.get() * 23,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    //返回图标
+    backIcon: {
+        height: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 5,
+        marginLeft: PixelRatio.get() * 2
+    },
+    //返回文本
+    backText: {
+        fontSize: 18,
+        color: '#ffffff',
+        marginLeft: PixelRatio.get() * 2
+    },
+    //完成区
+    completeContainer: {
+        width: PixelRatio.get() * 25,
+        alignItems: 'center'
+    },
+    completeText: {
+        fontSize: 18,
+        color: '#ffffff'
+    },
+
 });
 
 export default connect(room => room)(GameSetting);

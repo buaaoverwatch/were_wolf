@@ -80,7 +80,11 @@ const ChooseSeat = (props) => {
         else
         {
             Socket.handlesocket();
-            room.socket.send();
+            room.socket.send({"type":"2",
+                "request_id":"asdas",
+                "room_id":room.room_id,
+                "user_id":room.client_id,
+                "seat":n});
         }
     }
 

@@ -14,6 +14,7 @@ import {
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import UserGrid from './stateless/usergrid';
+import Next from './stateless/next';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
 const Test1 = (props) => {
@@ -88,10 +89,7 @@ const Test1 = (props) => {
 
             renderFixedHeader={() => (
                 <View key="fixed-header" style={styles.fixedSection}>
-                    <Text style={styles.fixedSectionText}
-                          onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
-                        Scroll to top
-                    </Text>
+                    <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
                 </View>
             )}
         >

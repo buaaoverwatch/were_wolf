@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-native';
 
-
+import { List, ListItem } from 'react-native-elements'
 
 import { connect } from 'dva/mobile';
 import {
@@ -25,7 +25,7 @@ import WhiteSpace from 'antd-mobile/lib/white-space';
 
 
 const RoomList = (props) => {
-    const { dispatch, change } = props;
+    const { dispatch, ALLROOM } = props;
     var n = 0;
     function getRoomList(i) {
         var roomname = '房间名:'+i.room_name;
@@ -34,26 +34,26 @@ const RoomList = (props) => {
         var gamestate = '进行到第'+i.nights+'夜';
         return (
             <TouchableOpacity key={n++} onPress={Actions.GameSetting}>
-            <WingBlank size="lg">
-                <WhiteSpace size="lg" />
-                <Card>
-                <Card.Header
-                    title={roomname}
-                    extra={roomid}
-                />
-                <Card.Body>
-                    <Text>{roomholder}</Text>
-                </Card.Body>
-                <Card.Footer content="当前游戏状态" extra={gamestate} />
-                </Card>
-                <WhiteSpace size="lg" />
-            </WingBlank>
+                <WingBlank size="lg">
+                    <WhiteSpace size="lg" />
+                    <Card>
+                        <Card.Header
+                            title={roomname}
+                            extra={roomid}
+                        />
+                        <Card.Body>
+                            <Text>{roomholder}</Text>
+                        </Card.Body>
+                        <Card.Footer content="当前游戏状态" extra={gamestate} />
+                    </Card>
+                    <WhiteSpace size="lg" />
+                </WingBlank>
             </TouchableOpacity>
         ) ;
     }
     var room_list = [];
-    for(let i = 0; i < change.roomlist1.length; i++) {
-        room_list.push(getRoomList(change.roomlist1[i]));
+    for(let i = 0; i < ALLROOM.roomlist.length; i++) {
+        room_list.push(getRoomList(ALLROOM.roomlist[i]));
     }
     return (
         <View style={{flex: 1}}>
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(change => change)(RoomList);
+export default connect(ALLROOM => ALLROOM)(RoomList);

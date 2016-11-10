@@ -1,4 +1,3 @@
-import StateConst from '../consts/roomstate'
 export default {
 
     namespace: 'room',
@@ -10,22 +9,22 @@ export default {
         owner_id: '',
         player_num: 10,
         player_id: ["a1", "a2", "a3", "a4"],
-        player_index: {"a1": 1, "a2": 2, "a3": 3, "a4": 4},
+        player_index: {},
         index_id: ["a1", "a2", "a3", "a4"],
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         guess_role: {},
         player_role: {"a1":"witch", "a2":"wolf", "a3":"villager", "a4": "hunter",},
-        player_avatar: {"a1": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a2": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a3": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a4": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'},
+        player_avatar: {},
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},
         player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
         sheriff_id: "a4",
         sheriff_list:[],
-        player_selectedid:"a2",
+        player_selectedid:"",
         round: null,
-        curstate: StateConst.wolf,
+        curstate: 4,
         request_id:0,
         lastvote: {},
-        nextstep:false,
+        nextstep: false,
 
         Werewolf:4,
         Villager:4,
@@ -85,6 +84,9 @@ export default {
         {
             return{...state,socket:action.payload};
         },
+        changeNextStep(state) {
+            return { ...state, nextstep: !state.nextstep};
+        },
 
 
         //以下三个是change添加的，用于修改loading
@@ -114,7 +116,7 @@ export default {
         },
         setcupido(state,action)
         {
-            return {...state,Cupido:action.payload};
+            return {...state,Cupid:action.payload};
         },
         setseer(state,action)
         {
@@ -132,7 +134,10 @@ export default {
         {
             return {...state,Guard:action.payload};
         },
-
+        setwincondition(state,action)
+        {
+            return {...state,WolfWinCondition:action.payload}
+        }
     }
 
 };/**
