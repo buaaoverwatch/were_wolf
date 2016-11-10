@@ -24,17 +24,17 @@ export default {
         curstate: '',
         request_id:0,
         lastvote: {},
-        game_setting: {
-            Werewolf:4,
-            Villager:4,
-            Cupido:1,
-            Seer:1,
-            Witch:1,
-            Hunter:1,
-            Guard:1,
-            WolfWinCondition:1
 
-        },
+        Werewolf:4,
+        Villager:4,
+        Cupido:1,
+        Seer:1,
+        Witch:1,
+        Hunter:1,
+        Guard:1,
+        WolfWinCondition:1,
+
+
 
         socket:null,
         loading : false,
@@ -99,6 +99,35 @@ export default {
         changemyseat(state,action)
         {
             return {...state,myseat:action.payload};
+        },
+        //
+        setwolf(state,action)
+        {
+            return {...state,Werewolf:action.payload};
+        },
+        setvill(state,action)
+        {
+            return {...state,Villager:action.payload};
+        },
+        setcupido(state,action)
+        {
+            return {...state,Cupido:action.payload};
+        },
+        setseer(state,action)
+        {
+            return {...state,Seer:action.payload};
+        },
+        setwitch(state,action)
+        {
+            return {...state,Witch:action.payload};
+        },
+        sethunter(state,action)
+        {
+            return {...state,Hunter:action.payload};
+        },
+        setguard(state,action)
+        {
+            return {...state,Guard:action.payload};
         },
 
     }

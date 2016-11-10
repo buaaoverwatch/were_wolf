@@ -195,8 +195,8 @@ var CARoom = (props) => {
                     maxLength="20"
                     clear
                     placeholder="起个名字吧"
-                >房间号</InputItem>
-                <Button type="primary" onClick={createRoom.bind(this)}>
+                >房间名</InputItem>
+                <Button type="primary" onClick={Actions.GameRoom}>
                     创建房间
                 </Button>
             </View>

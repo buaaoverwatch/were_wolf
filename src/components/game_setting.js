@@ -30,9 +30,50 @@ const GameSetting = (props) => {
     function test(){
 
     }
-    function onChange(val){
-        this.setState({val});
+    function SetWolf(val) {
+        dispatch({
+            type:'room/setwolf',
+            payload:val,
+        });
     }
+    function SetVill(val) {
+        dispatch({
+            type:'room/setvill',
+            payload:val,
+        });
+    }
+    function SetCupido(val) {
+        dispatch({
+            type:'room/setcupido',
+            payload:val,
+        });
+    }
+    function SetSeer(val) {
+        dispatch({
+            type:'room/setseer',
+            payload:val,
+        });
+    }
+    function SetWitch(val) {
+        dispatch({
+            type:'room/setwicth',
+            payload:val,
+        });
+    }
+    function SetHunter(val) {
+        dispatch({
+            type:'room/sethunter',
+            payload:val,
+        });
+    }
+    function SetGuard(val) {
+        dispatch({
+            type:'room/setguard',
+            payload:val,
+        });
+    }
+
+
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -46,33 +87,33 @@ const GameSetting = (props) => {
                         showsVerticalScrollIndicator={false}
             >
             <List renderHeader = {() => '角色及人数'}>
-                <List.Item extra={<Stepper showNumber max={10} min={1} value={room.game_setting.Werewolf} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={10} min={1} value={room.Werewolf} onChange={()=>this.SetWolf(this.value)} />}>
                     狼人
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={10} min={1} value={room.game_setting.Villager} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={10} min={1} value={room.Villager} onChange={()=>this.SetVill(value)} />}>
                 村民
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Cupido} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Cupido} onChange={()=>this.SetCupido(value)} />}>
                 丘比特
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Seer} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Seer} onChange={()=>this.SetSeer(value)} />}>
                 预言家
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Witch} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Witch} onChange={()=>this.SetWitch(value)} />}>
                 女巫
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Hunter} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Hunter} onChange={()=>this.SetHunter(value)} />}>
                 猎人
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Guard} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Guard} onChange={()=>this.SetGuard(value)} />}>
                     守卫
                 </List.Item>
             </List>
             <List renderHeader={() => '请选择狼人胜利判定'}>
-                <List.Item extra = {<RadioItem checked={room.game_setting.WolfWinCondition === 1} onChange={this.handleChange}/> }>
+                <List.Item extra = {<RadioItem checked={room.WolfWinCondition === 1} onChange={this.handleChange}/> }>
                     全部人死亡
                 </List.Item>
-                <List.Item extra = {<RadioItem checked={room.game_setting.WolfWinCondition === 2} onChange={this.handleChange2}/>}>
+                <List.Item extra = {<RadioItem checked={room.WolfWinCondition === 2} onChange={this.handleChange2}/>}>
 
                     全部特殊角色死亡
                 </List.Item>
