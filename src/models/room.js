@@ -5,6 +5,7 @@ export default {
     state: {
         room_id: null,
         room_name: '',
+        client_id:'',
         owner_id: '',
         player_num: null,
         player_id: [],
@@ -17,9 +18,11 @@ export default {
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},
         player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
         sheriff_id: "a4",
+        sheriff_list:[],
         player_selectedid:"",
         round: null,
         curstate: '',
+        request_id:0,
         lastvote: {},
         game_setting: {
             Werewolf:4,
@@ -32,7 +35,7 @@ export default {
             WolfWinCondition:1
 
         },
-
+        socket:null,
     },
 
     subscriptions: {},
@@ -49,8 +52,33 @@ export default {
         },
         changeCharacterNum(state,action)
         {
-            return{...state, }
+            return {...state,};
+        },
+        setroomstate(state,action)
+        {
+            return{...state,curstate:action.payload};
+        },
+        setalive(state,action)
+        {
+            return{...state,player_alive:Object.assign(this.player_alive,action.payload)};
+        },
+        setsherifflist(state,action)
+        {
+            return{...state,sherifflist:action.payload};
+        },
+        setalastvote(state,action)
+        {
+            return{...state,lastvote:action.payload};
+        },
+        setsheriff(state,action)
+        {
+            return{...state,sheriff_id:action.payload};
+        },
+        setsocket(state,action)
+        {
+            return{...state,socket:action.payload};
         }
+
 
     }
 

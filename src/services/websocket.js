@@ -9,17 +9,13 @@ import {Actions} from 'react-native-router-flux';
 
 
 const Socket = (props) => {
-    const { dispatch,count} = props;
+    const { dispatch,room} = props;
     function handlesocket()
     {
         connected=false;
         ws = new WebSocket('ws://115.29.193.48:8088');
         ws.onopen = () => {
             // connection opened
-            dispatch({
-                type: 'count/settext' ,
-                payload:'opened',
-            });
             console.log('OK');
             connected=true;
             //ws.send('something'); // send a message
@@ -28,37 +24,69 @@ const Socket = (props) => {
         ws.onmessage = (e) => {
             // a message was received
             console.log(e.data);
-            dispatch({
-                type: 'count/settext' ,
-                payload:e.data,
-            });
-            dispatch({
-                type: 'count/newmessage' ,
-                payload:e.data,
-            });
+            sendcomfirm(e.data);
+            if(e.data)
+            {
+                if(e.data.type===5)
+                {
+                    dispatch({
+                        type: 'room/setroomstate' ,
+                        payload:e.data.room_state,
+                    });
+                }
+                else if(e.data.type===6)
+                {
+                    dispatch({
+                        type: 'room/setroomstate' ,
+                        payload:e.data.room_state,
+                    });
+                }
+                else if(e.data.type===7)
+                {
+                    let alivelist={...room.player_alive,...e.data.change};
+                    dispatch({
+                        type: 'room/setalive' ,
+                        payload:alivelist,
+                    });
+                }
+                else if(e.data.type===8)
+                {
+                    dispatch({
+                        type: 'room/setsherifflist' ,
+                        payload:e.data.list,
+                    });
+                }
+                else if(e.data.type===9)
+                {
+                    dispatch({
+                        type: 'room/setlastvote' ,
+                        payload:e.data.list,
+                    });
+                }
+                else if(e.data.type===10)
+                {
+                    dispatch({
+                        type: 'room/setsheriff' ,
+                        payload:e.data.sheriff_id,
+                    });
+                }
+            }
+
 
         };
 
         ws.onerror = (e) => {
             // an error occurred
             console.log(e.message);
-            dispatch({
-                type: 'count/settext' ,
-                payload:'err',
-            });
         };
 
         ws.onclose = (e) => {
             // connection closed
             console.log(e.code, e.reason);
-            dispatch({
-                type: 'count/settext' ,
-                payload:'close',
-            });
             connected=false;
         };
         dispatch({
-            type: 'count/setsocket' ,
+            type: 'room/setsocket' ,
             payload:ws,
         });
     }
@@ -69,11 +97,19 @@ const Socket = (props) => {
             ws.send('something');
             console.log('Ol');
         }
-        props.dispatch({
-            type: 'count/settext' ,
-            payload:'clicked',
-        });
     };
+    function sendcomfirm(data) {
+        if (data.type!=0)
+        {
+            let msg={
+                type: 0,
+                room_id:room.room_id,
+                user_id:room.client_id,
+                room_request_id:room.request_id,
+            };
+            ws.send(msg);
+        }
+    }
     return (
         <View>
             <Button onClick={handleclick}>Start</Button>
@@ -82,4 +118,4 @@ const Socket = (props) => {
     );
 };
 
-export default connect(count=>count)(Socket)
+export default connect(room=>room)(Socket)
