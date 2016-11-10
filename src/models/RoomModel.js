@@ -1,7 +1,7 @@
 export default{
-    namespace: 'change',
+    namespace: 'ALLROOM',
     state: {
-        roomlist1 : [  
+        roomlist : [
             {
                 room_name : '傻逼的房间',
                 room_id : '23323',

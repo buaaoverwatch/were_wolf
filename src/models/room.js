@@ -86,7 +86,7 @@ export default {
         },
         changeNextStep(state) {
             return { ...state, nextstep: !state.nextstep};
-        }
+        },
 
 
         //以下三个是change添加的，用于修改loading

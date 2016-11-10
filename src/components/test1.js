@@ -88,8 +88,9 @@ const Test1 = (props) => {
             )}
 
             renderFixedHeader={() => (
-                <Next key="fixed-header" style={styles.fixedSection} 
-                nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
+                <View key="fixed-header" style={styles.fixedSection}>
+                    <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
+                </View>
             )}
         >
             <TabView data={room}/>

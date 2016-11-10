@@ -3,7 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
-} from 'react';
+} from 'react-native';
 
 import Modal from 'antd-mobile/lib/modal';
 import StateConst from '../../consts/roomstate';
@@ -29,7 +29,7 @@ export default class Next extends Component {
     };
 
     onPress() {
-        if(curstate != Stateconst.witch && props.nextstep === false) {
+        if(this.props.curstate != StateConst.witch && this.props.nextstep === false) {
             this.showModal();
             return;
         }
@@ -41,13 +41,13 @@ export default class Next extends Component {
 
     render() {
         return (
-            <View key="fixed-header">
+            <View>
                     <Text style={styles.fixedSectionText}
-                          onPress={onPress.bind(this)}>
+                          onPress={this.onPress.bind(this)}>
                         下一步
                     </Text>
                     <Modal
-                        title="确认"
+                        title="警告"
                         closable
                         maskClosable
                         transparent
@@ -58,8 +58,8 @@ export default class Next extends Component {
                         <Text style={{marginTop:30,
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
-                            标题{props.nextstep}</Text>
-                        <Text>技能未使用！</Text>
+                            技能未使用!{this.props.nextstep}</Text>
+                        <Text></Text>
                     </Modal>
             </View>
         )

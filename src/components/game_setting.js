@@ -23,7 +23,7 @@ import List from 'antd-mobile/lib/list';
 import Stepper from 'antd-mobile/lib/stepper';
 import Radio from 'antd-mobile/lib/radio';
 import Button from 'antd-mobile/lib/button'
-
+import Socket from '../services/websocket';
 const RadioItem = Radio.RadioItem;
 const GameSetting = (props) => {
     const {dispatch,room} = props;
@@ -84,8 +84,9 @@ const GameSetting = (props) => {
         });
     }
     function sendsetting(){
-        if(socket!=null)
-            room.socket.send({
+        if(room.socket!=null)
+            ws = new WebSocket('ws://115.29.193.48:8088');
+            ws.send({
                 "Werewolf": room.Werewolf,
                 "Villager": room.Villager,
                 "Cupid": room.Cupid,
@@ -97,7 +98,7 @@ const GameSetting = (props) => {
             });
         else
         {
-            Socket.handlesocket();
+//          Socket.handlesocket();
             room.socket.send({
                 "Werewolf": room.Werewolf,
                 "Villager": room.Villager,
