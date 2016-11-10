@@ -5,10 +5,10 @@ export default {
     state: {
         room_id: null,
         room_name: '',
-        client_id:'a4',
+        client_id:'a2',
         owner_id: '',
         player_num: 10,
-        player_id: [],
+        player_id: ["a1", "a2", "a3", "a4"],
         player_index: {},
         index_id: ["a1", "a2", "a3", "a4"],
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
@@ -27,7 +27,7 @@ export default {
 
         Werewolf:4,
         Villager:4,
-        Cupido:1,
+        Cupid:1,
         Seer:1,
         Witch:1,
         Hunter:1,
