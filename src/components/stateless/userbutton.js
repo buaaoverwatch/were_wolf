@@ -17,8 +17,9 @@ import {
 import Badge from 'antd-mobile/lib/badge';
 
 const UserButton = (props) => {
-    const { index,selected=false,vote,username,onPress,disabled,sheriff} = props.data;
+    const { index,selected=false,vote,username,onPress,disabled,sheriff,userid} = props.data;
     const styleprop=props.style;
+    const dispatch=props.dispatch;
     let content;
     let icon;
     if(sheriff===true)
@@ -106,7 +107,7 @@ const UserButton = (props) => {
                     accessibilityTraits="button"
                     onPress={onPress}
                     activeOpacity={0.8}
-                    >
+                >
                     {content}
                 </TouchableOpacity>
             </Badge>
