@@ -123,6 +123,154 @@ export default class Tabview extends Component {
             )
         });
     };
+    _renderCard(list){
+        const witch_heal=(
+            <Card
+                title='救人'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是女巫，您拥有一瓶解药，可以救治一名被狼人杀死的玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const witch_kill=(
+            <Card
+                title='毒药'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是女巫，您拥有一瓶毒药，可以毒死一名存活的玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const seer=(
+            <Card
+                title='查看身份'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是预言家，您每天夜里可以查看一名玩家的身份。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const cupid=(
+            <Card
+                title='丘比特'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是丘比特，您可以链接两位玩家成为情侣，成为情侣之后，只要双方有一人死去，另一人也会死亡。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const hunter=(
+            <Card
+                title='开枪'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是猎人，在您死亡时，您可以选择开枪杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const guard=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是守卫，您每晚可以选择守护一名玩家，这名玩家如果晚上被狼人杀死可以逃过一劫，不能连续两天守护同一位玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const wolf_kill=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        const wolf_=(
+            <Card
+                title='守护'
+                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                containerStyle={{backgroundColor:'white',height:300}}>
+                <Text style={{marginBottom: 10}}>
+                    您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
+                </Text>
+                <Button
+                    small
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    buttonStyle={{}}
+                    title='使用技能'
+                    onPress={this.showModal}/>
+            </Card>
+        );
+        return list.map((item, i) => {
+            return (
+                <ListItem
+                    key={i}
+                    roundAvatar
+                    avatar={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                    title={item}
+                />
+            )
+        });
+    };
     prepend(arr, item) {
         return [item].concat(arr);
     };
@@ -141,36 +289,8 @@ export default class Tabview extends Component {
                           backgroundColor:'#f7f7f7',
                       }}
                 >
-                    <Card
-                        title='救人'
-                        image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                        containerStyle={{backgroundColor:'white',height:300}}>
-                        <Text style={{marginBottom: 10}}>
-                            您的身份是女巫，您拥有一瓶解药，可以救治一名被狼人杀死的玩家。
-                        </Text>
-                        <Button
-                            small
-                            icon={{name: 'code'}}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{}}
-                            title='使用技能'
-                            onPress={this.showModal}/>
-                    </Card>
-                    <Card
-                        title='毒药'
-                        image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                        containerStyle={{backgroundColor:'white',height:300}}>
-                        <Text style={{marginBottom: 10}}>
-                            您的身份是女巫，您拥有一瓶毒药，可以毒死一名存活的玩家。
-                        </Text>
-                        <Button
-                            small
-                            icon={{name: 'code'}}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{}}
-                            title='使用技能'
-                            onPress={this.showModal}/>
-                    </Card>
+
+
                     <Modal
                         title="确认"
                         closable

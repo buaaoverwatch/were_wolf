@@ -3,7 +3,7 @@ import React, { Component, PropTypes, } from 'react'
 // 导入组件使用到的Native依赖模块
 import { ScrollView,View, StyleSheet, Text, Alert, TouchableOpacity,} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
-import Modal from 'antd-mobile/lib/modal';
+import Modal from 'antd-mobile/lib/modal'
 
 // 定义并默认导出自己的component
 export default class VoteResult extends Component {

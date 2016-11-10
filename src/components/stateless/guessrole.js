@@ -6,6 +6,7 @@ import React, { Component, PropTypes, } from 'react'
 // 导入组件使用到的Native依赖模块
 import { ScrollView,View, StyleSheet, Text, Alert, TouchableOpacity,} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
+import Modal from 'antd-mobile/lib/modal'
 
 // 定义并默认导出自己的component
 export default class GuessRole extends Component {
@@ -56,7 +57,7 @@ export default class GuessRole extends Component {
     // 构造函数
     constructor(props) {
         // 继承父类的this对象和传入的外部属性
-        super(props)
+        super(props);
         // 设置初始状态
         this.state = {
             player_id:props.player_id,
@@ -64,8 +65,22 @@ export default class GuessRole extends Component {
             guess_role:props.guess_role,
             player_avatar:props.player_avatar,
             player_index:props.player_index,
-        }
+            choose_id:null,
+            modalvisible:false,
+        };
         this._renderList = this._renderList.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.onClose = this.onClose.bind(this);
+    }
+    showModal(){
+        this.setState({
+            modalvisible: true,
+        });
+    }
+    onClose(){
+        this.setState({
+            modalvisible: false,
+        });
     }
 
     setNativeProps (nativeProps) {
@@ -84,27 +99,9 @@ export default class GuessRole extends Component {
                         title={`${this.state.player_index[item]}号玩家 ${this.state.player_nick[item]}`}
                         subtitle={`${this.state.guess_role[item]}`}
                         avatar={{uri:this.state.player_avatar[item]}}
-                        onPress={() => Alert.alert(
-                            `我猜${this.state.player_index[item]}号玩家的身份是...`,
-                            '请选择',
-                            [
-                                {text: '村民',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'村民'})})},
-                                {text: '狼人',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'狼人'})})},
-                                {text: '预言家',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'预言家'})})},
-                                {text: '女巫',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'女巫'})})},
-                                {text: '猎人',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'猎人'})})},
-                                {text: '守卫',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'守卫'})})},
-                                {text: '丘比特',
-                                    onPress: () => this.setState({guess_role:Object.assign(this.state.guess_role,{[item]:'丘比特'})})},
-                            ]
-                        )}
+                        onPress={() => this.setState({modalvisible:true,choose_id:item})}
                     />
+
                 )
             })
         }
@@ -119,13 +116,54 @@ export default class GuessRole extends Component {
 
     // 主渲染函数
     render() {
-        let { player_id } = this.state;
+        let { player_id ,modalvisible,choose_id} = this.state;
+        let i=this.state.player_index[this.state.choose_id];
         let { source, containerStyle } = this.props;
         return (
             <View style={[styles.container, containerStyle]}>
                 <List>
                     { this._renderList(player_id) }
                 </List>
+                <Modal
+                    title={`我猜${i}号玩家的身份是`}
+                    closable
+                    maskClosable
+                    transparent
+                    onClose={this.onClose}
+                    visible={modalvisible}
+                    style={{height:400,width:300,}}
+                >
+                    <ScrollView style={{marginBottom:20,}}>
+                        <ListItem
+                            key={1}
+                            title="村民"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'村民'})})}/>
+                        <ListItem
+                            key={2}
+                            title="狼人"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'狼人'})})}/>
+                        <ListItem
+                            key={3}
+                            title="预言家"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'预言家'})})}/>
+                        <ListItem
+                            key={4}
+                            title="女巫"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'女巫'})})}/>
+                        <ListItem
+                            key={5}
+                            title="猎人"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'猎人'})})}/>
+                        <ListItem
+                            key={6}
+                            title="守卫"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'守卫'})})}/>
+                        <ListItem
+                            key={7}
+                            title="丘比特"
+                            onPress={() => this.setState({modalvisible:false,guess_role:Object.assign(this.state.guess_role,{[choose_id]:'丘比特'})})}/>
+                    </ScrollView>
+                </Modal>
             </View>
         )
     }
