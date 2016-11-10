@@ -83,7 +83,34 @@ const GameSetting = (props) => {
             payload:val,
         });
     }
-
+    function sendsetting(){
+        if(socket!=null)
+            room.socket.send({
+                "Werewolf": room.Werewolf,
+                "Villager": room.Villager,
+                "Cupid": room.Cupid,
+                "Seer": room.Seer,
+                "Witch":room.Witch,
+                "Hunter":room.Hunter,
+                "Guard":room.Guard,
+                "WolfWinCondition":room.WolfWinCondition
+            });
+        else
+        {
+            Socket.handlesocket();
+            room.socket.send({
+                "Werewolf": room.Werewolf,
+                "Villager": room.Villager,
+                "Cupid": room.Cupid,
+                "Seer": room.Seer,
+                "Witch":room.Witch,
+                "Hunter":room.Hunter,
+                "Guard":room.Guard,
+                "WolfWinCondition":room.WolfWinCondition
+            });
+        }
+        Actions.Test1();
+    }
 
     return (
         <View style={{flex: 1}}>
@@ -99,7 +126,7 @@ const GameSetting = (props) => {
                 <Text style={styles.headerText}>
                     游戏设置
                 </Text>
-                <TouchableOpacity onPress={Actions.Test1}>
+                <TouchableOpacity onPress={sendsetting()}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>下一步
                         </Text>
