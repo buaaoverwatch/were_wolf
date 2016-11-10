@@ -95,7 +95,7 @@ const Test1 = (props) => {
                 </View>
             )}
         >
-            <TabView data={room}/>
+            <TabView room={room}/>
         </ParallaxScrollView>
     );
 };

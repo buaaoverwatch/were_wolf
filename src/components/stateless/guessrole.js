@@ -60,11 +60,11 @@ export default class GuessRole extends Component {
         super(props);
         // 设置初始状态
         this.state = {
-            player_id:props.player_id,
-            player_nick:props.player_nick,
-            guess_role:props.guess_role,
-            player_avatar:props.player_avatar,
-            player_index:props.player_index,
+            player_id:props.data.player_id,
+            player_nick:props.data.player_nick,
+            guess_role:props.data.guess_role,
+            player_avatar:props.data.player_avatar,
+            player_index:props.data.player_index,
             choose_id:null,
             modalvisible:false,
         };
@@ -83,8 +83,13 @@ export default class GuessRole extends Component {
         });
     }
 
-    setNativeProps (nativeProps) {
-        this._root.setNativeProps(nativeProps);
+    _renderGuessRole(data)
+    {
+        let text='村民';
+        if(data)
+            return data;
+        else
+            return text;
     }
     // 遍历的部分可以写成子渲染函数
     _renderList(data) {
@@ -97,7 +102,7 @@ export default class GuessRole extends Component {
                         roundAvatar
                         key={i}
                         title={`${this.state.player_index[item]}号玩家 ${this.state.player_nick[item]}`}
-                        subtitle={`${this.state.guess_role[item]}`}
+                        subtitle={this._renderGuessRole(this.state.guess_role[item])}
                         avatar={{uri:this.state.player_avatar[item]}}
                         onPress={() => this.setState({modalvisible:true,choose_id:item})}
                     />
