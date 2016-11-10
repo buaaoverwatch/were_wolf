@@ -112,7 +112,7 @@ export default {
         },
         setcupido(state,action)
         {
-            return {...state,Cupido:action.payload};
+            return {...state,Cupid:action.payload};
         },
         setseer(state,action)
         {
@@ -130,7 +130,10 @@ export default {
         {
             return {...state,Guard:action.payload};
         },
-
+        setwincondition(state,action)
+        {
+            return {...state,WolfWinCondition:action.payload}
+        }
     }
 
 };/**
