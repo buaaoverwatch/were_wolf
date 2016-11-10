@@ -22,8 +22,10 @@ export default class Start extends Component {
     }
     componentDidMount() {
         Animated.timing(          // Uses easing functions
-            this.state.fadeAnim,    // The value to drive
-            {toValue: 1},           // Configuration
+            this.state.fadeAnim, {
+                toValue: 1,
+                duration: 1000
+            },           // Configuration
         ).start();                // Don't forget start!
     }
     render() {

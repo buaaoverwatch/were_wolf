@@ -103,6 +103,7 @@ export default {
         //
         setwolf(state,action)
         {
+            console.log("ok");
             return {...state,Werewolf:action.payload};
         },
         setvill(state,action)

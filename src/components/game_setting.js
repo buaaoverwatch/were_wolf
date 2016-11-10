@@ -35,6 +35,7 @@ const GameSetting = (props) => {
             type:'room/setwolf',
             payload:val,
         });
+        console.log(val);
     }
     function SetVill(val) {
         dispatch({
@@ -70,7 +71,9 @@ const GameSetting = (props) => {
         dispatch({
             type:'room/setguard',
             payload:val,
+
         });
+
     }
 
 
@@ -87,25 +90,25 @@ const GameSetting = (props) => {
                         showsVerticalScrollIndicator={false}
             >
             <List renderHeader = {() => '角色及人数'}>
-                <List.Item extra={<Stepper max={10} min={1} value={room.Werewolf} onChange={()=>this.SetWolf(this.value)} />}>
+                <List.Item extra={<Stepper max={10} min={1} value={room.Werewolf} readOnly = {false} onChange={(value) => SetWolf(value)} />}>
                     狼人
                 </List.Item>
-                <List.Item extra={<Stepper max={10} min={1} value={room.Villager} onChange={()=>this.SetVill(value)} />}>
+                <List.Item extra={<Stepper max={10} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
                 村民
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Cupido} onChange={()=>this.SetCupido(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Cupido} readOnly = {false} onChange={(value)=>SetCupido(value)} />}>
                 丘比特
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Seer} onChange={()=>this.SetSeer(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Seer} readOnly = {false} onChange={(value)=>SetSeer(value)} />}>
                 预言家
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Witch} onChange={()=>this.SetWitch(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Witch} readOnly = {false} onChange={(value)=>SetWitch(value)} />}>
                 女巫
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Hunter} onChange={()=>this.SetHunter(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Hunter} readOnly = {false} onChange={(value)=>SetHunter(value)} />}>
                 猎人
                 </List.Item>
-                <List.Item extra={<Stepper max={1} min={0} value={room.Guard} onChange={()=>this.SetGuard(value)} />}>
+                <List.Item extra={<Stepper max={1} min={0} value={room.Guard} readOnly = {false} onChange={(value)=>SetGuard(value)} />}>
                     守卫
                 </List.Item>
             </List>
