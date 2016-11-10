@@ -15,17 +15,6 @@ export default{
                 nights : '5'
             },
         ],
-         game_setting: {
-            Werewolf:4,
-            Villager:4,
-            Cupido:1,
-            Seer:1,
-            Witch:1,
-            Hunter:1,
-            Guard:1,
-            WolfWinCondition:1
-
-        },
     },
     subscriptions: {
         //setup({ dispatch, history }) {

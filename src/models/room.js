@@ -21,6 +21,18 @@ export default {
         round: null,
         curstate: '',
         lastvote: {},
+        game_setting: {
+            Werewolf:4,
+            Villager:4,
+            Cupido:1,
+            Seer:1,
+            Witch:1,
+            Hunter:1,
+            Guard:1,
+            WolfWinCondition:1
+
+        },
+
     },
 
     subscriptions: {},
@@ -34,6 +46,10 @@ export default {
         changeselid(state,action)
         {
             return{...state,player_selectedid:action.payload};
+        },
+        changeCharacterNum(state,action)
+        {
+            return{...state, }
         }
 
     }

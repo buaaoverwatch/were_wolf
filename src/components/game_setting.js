@@ -7,7 +7,8 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    Image
+    Image,
+    ScrollView,
 } from 'react-native';
 
 
@@ -25,7 +26,7 @@ import Button from 'antd-mobile/lib/button'
 
 
 const GameSetting = (props) => {
-    const {dispatch,game_options} = props;
+    const {dispatch,room} = props;
     function test(){
 
     }
@@ -39,46 +40,69 @@ const GameSetting = (props) => {
                     设置面板
                 </Text>
             </View>
+            <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
+                        automaticallyAdjustContentInsets={false}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+            >
             <List renderHeader = {() => '角色及人数'}>
-                <List.Item extra={<Stepper showNumber max={10} min={1} value={setting_page.game_setting.Werewolf} onChange={setting_page.game_setting.Werewolf = value} />}>
-                狼人
+                <List.Item extra={<Stepper showNumber max={10} min={1} value={room.game_setting.Werewolf} onChange={this.onChange} />}>
+                    狼人
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={10} min={1} value={setting_page.game_setting.Villager} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper showNumber max={10} min={1} value={room.game_setting.Villager} onChange={this.onChange} />}>
                 村民
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={setting_page.game_setting.Cupido} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Cupido} onChange={this.onChange} />}>
                 丘比特
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={setting_page.game_setting.Seer} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Seer} onChange={this.onChange} />}>
                 预言家
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={setting_page.game_setting.Witch} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Witch} onChange={this.onChange} />}>
                 女巫
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={setting_page.game_setting.Hunter} onChange={this.onChange} />}>
+                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Hunter} onChange={this.onChange} />}>
                 猎人
                 </List.Item>
-                <List.Item extra={<Stepper showNumber max={1} min={0} value={setting_page.game_setting.Guard} onChange={this.onChange} />}>
-                守卫
+                <List.Item extra={<Stepper showNumber max={1} min={0} value={room.game_setting.Guard} onChange={this.onChange} />}>
+                    守卫
                 </List.Item>
             </List>
             <List renderHeader={() => '请选择狼人胜利判定'}>
-                <RadioItem checked={this.state.value === 1} onChange={this.handleChange} disabled={this.state.disabled}data-seed="logId">
+                <List.Item extra = {<RadioItem checked={room.game_setting.WolfWinCondition === 1} onChange={this.handleChange}/> }>
                     全部人死亡
-                </RadioItem>
-                <RadioItem checked={this.state.value === 2} onChange={this.handleChange2} disabled={this.state.disabled}>
+                </List.Item>
+                <List.Item extra = {<RadioItem checked={room.game_setting.WolfWinCondition === 2} onChange={this.handleChange2}/>}>
+
                     全部特殊角色死亡
-                </RadioItem>
+                </List.Item>
                 
             </List>
-            <TouchableOpacity onPress={Actions.RoomList}>
-                <Button type="default" size="small" inline>上一步</Button>}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={Actions.ChooseSeat}>
-                <Button type="primary" size="small" inline>下一步</Button>}
-            </TouchableOpacity>
+
+            <List renderHeader={() => '继续'}>
+            <Button type="default" onClick = {Actions.pop} inline>上一步</Button>
+            <Button type="primary" onClick = {Actions.Test1} inline>下一步</Button>
+            </List>
+            </ScrollView>
             </View>
     );
 };
 
-export default connect(change => change)(GameSetting);
+const styles = StyleSheet.create({
+    //标题
+    header: {
+        flexDirection: 'row',
+        height: PixelRatio.get() * 16,
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        backgroundColor: '#393a3f',//#0033ff
+        justifyContent: 'center'
+    },
+    //标题文本
+    headerText: {
+        color: '#ffffff',
+        fontSize: 18,
+    },
+});
+
+export default connect(room => room)(GameSetting);

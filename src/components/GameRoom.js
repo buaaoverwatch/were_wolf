@@ -69,7 +69,7 @@ const GameRoom = (props) => {
                 <Text style={styles.headerText}>
                     房间
                 </Text>
-                <TouchableOpacity onPress={Actions.Test1}>
+                <TouchableOpacity onPress={Actions.GameSetting}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>
                             下一步
