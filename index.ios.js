@@ -58,13 +58,13 @@ class App extends Component {
     return (
         <Router>
           <Scene key="root">
-            <Scene key="Launch" component={Launch} initial={infoModel.state.ifLogin === true} hideNavBar/>
+            <Scene key="Launch" component={Launch} initial={infoModel.state.ifLogin === false} hideNavBar/>
             <Scene
                 key="tabbar"
                 tabs
                 tabBarStyle={styles.tabBarStyle}
                 tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                initial={infoModel.state.ifLogin === false}
+                initial={infoModel.state.ifLogin === true}
             >
               <Scene
                   key="RoomPage"

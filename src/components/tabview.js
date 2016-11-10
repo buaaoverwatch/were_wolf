@@ -17,90 +17,100 @@ import Modal from 'antd-mobile/lib/modal';
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
 
-var TabView = React.createClass({
+export default class Tabview extends Component {
 
-    getInitialState() {
-        return {
-            visible: false ,
-            users:[
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-                {
-                    name: 'brynn',
-                    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-                },
-            ],
-            player_id:[
-                1,2,3,4,5,6,7,8,
-            ],
+    static defaultProps = {
+        users:[
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brynn',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+        ],
+        player_id:[
+            1,2,3,4,5,6,7,8,
+        ],
+    }
+
+    constructor(props) {
+        // 继承父类的this对象和传入的外部属性
+        super(props)
+        // 设置初始状态
+        this.state = {
+            users: props.users,
+            player_id:props.player_id,
             msg:[],
             msg1_1:'1号玩家',
             msg1_2:'是',
             msg1_3:'村民',
             msg2_1:'1号玩家',
             msg2_2:'抗推',
-
-        };
-    },
+        }
+        this.showModal = this.showModal.bind(this);
+        this.onClose = this.onClose.bind(this);
+        //this._renderList = this._renderList.bind(this);
+        //this._renderModal = this._renderModal.bind(this);
+    };
     showModal() {
         this.setState({
             visible: true,
         });
-    },
+    };
     onClose() {
         this.setState({
             visible: false,
         });
-    },
+    };
     _renderPicker(list){
         return list.map((item, i) => {
             return (
                 <Picker.Item key={i} label={`${i+1}号玩家`} value={`${i+1}号玩家`}/>
             )
         });
-    },
+    };
     _renderMsg(list){
         return list.map((item, i) => {
             return (
@@ -112,10 +122,10 @@ var TabView = React.createClass({
                 />
             )
         });
-    },
+    };
     prepend(arr, item) {
         return [item].concat(arr);
-    },
+    };
     render() {
         return (
             <ScrollableTabView
@@ -292,7 +302,7 @@ var TabView = React.createClass({
             </ScrollableTabView>
         );
     }
-});
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -302,4 +312,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
 });
-export default TabView
