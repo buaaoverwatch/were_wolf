@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {
     Text,
+    Dimensions,
     StyleSheet,
     View,
     Alert,
@@ -16,6 +17,7 @@ import Modal from 'antd-mobile/lib/modal';
 
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
+
 
 export default class Tabview extends Component {
 
@@ -82,6 +84,8 @@ export default class Tabview extends Component {
         this.state = {
             users: props.users,
             player_id:props.player_id,
+            room:props.data,
+            dispatch:props.dispatch,
             msg:[],
             msg1_1:'1号玩家',
             msg1_2:'是',
@@ -123,9 +127,10 @@ export default class Tabview extends Component {
             )
         });
     };
-    _renderCard(list){
+    _renderCard(){
         const witch_heal=(
             <Card
+                key={1}
                 title='救人'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -143,6 +148,7 @@ export default class Tabview extends Component {
         );
         const witch_kill=(
             <Card
+                key={2}
                 title='毒药'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -160,6 +166,7 @@ export default class Tabview extends Component {
         );
         const seer=(
             <Card
+                key={3}
                 title='查看身份'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -177,6 +184,7 @@ export default class Tabview extends Component {
         );
         const cupid=(
             <Card
+                key={4}
                 title='丘比特'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -194,6 +202,7 @@ export default class Tabview extends Component {
         );
         const hunter=(
             <Card
+                key={5}
                 title='开枪'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -211,6 +220,7 @@ export default class Tabview extends Component {
         );
         const guard=(
             <Card
+                key={6}
                 title='守护'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
@@ -228,7 +238,8 @@ export default class Tabview extends Component {
         );
         const wolf_kill=(
             <Card
-                title='守护'
+                key={7}
+                title='杀人'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
@@ -243,13 +254,14 @@ export default class Tabview extends Component {
                     onPress={this.showModal}/>
             </Card>
         );
-        const wolf_=(
+        const wolf_suicide=(
             <Card
-                title='守护'
+                key={8}
+                title='自爆'
                 image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
-                    您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
+                    您的身份是狼人，您可以选择自杀来随时结束这一轮的发言。
                 </Text>
                 <Button
                     small
@@ -260,21 +272,60 @@ export default class Tabview extends Component {
                     onPress={this.showModal}/>
             </Card>
         );
-        return list.map((item, i) => {
-            return (
-                <ListItem
-                    key={i}
-                    roundAvatar
-                    avatar={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                    title={item}
-                />
-            )
+        let list=[
+            {
+                key:1,
+                role:'witch',
+                data:witch_heal,
+            },
+            {
+                key:2,
+                role:'witch',
+                data:witch_kill,
+            },
+            {
+                key:3,
+                role:'seer',
+                data:seer,
+            },
+            {
+                key:4,
+                role:'cupid',
+                data:cupid,
+            },
+            {
+                key:5,
+                role:'hunter',
+                data:hunter,
+            },
+            {
+                key:6,
+                role:'guard',
+                data:guard,
+            },
+            {
+                key:7,
+                role:'wolf',
+                data:wolf_kill,
+            },
+            {
+                key:8,
+                role:'wolf',
+                data:wolf_suicide,
+            },
+        ];
+        var array=[];
+        list.map((item, i) => {
+            if(item.role==this.state.room.player_role[this.state.room.client_id])
+                array.push(item.data);
         });
+        return array;
     };
     prepend(arr, item) {
         return [item].concat(arr);
     };
     render() {
+        const window = Dimensions.get('window');
         return (
             <ScrollableTabView
                 style={{marginTop: 0, height:1000,}}
@@ -289,8 +340,7 @@ export default class Tabview extends Component {
                           backgroundColor:'#f7f7f7',
                       }}
                 >
-
-
+                    {this._renderCard()}
                     <Modal
                         title="确认"
                         closable
@@ -315,7 +365,7 @@ export default class Tabview extends Component {
                       }}
                 >
                     <VoteResult
-                        containerStyle={{width:380,}}
+                        containerStyle={{width:window.width}}
                     />
                 </View>
                 <View tabLabel='狼人'
@@ -416,7 +466,7 @@ export default class Tabview extends Component {
                       }}
                 >
                     <GuessRole
-                        containerStyle={{width:380,}}
+                        containerStyle={{width:window.width}}
                     />
                 </View>
             </ScrollableTabView>

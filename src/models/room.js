@@ -5,7 +5,7 @@ export default {
     state: {
         room_id: null,
         room_name: '',
-        client_id:'',
+        client_id:'a4',
         owner_id: '',
         player_num: null,
         player_id: [],
@@ -13,7 +13,7 @@ export default {
         index_id: ["a1", "a2", "a3", "a4"],
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         guess_role: {},
-        player_role: {},
+        player_role: {"a1":"witch", "a2":"wolf", "a3":"villager", "a4": "hunter",},
         player_avatar: {},
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},
         player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
