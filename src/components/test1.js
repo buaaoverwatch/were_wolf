@@ -16,123 +16,90 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import UserGrid from './stateless/usergrid';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
-class Test1 extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (r1, r2) => r1 !== r2
-            }).cloneWithRows([
-                'Simplicity Matters',
-                'Hammock Driven Development',
-                'Value of Values',
-                'Are We There Yet?',
-                'The Language of the System',
-                'Design, Composition, and Performance',
-                'Clojure core.async',
-                'The Functional Database',
-                'Deconstructing the Database',
-                'Hammock Driven Development',
-                'Value of Values'
-            ]),
-            users: [
-                {
-                    key:1,
-                    index:"1",
-                    username:"生活很悠闲美丽啦啦啦",
-                },
-                {
-                    key:2,
-                    index:"1",
-                    username:"hahah",
-                    vote:"3",
-                },
-                {
-                    key:3,
-                    index:"1",
-                    username:"hahah",
-                    selected:true,
-                },
-                {
-                    key:4,
-                    index:"1",
-                    username:"hahah",
-                    disabled:true,
-                },
-                {
-                    key:5,
-                    index:"1",
-                    username:"hahah",
-                    vote:3,
-                    sheriff:true,
-                    disabled:true,
-                },
-                {
-                    key:6,
-                    index:"1",
-                    username:"生活很悠闲美丽啦啦啦",
-                },
-            ],
-        };
-        const { dispatch, room } = props;
+const Test1 = (props) => {
+    const { dispatch, room } = props;
+    function genusergriddata()
+    {
+
+        return room.index_id.map(
+            function (item,i) {
+                let issheriff=false;
+                if(item==room.sheriff_id)
+                    issheriff=true;
+                let issel=false;
+                if(item==room.player_selectedid)
+                    issel=true;
+                function handlePress() {
+                    dispatch({ type: 'room/changeselid',payload:item });
+                }
+                return {
+                    key: i,
+                    index: i+1,
+                    userid:item,
+                    username: room.player_nick[item],
+                    vote: room.player_wolfvote[item],
+                    sheriff: issheriff,
+                    disabled: !room.player_alive[item],
+                    selected: issel,
+                    onPress:handlePress,
+                }
+            }
+        )
     }
-    render() {
-        const { onScroll = () => {} } = this.props;
-        return (
-            <ParallaxScrollView
-                onScroll={onScroll}
+    const usergriddata=genusergriddata();
+    return (
+        <ParallaxScrollView
+            headerBackgroundColor="#333"
+            stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
+            parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
+            backgroundSpeed={10}
 
-                headerBackgroundColor="#333"
-                stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
-                parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
-                backgroundSpeed={10}
+            renderBackground={() => (
+                <View key="background">
+                    <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
+                        width: window.width,
+                        height: PARALLAX_HEADER_HEIGHT}}/>
+                    <View style={{position: 'absolute',
+                        top: 0,
+                        width: window.width,
+                        backgroundColor: 'rgba(0,0,0,.4)',
+                        height: PARALLAX_HEADER_HEIGHT}}/>
+                </View>
+            )}
 
-                renderBackground={() => (
-                    <View key="background">
-                        <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
-                            width: window.width,
-                            height: PARALLAX_HEADER_HEIGHT}}/>
-                        <View style={{position: 'absolute',
-                            top: 0,
-                            width: window.width,
-                            backgroundColor: 'rgba(0,0,0,.4)',
-                            height: PARALLAX_HEADER_HEIGHT}}/>
-                    </View>
-                )}
-
-                renderForeground={() => (
-                    <View key="parallax-header" style={ styles.parallaxHeader }>
-                        <UserGrid data={this.state.users}/>
-                        <Text style={ styles.sectionSpeakerText }>
-                            狼人行动阶段
-                        </Text>
-                        <Text style={ styles.sectionTitleText }>
-                            啦啦啦啦啦
-                        </Text>
-                    </View>
-                )}
+            renderForeground={() => (
+                <View key="parallax-header" style={ styles.parallaxHeader }>
+                    <UserGrid data={usergriddata} dispatch={dispatch}/>
+                    <Text style={ styles.sectionSpeakerText }>
+                        狼人行动阶段
+                    </Text>
+                    <Text style={ styles.sectionTitleText }>
+                        啦啦啦啦啦
+                    </Text>
+                </View>
+            )}
 
 
-                renderStickyHeader={() => (
-                    <View key="sticky-header" style={styles.stickySection}>
-                        <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
-                    </View>
-                )}
+            renderStickyHeader={() => (
+                <View key="sticky-header" style={styles.stickySection}>
+                    <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
+                </View>
+            )}
 
-                renderFixedHeader={() => (
-                    <View key="fixed-header" style={styles.fixedSection}>
-                        <Text style={styles.fixedSectionText}
-                              onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
-                            Scroll to top
-                        </Text>
-                    </View>
-                )}
-            >
-                <TabView/>
-            </ParallaxScrollView>
-        );
-    }
-}
+            renderFixedHeader={() => (
+                <View key="fixed-header" style={styles.fixedSection}>
+                    <Text style={styles.fixedSectionText}
+                          onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
+                        Scroll to top
+                    </Text>
+                </View>
+            )}
+        >
+            <TabView/>
+        </ParallaxScrollView>
+    );
+};
+
 
 const window = Dimensions.get('window');
 

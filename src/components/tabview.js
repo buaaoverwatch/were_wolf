@@ -11,7 +11,6 @@ import {
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import { Card, Button ,List, ListItem} from 'react-native-elements'
-import FlipCard from 'react-native-flip-card'
 import {Actions} from 'react-native-router-flux';
 import Modal from 'antd-mobile/lib/modal';
 
