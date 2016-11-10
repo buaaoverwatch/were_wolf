@@ -25,14 +25,11 @@ export default class Tabview extends Component {
     static defaultProps = {
 
     };
-
     constructor(props) {
         // 继承父类的this对象和传入的外部属性
         super(props);
         // 设置初始状态
         this.state = {
-            player_id:props.data.player_id,
-            room:props.data,
             dispatch:props.dispatch,
             msg:[],
             msg1_1:'1号玩家',
@@ -40,12 +37,89 @@ export default class Tabview extends Component {
             msg1_3:'村民',
             msg2_1:'1号玩家',
             msg2_2:'抗推',
+            modaltitle:'',
+            modalcontent:'',
+            visible:false,
+            extrafun:null,
         };
         this.showModal = this.showModal.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.checkandshowModal = this.checkandshowModal.bind(this);
         //this._renderList = this._renderList.bind(this);
         //this._renderModal = this._renderModal.bind(this);
     };
+    onPressModal(){
+        this.setState({visible:false});
+    }
+    checkandshowModal(role){
+        let title;
+        let content;
+        if(role=='wolf')
+        {
+            if(this.props.room.curstate!=StateConst.wolf)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"不能在非狼人行动阶段杀人"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择行使技能的对象"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您这轮已经杀过人了"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                j=0;
+                this.props.room.player_id.map((item, i) => {
+                    if(this.props.room.player_wolfvote[item]>0)
+                    {
+                        j=j+1;
+                    }
+                });
+                if(j>1)
+                {
+                    this.setState({modaltitle:"出错啦"});
+                    this.setState({modalcontent:"请您和队友统一意见"});
+                    this.setState({visible:true});
+                }
+                else
+                {
+                    this.setState({modaltitle:"请确认"});
+                    this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要杀他么`});
+                    function press() {
+                        //TODO:加入回调函数
+                    };
+                    this.setState({visible:true});
+                }
+
+
+            }
+        }
+        else if(role=='hunter')
+        {
+
+        }
+        else if(role=='witch')
+        {
+
+        }
+        else if(role=='cupid')
+        {
+
+        }
+        else if(role=='seer')
+        {
+
+        }
+
+    }
     showModal() {
         this.setState({
             visible: true,
@@ -76,7 +150,7 @@ export default class Tabview extends Component {
         });
     };
     _renderWolf(){
-        if(this.state.room.player_role[this.state.room.client_id]=='wolf')
+        if(this.props.room.player_role[this.props.room.client_id]=='wolf'&&this.props.room.curstate==StateConst.wolf)
         {
             return(
                 <View tabLabel='狼人'
@@ -103,7 +177,7 @@ export default class Tabview extends Component {
                                 selectedValue={this.state.msg1_1}
                                 onValueChange={(lang) => this.setState({msg1_1: lang})}
                                 style={{flex:2}}>
-                                {this._renderPicker(this.state.player_id)}
+                                {this._renderPicker(this.props.room.player_id)}
                             </Picker>
                             <Picker
                                 selectedValue={this.state.msg1_2}
@@ -140,7 +214,7 @@ export default class Tabview extends Component {
                                 selectedValue={this.state.msg2_1}
                                 onValueChange={(lang) => this.setState({msg2_1: lang})}
                                 style={{flex:1}}>
-                                {this._renderPicker(this.state.player_id)}
+                                {this._renderPicker(this.props.room.player_id)}
                             </Picker>
                             <Picker
                                 selectedValue={this.state.msg2_2}
@@ -294,7 +368,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('wolf')}/>
             </Card>
         );
         const wolf_suicide=(
@@ -359,7 +433,7 @@ export default class Tabview extends Component {
         ];
         var array=[];
         list.map((item, i) => {
-            if(item.role==this.state.room.player_role[this.state.room.client_id])
+            if(item.role==this.props.room.player_role[this.props.room.client_id])
                 array.push(item.data);
         });
         return array;
@@ -385,19 +459,27 @@ export default class Tabview extends Component {
                 >
                     {this._renderCard()}
                     <Modal
-                        title="确认"
+                        title={this.state.modaltitle}
                         closable
                         maskClosable
                         transparent
                         onClose={this.onClose}
                         visible={this.state.visible}
-                        style={{height:200,width:300,}}
+                        style={{height:200,width:300,alignItems: 'center'}}
                     >
                         <Text style={{marginTop:30,
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
-                            请选择您技能使用的对象</Text>
-                        <Text>{StateConst.gameend}</Text>
+                            {this.state.modalcontent}
+                        </Text>
+                        <Button
+                            raised
+                            icon={{name: 'send'}}
+                            title='确认'
+                            backgroundColor='#fd661b'
+                            buttonStyle={{marginTop:40,width:150,height:40}}
+                            onPress={this.onClose}
+                        />
                     </Modal>
                 </View>
                 <View tabLabel='投票'
@@ -422,6 +504,7 @@ export default class Tabview extends Component {
                 >
                     <GuessRole
                         containerStyle={{width:window.width}}
+                        data={this.props.room}
                     />
                 </View>
             </ScrollableTabView>
