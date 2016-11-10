@@ -7,6 +7,7 @@ import {
     Text,
     Dimensions,
     PixelRatio,
+    ScrollView,
     TouchableOpacity,
     Image
 } from 'react-native';
@@ -17,49 +18,194 @@ import { connect } from 'dva/mobile';
 import {
     Actions
 } from 'react-native-router-flux';
-
-//此处应有一个fetch到的房间列表
-import Grid from 'antd-mobile/lib/grid';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 
-
-
-const data1 ={
-  name1:'adsa',
-  name2:'asdasd',
-  name3:'asdsdasd',
-
-};
 
 
 const ChooseSeat = (props) => {
-    const {dispatch,game_options} = props;
-    function test(){
+    const {dispatch,room} = props;
+    var Views = [];
+    function addRow(n){
+        var row = [];
+        //此处设置onpress事件用于修改state中的值
+        for(let i = n;i<n+4&&i<room.player_num;i++){
+            row.push(
+                <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
+                    <View  style={styles.single} >
+                        <Image source={require('../images/wolf.png')} style={styles.portrait} />
+                        <Text style={styles.portraitText}>
+                            此座位无人
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+        return (
+              <View key = {n} style = {styles.row}>
+                  {row}
+              </View>
+            );
+
 
     }
-    function onChange(val){
-        this.setState({val});
-    }
-    return (
-    <View>
-      <Grid data={data} />
-      <Text style={{ margin: 10, color: '#999' }}>请选择座位</Text>
-      <Grid data={data1} columnNum={4} hasLine={false}
-        renderItem={(dataItem, index) => (
-          <View style={{ margin: '16px', background: '#f7f7f7', textAlign: 'center' }}>
-            <View style={{ background: 'rgba(0, 0, 0, 0.1)', padding: '8px' }}>
-              <Text>{index + 1}.{dataItem.text}</Text>
+    function Seats(){
+        Views = [];
+        for(let i = 0; i < room.player_num; i = i+4){
+            Views.push(addRow(i));
+        }
+        return (
+            <View style={styles.portraitContainer}>
+                {Views}
             </View>
-            <img src={require('./741524682069127_v2.jpg')} style={{ width: '80%', margin: '12px' }} />
-          </View>
-        )}
-      />
-    </View>
-        
-    );
-};
+        );
 
-export default connect(Change => Change)(ChooseSeat);
+    }
+    function setMySeat(n)//用于修改state中的myseat变量，将myseat设置为选定的值
+    {
+        dispatch({
+           type:'room/changemyseat',
+           payload:n,
+        });
+        dispatch({
+            type:'room/changechooseseatloding',
+            payload:true,
+        });
+
+    }
+
+
+
+    return (
+            <View style={{flex: 1}}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={Actions.pop}>
+                        <View style={styles.backContainer}>
+                            <Image style={styles.backIcon}
+                                   source={require('../images/back.png')}/>
+                            <Text style={styles.backText}>
+                                返回
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.headerText}>
+                        顺时针选择座位
+                    </Text>
+                    <TouchableOpacity onPress={Actions.GameSetting}>
+                        <View style={styles.completeContainer}>
+                            <Text style={styles.completeText}>
+                                下一步
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView style={{flex: 1, backgroundColor: '#f5f5f9'}}
+                            automaticallyAdjustContentInsets={false}
+                            showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                >
+                    {Seats()}
+                    <ActivityIndicator
+                        toast
+                        text="等待服务器"
+                        animating={room.loading}
+                    />
+                </ScrollView>
+
+            </View>
+
+        );
+
+
+    }  ;
+
+
+
+const styles = StyleSheet.create({
+    //标题
+    header: {
+        flexDirection: 'row',
+        height: PixelRatio.get() * 16,
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        backgroundColor: '#393a3f',//#0033ff
+        justifyContent: 'space-between'
+    },
+    //标题文本
+    headerText: {
+        color: '#ffffff',
+        fontSize: 18,
+    },
+    //返回区
+    backContainer: {
+        width: PixelRatio.get() * 23,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    //返回图标
+    backIcon: {
+        height: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 5,
+        marginLeft: PixelRatio.get() * 2
+    },
+    //返回文本
+    backText: {
+        fontSize: 18,
+        color: '#ffffff',
+        marginLeft: PixelRatio.get() * 2
+    },
+    //完成区
+    completeContainer: {
+        width: PixelRatio.get() * 25,
+        alignItems: 'center'
+    },
+    completeText: {
+        fontSize: 18,
+        color: '#ffffff'
+    },
+    //提示信息
+    toastContainer: {
+        marginTop: PixelRatio.get() * 2
+    },
+    //每个头像区
+    single: {
+        flexDirection: 'column',
+        width: PixelRatio.get() * 35,
+        height: PixelRatio.get() * 40,
+        alignItems: 'center',
+        marginTop: PixelRatio.get() * 2,
+        marginLeft: PixelRatio.get() * 1
+    },
+    portrait: {
+        width: PixelRatio.get() * 25,
+        height: PixelRatio.get() * 25
+    },
+    portraitText: {
+        fontSize: 16,
+        color: '#000000',
+        marginTop: PixelRatio.get() * 3,
+    },
+    //每一行
+    row: {
+        flexDirection: 'row',
+        height: PixelRatio.get() * 40,
+    },
+    //所有头像区
+    portraitContainer: {
+        flexDirection: 'column'
+    }
+});
+
+export default connect(room => room)(ChooseSeat);
+
+
+
+
+
+
+
+
+
 
 
 

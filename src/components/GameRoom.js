@@ -69,7 +69,7 @@ const GameRoom = (props) => {
                 <Text style={styles.headerText}>
                     房间
                 </Text>
-                <TouchableOpacity onPress={Actions.GameSetting}>
+                <TouchableOpacity onPress={Actions.ChooseSeat}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>
                             下一步
@@ -177,4 +177,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//export default connect(information => information)(GameRoom);
 export default connect(information => information)(GameRoom);

@@ -2,7 +2,7 @@
  * Created by shi on 2016/10/31.
  */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Alert,View } from 'react-native';
 import dva, { connect } from 'dva/mobile';
 import Button from 'antd-mobile/lib/button';
 import {Actions} from 'react-native-router-flux';
@@ -27,7 +27,31 @@ const Socket = (props) => {
             sendcomfirm(e.data);
             if(e.data)
             {
-                if(e.data.type===5)
+                if(e.data.type===3)
+                {
+                    if(e.data.result)//返回true时修改自己的座位
+                    {
+                        dispatch({
+                        type: 'room/changeplayerindex',
+                        payload: e.data.result,
+                        });
+                    }
+                    else//否则返回错误消息，不修改座位
+                    {
+                        Alert.alert(
+                            '此座位已被占用！',
+                            alertMessage,
+                            [
+                                {text: '好的', onPress: () => console.log('OK Pressed!')},
+                            ]
+                        )
+                    }//最终修改loading的状态
+                    dispatch({
+                        type: 'room/changechooseseatloading',
+                        payload:false,
+                    })
+                }
+                else if(e.data.type===5)
                 {
                     dispatch({
                         type: 'room/setroomstate' ,
