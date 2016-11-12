@@ -14,6 +14,7 @@ export default {
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
         client_id:'a3',
+        username: "",
         //
         room_id: null,
         room_name: '',
@@ -219,7 +220,20 @@ export default {
         setwincondition(state,action)
         {
             return {...state,WolfWinCondition:action.payload}
-        }
+        },
+
+        //qingchanghan
+        setuserinfo(state, action) {
+            return { ...state, client_id: action.payload.userID, username: action.payload.username};
+        },
+        createRoomSuccess(state, action) {
+            return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
+                , owner_id: action.payload.ownerID};
+        },
+        addRoomSuccess(state, action) {
+            return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
+                , owner_id: action.payload.ownerID};
+        },
     }
 
 };/**

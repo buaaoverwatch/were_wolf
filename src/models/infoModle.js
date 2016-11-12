@@ -1,6 +1,11 @@
 /**
  * Created by Qingchang Han on 2016/10/30.
  */
+import React, { Component } from 'react';
+import {
+    AsyncStorage
+} from 'react-native';
+
 export default{
     namespace: 'information',
     state: {
@@ -73,11 +78,61 @@ export default{
     },
     reducers: {
         registerSuccess(state, action) {
+            AsyncStorage.setItem('username', action.payload.username, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('nickname', action.payload.nickname, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('password', action.payload.password, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('introduce', action.payload.introduce, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('userID', action.payload.userID, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
           return { ...state, username: action.payload.username, nickname: action.payload.nickname
               , password: action.payload.password, introduce: action.payload.introduce
                 , userID: action.payload.userID};
         },
         loginSuccess(state, action) {
+            AsyncStorage.setItem('username', action.payload.username, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('nickname', action.payload.nickname, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('password', action.payload.password, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('introduce', action.payload.introduce, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('userID', action.payload.userID, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
           return { ...state, username: action.payload.username, nickname: action.payload.nickname
               , password: action.payload.password, introduce: action.payload.introduce
                 , userID: action.payload.userID};
@@ -94,14 +149,6 @@ export default{
         },
         changeLoading(state) {
             return { ...state, loading: !state.loading};
-        },
-        createRoomSuccess(state, action) {
-            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName
-                    , ownerID: action.payload.ownerID};
-        },
-        addRoomSuccess(state, action) {
-            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName
-                    , ownerID: action.payload.ownerID};
         },
         changeRoomID(state, action) {
             return { ...state, roomID: action.payload};
