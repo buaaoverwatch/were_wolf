@@ -1,4 +1,12 @@
 import StateConst from '../consts/roomstate';
+import Toast from 'antd-mobile/lib/toast';
+
+function delay(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
+
 export default {
 
     namespace: 'room',
@@ -68,13 +76,28 @@ export default {
     subscriptions: {},
 
     effects: {
-
+        *WebSocketsend({ payload }, { put, call, select }) {
+            const WebSocket = yield select(state => state.socket);
+            const {msg}=payload;
+            WebSocket.send(msg);
+            yield put({ type: 'showLoading' });
+            yield call(delay, 1000);
+            const ld=select(state => state.loading);
+            if(ld==true)
+            {
+                yield put({ type: 'hideLoading' });
+                Toast.fail('链接失败，请重试', 1);
+            }
+        },
     },
 
     reducers: {
         //WebSocket相关
         showLoading(state) {
             return {...state, loading: true};
+        },
+        hideLoading(state) {
+            return {...state, loading: false};
         },
         setsocket(state,action)
         {
