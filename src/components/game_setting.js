@@ -83,35 +83,68 @@ const GameSetting = (props) => {
             payload:val,
         });
     }
+    function setWolfMax(){
+        return room.player_num-room.Villager-room.Cupid-room.Seer-room.Witch-room.Hunter-room.Guard;
+    }
+    function setVillMax(){
+        return room.player_num-room.Werewolf-room.Cupid-room.Seer-room.Witch-room.Hunter-room.Guard;
+    }
+    function CheckSetting(){
+        if(room.Werewolf+room.Villager+room.Cupid+room.Seer+room.Witch+room.Hunter+room.Guard===room.player_num) {
+                   sendsetting();
+        }
+        else {
+            Alert.alert(
+                '角色总数与房间人数不符！',
+                alertMessage,
+                [
+                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+                ]
+            );
+        }
+    }
     function sendsetting(){
         if(room.socket!=null)
         {
-            ws = new WebSocket('ws://115.29.193.48:8088');
-            ws.send({
-                "Werewolf": room.Werewolf,
-                "Villager": room.Villager,
-                "Cupid": room.Cupid,
-                "Seer": room.Seer,
-                "Witch":room.Witch,
-                "Hunter":room.Hunter,
-                "Guard":room.Guard,
-                "WolfWinCondition":room.WolfWinCondition
+
+            room.socket.send({
+                "type":"3",
+                "request_id":"",
+                "room_id":room.room_id.toString(),
+                "user_id":room.owner_id.toString(),
+                "wolf_num": room.Werewolf.toString(),
+                "seer_num": room.Seer.toString(),
+                "hunter_num":room.Hunter.toString(),
+                "village_num": room.Villager.toString(),
+                "witch_num":room.Witch.toString(),
+                "cupid_num": room.Cupid.toString(),
+                "guard_num":room.Guard.toString(),
+                "rule":room.WolfWinCondition.toString()
             });
         }
         else
         {
 //          Socket.handlesocket();
             room.socket.send({
-                "Werewolf": room.Werewolf,
-                "Villager": room.Villager,
-                "Cupid": room.Cupid,
-                "Seer": room.Seer,
-                "Witch":room.Witch,
-                "Hunter":room.Hunter,
-                "Guard":room.Guard,
-                "WolfWinCondition":room.WolfWinCondition
+                "type":"3",
+                "request_id":"",
+                "room_id":room.room_id.toString(),
+                "user_id":room.owner_id.toString(),
+                "wolf_num": room.Werewolf.toString(),
+                "seer_num": room.Seer.toString(),
+                "hunter_num":room.Hunter.toString(),
+                "village_num": room.Villager.toString(),
+                "witch_num":room.Witch.toString(),
+                "cupid_num": room.Cupid.toString(),
+                "guard_num":room.Guard.toString(),
+                "rule":room.WolfWinCondition.toString()
             });
         }
+        dispatch({
+            type:'room/changeloading',
+            payload:true,
+        });
+
         Actions.Test1();
     }
 
@@ -129,7 +162,7 @@ const GameSetting = (props) => {
                 <Text style={styles.headerText}>
                     游戏设置
                 </Text>
-                <TouchableOpacity onPress={Actions.Test1}>
+                <TouchableOpacity onPress={CheckSetting}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>下一步
                         </Text>
@@ -142,10 +175,10 @@ const GameSetting = (props) => {
                         showsVerticalScrollIndicator={false}
             >
             <List renderHeader = {() => '角色及人数'}>
-                <List.Item extra={<Stepper max={10} min={1} value={room.Werewolf} readOnly = {false} onChange={(value) => SetWolf(value)} />}>
+                <List.Item extra={<Stepper max={(max)=> setWolfMax()} min={1} value={room.Werewolf} readOnly = {false} onChange={(value) => SetWolf(value)} />}>
                     狼人
                 </List.Item>
-                <List.Item extra={<Stepper max={10} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
+                <List.Item extra={<Stepper max={(max)=> setVillMax()} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
                 村民
                 </List.Item>
                 <List.Item extra={<Stepper max={1} min={0} value={room.Cupid} readOnly = {false} onChange={(value)=>SetCupido(value)} />}>
@@ -165,17 +198,17 @@ const GameSetting = (props) => {
                 </List.Item>
             </List>
             <List renderHeader={() => '请选择狼人胜利判定'}>
-                <RadioItem checked={room.WolfWinCondition === 1}
+                <RadioItem checked={room.WolfWinCondition === 0}
                                                onChange={(checked)=>{
                                                    if(checked){
-                                                       handleChange(1)}}}>
+                                                       handleChange(0)}}}>
                     全部人死亡
                 </RadioItem>
 
-                <RadioItem checked={room.WolfWinCondition === 2}
+                <RadioItem checked={room.WolfWinCondition === 1}
                                                onChange={(checked)=>{
                                                    if(checked){
-                                                        handleChange(2)}}}>
+                                                        handleChange(1)}}}>
 
                     全部特殊角色死亡
                 </RadioItem>
@@ -184,6 +217,11 @@ const GameSetting = (props) => {
 
 
             </ScrollView>
+            <ActivityIndicator
+                toast
+                text="等待服务器"
+                animating={room.loading}
+            />
             </View>
     );
 };

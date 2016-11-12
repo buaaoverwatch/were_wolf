@@ -22,10 +22,10 @@ import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 import Socket from '../services/websocket';
 /*
-  这个应该是：如果自己是房主，一号位置显示自己的头像，不能选择其他座位
-  其他人选择了头像则在界面上显示
-  如果自己不是房主，一号位置显示房主头像，自己选择座位，同时其他人选择了座位也在面板上更新
-*/
+ 这个应该是：如果自己是房主，一号位置显示自己的头像，不能选择其他座位
+ 其他人选择了头像则在界面上显示
+ 如果自己不是房主，一号位置显示房主头像，自己选择座位，同时其他人选择了座位也在面板上更新
+ */
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
     var Views = [];
@@ -38,47 +38,49 @@ const ChooseSeat = (props) => {
 
         for(let i = n;i<n+4&&i<room.player_num;i++){
 
-                row.push(
+            row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
                     <View  style={styles.single} >
-                        <Image source={require('../images/wolf.png')} style={styles.portrait} />
+                        <Image source={require(getPlayerAvatar(i))} style={styles.portrait} />
                         <Text style={styles.portraitText}>
-                            请选择座位
+                            {getPlayerNick(i)}
                         </Text>
                     </View>
                 </TouchableOpacity>
             );
         }
         return (
-              <View key = {n} style = {styles.row}>
-                  {row}
-              </View>
-            );
+            <View key = {n} style = {styles.row}>
+                {row}
+            </View>
+        );
 
 
     }
-    // function getPlayerAvatar(i){
-    //     if(i===0)
-    //         return player_avatar[owner_id];
-    //     else
-    //     {
-    //         if()//如果这个index还没有人的话
-    //             return //某张默认头像的地址
-    //         else
-    //             return player_avatar[i];
-    //
-    //     }
-    // }
-    // function getPlayerNick(i){
-    //     if(i===0)
-    //         return player_nick[owner_id];
-    //     else
-    //     {
-    //         if()
-    //             return ;
-    //     }
-    //
-    // }
+    function getPlayerAvatar(i){
+        if(i===0)
+            return '../images/head_portrait.jpg';//一个存了房主照片的文件
+        else
+        {
+            if(index_player[i]=="null")//如果这个index还没有人的话
+                return '../images/person.png';//某张默认头像的地址
+            else
+                return '../images/wolf.png';
+
+        }
+    }
+    function getPlayerNick(i){
+        if(i===0)
+            return player_nick[owner_id];
+        else
+        {
+            if(index_player[i]=="null")
+                return "这个座位没有人";
+            else
+                return player_nick[index_player[i]];
+        }
+
+    }
     //这个是用来存放所有用户头像的东西，这个倒是没有什么问题
     function Seats(){
         Views = [];
@@ -94,9 +96,13 @@ const ChooseSeat = (props) => {
     }
     function setMySeat(n)
     {
+        if(n===0)
+        {
+            return ;
+        }
         dispatch({
-           type:'room/changemyseat',
-           payload:n,
+            type:'room/changemyseat',
+            payload:n,
         });
         dispatch({
             type:'room/changechooseseatloading',
@@ -106,65 +112,77 @@ const ChooseSeat = (props) => {
 
         if(socket!=null)
             room.socket.send({"type":"2",
-                                "request_id":"asdas",
-                                "room_id":room.room_id,
-                                "user_id":room.client_id,
-                                "seat":n});
+                "request_id":"asdas",
+                "room_id":room.room_id.toString(),
+                "user_id":room.client_id.toString(),
+                "seat":n.toString()});
         else
         {
             Socket.handlesocket();
             room.socket.send({"type":"2",
                 "request_id":"asdas",
-                "room_id":room.room_id,
-                "user_id":room.client_id,
-                "seat":n});
+                "room_id":room.room_id.toString(),
+                "user_id":room.client_id.toString(),
+                "seat":n.toString()});
         }
+    }
+    function checkSeat(){
+        if(player_index[client_id]!=null)
+            Actions.GameSetting();
+        else
+            Alert.alert(
+                '请选择座位！',
+                alertMessage,
+                [
+                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+                ]
+            )
     }
 
 
     //todo 修改opacity的action
     return (
-            <View style={{flex: 1}}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={Actions.pop}>
-                        <View style={styles.backContainer}>
-                            <Image style={styles.backIcon}
-                                   source={require('../images/back.png')}/>
-                            <Text style={styles.backText}>
-                                返回
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <Text style={styles.headerText}>
-                        顺时针选择座位
-                    </Text>
-                    <TouchableOpacity onPress={Actions.GameSetting}>
-                        <View style={styles.completeContainer}>
-                            <Text style={styles.completeText}>
-                                下一步
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView style={{flex: 1, backgroundColor: '#f5f5f9'}}
-                            automaticallyAdjustContentInsets={false}
-                            showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false}
-                >
-                    {Seats()}
-                    <ActivityIndicator
-                        toast
-                        text="等待服务器"
-                        animating={room.loading}
-                    />
-                </ScrollView>
-
+        <View style={{flex: 1}}>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={Actions.pop}>
+                    <View style={styles.backContainer}>
+                        <Image style={styles.backIcon}
+                               source={require('../images/back.png')}/>
+                        <Text style={styles.backText}>
+                            返回
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <Text style={styles.headerText}>
+                    顺时针选择座位
+                </Text>
+                <TouchableOpacity onPress={checkSeat()}>
+                    <View style={styles.completeContainer}>
+                        <Text style={styles.completeText}>
+                            下一步
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
+            <ScrollView style={{flex: 1, backgroundColor: '#f5f5f9'}}
+                        automaticallyAdjustContentInsets={false}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+            >
+                {Seats()}
 
-        );
+            </ScrollView>
+            <ActivityIndicator
+                toast
+                text="等待服务器"
+                animating={room.loading}
+            />
+        </View>
+
+    );
 
 
-    }  ;
+}  ;
 
 
 
