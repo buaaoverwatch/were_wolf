@@ -17,6 +17,7 @@ import UserGrid from './stateless/usergrid';
 import Next from './stateless/next';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 import StateConst from '../consts/roomstate';
 
@@ -106,6 +107,11 @@ const Test1 = (props) => {
             )}
         >
             <TabView room={room} dispatch={dispatch}/>
+            <ActivityIndicator
+                toast
+                text="正在加载"
+                animating={room.loading}
+            />
         </ParallaxScrollView>
     );
 };
