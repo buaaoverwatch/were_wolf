@@ -77,18 +77,11 @@ export default {
     subscriptions: {},
 
     effects: {
-        *WebSocketsend({ payload }, { put, call, select }) {
-            const WebSocket = yield select(state => state.socket);
-            const {msg}=payload;
-            WebSocket.send(msg);
+        *WebSocketsend({ payload }, { put, call }) {
+            //const WebSocket = yield select(state => state.socket);
             yield put({ type: 'showLoading' });
-            yield call(delay, 1000);
-            const ld=select(state => state.loading);
-            if(ld==true)
-            {
-                yield put({ type: 'hideLoading' });
-                Toast.fail('链接失败，请重试', 1);
-            }
+            yield call(delay, 5000);
+            yield put({ type: 'checkLoading' });
         },
     },
 
@@ -106,8 +99,7 @@ export default {
         },
         addUserRequestID(state)
         {
-            let i=state.user_request_id+1;
-            return{...state,user_request_id:i};
+            return{...state,user_request_id:state.user_request_id+1};
         },
         setRoomRequestID(state,action)
         {

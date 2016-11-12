@@ -27,12 +27,16 @@ const Socket = (props) => {
             if(e.data)
             {
                 msg=JSON.parse(e.data);
-                if(msg.type===0)
+                if(msg.type==='0')
                 {
-                    if(msg.user_request_id==room.user_request_id)//收到了发送消息的确认消息
+                    if(msg.user_request_id==room.user_request_id.toString())//收到了发送消息的确认消息
                     {
                         dispatch({
                             type: 'room/addUserRequestID',
+                        });
+                        room.user_request_id=room.user_request_id+1;
+                        dispatch({
+                            type: 'room/hideLoading',
                         });
                         //TODO:loading置false
                     }
@@ -121,11 +125,13 @@ const Socket = (props) => {
         ws.onerror = (e) => {
             // an error occurred
             console.log(e.message);
+            console.log('sss');
         };
 
         ws.onclose = (e) => {
             // connection closed
             console.log(e.code, e.reason);
+            console.log('ssss');
             connected=false;
         };
         dispatch({
@@ -145,7 +151,11 @@ const Socket = (props) => {
                 seat:100,
             });
             ws.send(msg);
-            console.log('Ol');
+            dispatch({
+                type: 'room/WebSocketsend',
+                payload: {msg},
+            });
+            console.log('Ol'+room.user_request_id);
         }
     }
     function sendcomfirm(data) {
