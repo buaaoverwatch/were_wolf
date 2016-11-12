@@ -22,10 +22,10 @@ import {
 
 var username, nickname, password, introduce;
 class Register extends Component {
-    clickhttp() {
-        dispatch({
-            type: './information/loadingTrue'
-        });
+    clickhttp(_this) {
+        // _this.props.dispatch({
+        //     type: './information/loadingTrue'
+        // });
         // const data1 = {
         //     user_name: "lalala",
         //     nick_name: "啦啦啦",
@@ -45,40 +45,50 @@ class Register extends Component {
                 introduce: introduce
             })
         })
-            .then(function(data){
-                console.log(data.text());
-                return data;
-            })
-            .then((responseText) => {
-                dispatch({
-                    type: './information/loadingFalse'
+            .then(function(data) {
+                //console.log('data: ' + data.text());
+                data.json().then(function (data1) {
+                    console.log('data1: ' + data1.text());
+                    alert('data1: ' + data1);
                 });
-                if(responseText.type == 1) {
-                    Toast.fail("用户名已存在！", 1);
-                    return responseText;
-                } else if (responseText.type == 2) {
-                    Toast.fail("网络请求错误！", 1);
-                    return responseText;
-                }
-                Toast.success("注册成功！请登录。" + responseText.type,1);
-                dispatch({
-                    type: './information/registerSuccess',
-                    payload: {
-                        username: username,
-                        nickname: nickname,
-                        password: password,
-                        introduce: introduce
-                    }
-                });
-                //这里应该有一个界面跳转
-                console.log(responseText);
-                return responseText;
+                // console.log('data:' + data.text());
+                // //alert('data: ' + data.text());
+                // alert('type: ' + data.text());
+                // //alert('type: ' + data.text()._65());
+                // _this.props.dispatch({
+                //     type: './information/loadingFalse'
+                // });
+                // console.log('type: ' + data.text());
+                // if(data.type == 1) {
+                //     Toast.fail("用户名已存在！", 1);
+                //     return data.text();
+                // } else if (data.type == 2) {
+                //     Toast.fail("网络请求错误！", 1);
+                //     return data.text();
+                // }
+                // Toast.success("注册成功！请登录。" + data.type,1);
+                // _this.props.dispatch({
+                //     type: './information/registerSuccess',
+                //     payload: {
+                //         username: username,
+                //         nickname: nickname,
+                //         password: password,
+                //         introduce: introduce
+                //     }
+                // });
+                // //这里应该有一个界面跳转
+                // Actions.tabbar();
+                // return data;
             })
+            // .then((responseText) => {
+            //     console.log(responseText);
+            //     return responseText;
+            // })
             .catch((error) => {
-                dispatch({
+                _this.props.dispatch({
                     type: './information/loadingFalse'
                 });
-                Toast.fail("网络错误！", 1);
+                //Toast.fail("网络错误！", 1);
                 console.warn(error);
             });
     }
@@ -108,9 +118,9 @@ class Register extends Component {
         }
         //
         //http
-        //clickhttp();
+        this.clickhttp(this);
         //direct
-        Actions.tabbar();
+        //Actions.tabbar();
     }
     render() {
         const {getFieldProps} = this.props.form;

@@ -41,9 +41,9 @@ const ChooseSeat = (props) => {
                 row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
                     <View  style={styles.single} >
-                        <Image source={getPlayerAvatar(i)} style={styles.portrait} />
+                        <Image source={require('../images/wolf.png')} style={styles.portrait} />
                         <Text style={styles.portraitText}>
-                            {getPlayerNick(i)}
+                            请选择座位
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -57,28 +57,28 @@ const ChooseSeat = (props) => {
 
 
     }
-    function getPlayerAvatar(i){
-        if(i===0)
-            return player_avatar[owner_id];
-        else
-        {
-            if()//如果这个index还没有人的话
-                return //某张默认头像的地址
-            else
-                return player_avatar[i];
-
-        }
-    }
-    function getPlayerNick(i){
-        if(i===0)
-            return player_nick[owner_id];
-        else
-        {
-            if()
-                return ;
-        }
-
-    }
+    // function getPlayerAvatar(i){
+    //     if(i===0)
+    //         return player_avatar[owner_id];
+    //     else
+    //     {
+    //         if()//如果这个index还没有人的话
+    //             return //某张默认头像的地址
+    //         else
+    //             return player_avatar[i];
+    //
+    //     }
+    // }
+    // function getPlayerNick(i){
+    //     if(i===0)
+    //         return player_nick[owner_id];
+    //     else
+    //     {
+    //         if()
+    //             return ;
+    //     }
+    //
+    // }
     //这个是用来存放所有用户头像的东西，这个倒是没有什么问题
     function Seats(){
         Views = [];
