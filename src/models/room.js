@@ -58,7 +58,7 @@ export default {
 
 
 
-
+        hassocket:false,
         socket:null,
         loading : false,
         myseat:0,
@@ -78,7 +78,7 @@ export default {
         },
         setsocket(state,action)
         {
-            return{...state,socket:action.payload};
+            return{...state,socket:action.payload,hassocket:true};
         },
         addUserRequestID(state)
         {
