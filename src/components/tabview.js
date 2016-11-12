@@ -42,13 +42,17 @@ export default class Tabview extends Component {
             extrafun:()=>{},
         };
         this.onClose = this.onClose.bind(this);
+        this.onConfirm = this.onConfirm.bind(this);
         this.checkandshowModal = this.checkandshowModal.bind(this);
         //this._renderList = this._renderList.bind(this);
         //this._renderModal = this._renderModal.bind(this);
     };
-    onClose(){
+    onConfirm(){
         this.state.extrafun();
         this.setState({extrafun:()=>{}});
+        this.setState({visible:false});
+    };
+    onClose(){
         this.setState({visible:false});
     };
     checkandshowModal(role){
@@ -654,19 +658,31 @@ export default class Tabview extends Component {
                         visible={this.state.visible}
                         style={{height:200,width:300,alignItems: 'center'}}
                     >
-                        <Text style={{marginTop:30,
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={{marginTop:30,
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
-                            {this.state.modalcontent}
-                        </Text>
-                        <Button
-                            raised
-                            icon={{name: 'send'}}
-                            title='确认'
-                            backgroundColor='#fd661b'
-                            buttonStyle={{marginTop:40,width:150,height:40}}
-                            onPress={this.onClose}
-                        />
+                                {this.state.modalcontent}
+                            </Text>
+                            <View style={{flexDirection:'row',alignItems: 'center'}}>
+                                <Button
+                                    raised
+                                    icon={{name: 'done'}}
+                                    title='确认'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onConfirm}
+                                />
+                                <Button
+                                    raised
+                                    icon={{name: 'clear'}}
+                                    title='取消'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onClose}
+                                />
+                            </View>
+                        </View>
                     </Modal>
                 </View>
                 <View tabLabel='投票'
