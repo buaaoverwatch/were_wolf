@@ -32,6 +32,41 @@ import Socket from '../services/websocket';
 const seeMySelf = (props) => {
     const {dispatch, room} = props;
 
+    const wolf = require('');
+    const vill = require('');
+    const cupid = require('');
+    const hunter = require('');
+    const guard = require('');
+    const witch = require('');
+    const seer = require('');
+
+    function  getChaPic() {
+        if(room.player_role[room.client_id]==="wolf"){
+            return wolf;
+        }
+        else if(room.player_role[room.client_id]==="vill"){
+            return vill;
+        }
+        else if(room.player_role[room.client_id]==="witch"){
+            return witch;
+        }
+        else if(room.player_role[room.client_id]==="cupid"){
+            return cupid;
+        }
+        else if(room.player_role[room.client_id]==="hunter"){
+            return hunter;
+        }
+        else if(room.player_role[room.client_id]==="guard"){
+            return guard;
+        }
+        else if(room.player_role[room.client_id]==="seer"){
+            return seer;
+        }
+
+    }
+
+
+
     return(
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -46,7 +81,7 @@ const seeMySelf = (props) => {
                 </TouchableOpacity>
             </View>
             <Image style ={ styles.Character}
-            source ={p}
+            source ={getChaPic()}
             />
             <Text>{getCharacter()}</Text>
             <ActivityIndicator
