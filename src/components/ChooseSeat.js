@@ -28,6 +28,9 @@ import Socket from '../services/websocket';
  */
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
+    const p1 = require('../images/head_portrait.jpg');
+    const p2 = require('../images/person.png');
+    const p3 = require('../images/wolf.png');
     var Views = [];
     //这个的数据源有点问题
     //首先playerid和nick和avatar都是创建游戏之后就有了的。
@@ -41,7 +44,7 @@ const ChooseSeat = (props) => {
             row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
                     <View  style={styles.single} >
-                        <Image source={require(getPlayerAvatar(i))} style={styles.portrait} />
+                        <Image source={getPlayerAvatar(i)} style={styles.portrait} />
                         <Text style={styles.portraitText}>
                             {getPlayerNick(i)}
                         </Text>
@@ -59,25 +62,25 @@ const ChooseSeat = (props) => {
     }
     function getPlayerAvatar(i){
         if(i===0)
-            return '../images/head_portrait.jpg';//一个存了房主照片的文件
+            return p1;//一个存了房主照片的文件
         else
         {
-            if(index_player[i]=="null")//如果这个index还没有人的话
-                return '../images/person.png';//某张默认头像的地址
+            if(room.index_player[i]=="null")//如果这个index还没有人的话
+                return p2;//某张默认头像的地址
             else
-                return '../images/wolf.png';
+                return p3;
 
         }
     }
     function getPlayerNick(i){
         if(i===0)
-            return player_nick[owner_id];
+            return room.player_nick[room.owner_id];
         else
         {
-            if(index_player[i]=="null")
+            if(room.index_player[i]=="null")
                 return "这个座位没有人";
             else
-                return player_nick[index_player[i]];
+                return room.player_nick[room.index_player[i]];
         }
 
     }
@@ -127,7 +130,7 @@ const ChooseSeat = (props) => {
         }
     }
     function checkSeat(){
-        if(player_index[client_id]!=null)
+        if(room.player_index[room.client_id]!=null)
             Actions.GameSetting();
         else
             Alert.alert(

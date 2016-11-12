@@ -11,7 +11,7 @@ export default {
         room_name: '',
         owner_id: '213',
         //
-        index_player:{0:owner_id,1:"null",2:"asdsa",3:"asss"},
+        index_player:{0:this.owner_id,1:"null",2:"asdsa",3:"asss"},
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         player_avatar: {},
         player_num: 10,

@@ -30,10 +30,11 @@ var EditInfo = (props) => {
     const {getFieldProps} = props.form;
     function click() {
         var Regx = /(^[A-Za-z0-9]+$)/;
-        if(nickname == information.nickname &&
-        password == information.password &&
-        introduce == information.introduce) {
+        if(nickname === information.nickname &&
+        password === information.password &&
+        introduce === information.introduce) {
             Toast.success("修改成功！1", 1);
+            alert(nickname + '  ' + password + '  ' + introduce);
             Actions.pop();
             return;
         }

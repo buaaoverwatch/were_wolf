@@ -46,12 +46,12 @@ class Login extends Component {
             return;
         }
         //http
-        //clickhttp();
-        Actions.tabbar();
+        this.clickhttp(this);
+        //Actions.tabbar();
     }
-    clickhttp() {
-        dispatch({
-            type: './information/loadingTrue'
+    clickhttp(_this) {
+        _this.props.dispatch({
+            type: 'information/loadingTrue'
         });
         fetch('http://10.138.73.83:8000/login/', {
             method: 'POST',
@@ -65,21 +65,20 @@ class Login extends Component {
             })
         })
             .then(function(data){
-                console.log(data.text());
-                return data;
+                return data.json();
             })
             .then((responseText) => {
-                dispatch({
-                    type: './information/loadingFalse'
+                _this.dispatch({
+                    type: 'information/loadingFalse'
                 });
-                if(responseText.type == 1) {
+                if(responseText[0].type == 1) {
                     Toast.fail("用户名不存在！", 1);
                     return responseText;
-                } else if (responseText.type == 2) {
+                } else if (responseText[0].type == 2) {
                     Toast.fail("密码错误！", 1);
                     return responseText;
                 }
-                Toast.success("登录成功！" + responseText.type,1);
+                Toast.success("登录成功！",1);
                 //TODO:这里服务器应该返回昵称和简介
                 dispatch({
                     type: './information/loginSuccess',

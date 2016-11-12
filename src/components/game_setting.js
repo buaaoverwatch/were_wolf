@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     AppRegistry,
     View,
     StyleSheet,
@@ -9,6 +10,7 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
+    ActivityIndicator
 } from 'react-native';
 
 
