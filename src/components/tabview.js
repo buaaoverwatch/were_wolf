@@ -30,7 +30,6 @@ export default class Tabview extends Component {
         super(props);
         // 设置初始状态
         this.state = {
-            dispatch:props.dispatch,
             msg:[],
             msg1_1:'1号玩家',
             msg1_2:'是',
@@ -40,21 +39,20 @@ export default class Tabview extends Component {
             modaltitle:'',
             modalcontent:'',
             visible:false,
-            extrafun:null,
+            extrafun:()=>{},
         };
-        this.showModal = this.showModal.bind(this);
         this.onClose = this.onClose.bind(this);
         this.checkandshowModal = this.checkandshowModal.bind(this);
         //this._renderList = this._renderList.bind(this);
         //this._renderModal = this._renderModal.bind(this);
     };
-    onPressModal(){
+    onClose(){
+        this.state.extrafun();
+        this.setState({extrafun:()=>{}});
         this.setState({visible:false});
-    }
+    };
     checkandshowModal(role){
-        let title;
-        let content;
-        if(role=='wolf')
+        if(role=='wolf_kill')
         {
             if(this.props.room.curstate!=StateConst.wolf)
             {
@@ -71,7 +69,7 @@ export default class Tabview extends Component {
             else if(this.props.room.nextstep)
             {
                 this.setState({modaltitle:"出错啦"});
-                this.setState({modalcontent:"您这轮已经杀过人了"});
+                this.setState({modalcontent:"您这轮已经杀过人了,请点击下一步按钮"});
                 this.setState({visible:true});
             }
             else
@@ -98,38 +96,227 @@ export default class Tabview extends Component {
                     };
                     this.setState({visible:true});
                 }
-
-
+            }
+        }
+        if(role=='wolf_suicide')
+        {
+            if(this.props.room.curstate==StateConst.cupid|
+                this.props.room.curstate==StateConst.lover||
+                this.props.room.curstate==StateConst.guard||
+                this.props.room.curstate==StateConst.wolf||
+                this.props.room.curstate==StateConst.seer||
+                this.props.room.curstate==StateConst.witch)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"不能在黑夜自爆"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:"您确定要自爆么，自爆后将会结束这轮白天的所有行动跳到下一个黑夜"});
+                function press() {
+                    //TODO:加入回调函数
+                };
+                this.setState({visible:true});
             }
         }
         else if(role=='hunter')
         {
-
+            if(this.props.room.curstate!=StateConst.hunter)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有死亡，不能开枪"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您已经开过枪了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择行使技能的对象"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要向Ta开枪么`});
+                function press() {
+                    //TODO:加入回调函数
+                };
+                this.setState({visible:true});
+            }
         }
-        else if(role=='witch')
+        else if(role=='witch_heal')
         {
-
+            if(this.props.room.curstate!=StateConst.witch)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有还没有到自己的回合，不能使用技能"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.witch_save)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您已经救过人了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"一局只能使用一瓶解药或一瓶毒药,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.wolf_lastkill==this.props.room.client_id&&this.props.room.round!=1)
+            {
+                this.setState({modaltitle:"遗憾的是"});
+                this.setState({modalcontent:"您这局被狼人杀死了，可惜今夜不是第一夜，您不能自救"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`这轮死亡的是${this.props.room.player_index[this.props.room.wolf_lastkill]}号玩家，您确定要救他么`});
+                function press() {
+                    //TODO:加入回调函数
+                    //TODO:加入取消键
+                };
+                this.setState({visible:true});
+            }
+        }
+        else if(role=='witch_kill')
+        {
+            if(this.props.room.curstate!=StateConst.witch)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有还没有到自己的回合，不能使用技能"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.witch_kill)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您已经毒过人了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"一局只能使用一瓶解药或一瓶毒药,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择行使技能的对象"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要对他使用毒药么`});
+                function press() {
+                    //TODO:加入回调函数
+                };
+                this.setState({visible:true});
+            }
         }
         else if(role=='cupid')
         {
-
+            if(this.props.room.curstate!=StateConst.cupid)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有还没有到自己的回合，不能使用技能"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您已经连接过两位情侣了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid==""||this.props.room.player_selectedid2=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择要链接的两位情侣"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家和${this.props.room.player_index[this.props.room.player_selectedid2]}号玩家，您确定要链接两位玩家成为情侣么`});
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep'});
+                };
+                this.setState({extrafun:press});
+                this.setState({visible:true});
+            }
         }
         else if(role=='seer')
         {
-
+            if(this.props.room.curstate!=StateConst.seer)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有还没有到自己的回合，不能使用技能"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您这轮已经看过玩家的身份了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择要查看身份的玩家"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要查看Ta的身份么`});
+                function press() {
+                    //TODO:加入回调函数
+                };
+                this.setState({visible:true});
+            }
+        }
+        else if(role=='guard')
+        {
+            if(this.props.room.curstate!=StateConst.seer)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您还没有还没有到自己的回合，不能使用技能"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.nextstep)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"您这轮已经守护过一名玩家了,请点击下一步按钮"});
+                this.setState({visible:true});
+            }
+            else if(this.props.room.player_selectedid=="")
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:"请选择要守护的玩家"});
+                this.setState({visible:true});
+            }
+            else
+            {
+                this.setState({modaltitle:"请确认"});
+                this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要守护Ta么`});
+                function press() {
+                    //TODO:加入回调函数
+                };
+                this.setState({visible:true});
+            }
         }
 
     }
-    showModal() {
-        this.setState({
-            visible: true,
-        });
-    };
-    onClose() {
-        this.setState({
-            visible: false,
-        });
-    };
     _renderPicker(list){
         return list.map((item, i) => {
             return (
@@ -260,7 +447,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('witch_heal')}/>
             </Card>
         );
         const witch_kill=(
@@ -278,7 +465,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('witch_kill')}/>
             </Card>
         );
         const seer=(
@@ -296,7 +483,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('seer')}/>
             </Card>
         );
         const cupid=(
@@ -314,7 +501,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('cupid')}/>
             </Card>
         );
         const hunter=(
@@ -332,7 +519,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('hunter')}/>
             </Card>
         );
         const guard=(
@@ -350,7 +537,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('guard')}/>
             </Card>
         );
         const wolf_kill=(
@@ -368,7 +555,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={()=>this.checkandshowModal('wolf')}/>
+                    onPress={()=>this.checkandshowModal('wolf_kill')}/>
             </Card>
         );
         const wolf_suicide=(
@@ -386,7 +573,7 @@ export default class Tabview extends Component {
                     backgroundColor='#03A9F4'
                     buttonStyle={{}}
                     title='使用技能'
-                    onPress={this.showModal}/>
+                    onPress={()=>this.checkandshowModal('wolf_suicide')}/>
             </Card>
         );
         let list=[
