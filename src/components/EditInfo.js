@@ -18,6 +18,7 @@ import {
 } from 'react-native-router-flux';
 import List from 'antd-mobile/lib/list';
 import InputItem from 'antd-mobile/lib/input-item';
+import Toast from 'antd-mobile/lib/toast';
 import { createForm } from 'rc-form';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
@@ -32,7 +33,7 @@ var EditInfo = (props) => {
         if(nickname == information.nickname &&
         password == information.password &&
         introduce == information.introduce) {
-            Toast.success("修改成功！", 1);
+            Toast.success("修改成功！1", 1);
             Actions.pop();
             return;
         }
@@ -46,12 +47,12 @@ var EditInfo = (props) => {
             return;
         }
         //TODO:发送http请求
-        //clickhttp();
-        Actions.pop();
+        clickhttp();
+        //Actions.pop();
     }
     function clickhttp() {
         dispatch({
-            type: './information/loadingTrue'
+            type: 'information/loadingTrue'
         });
         fetch('http://10.138.73.83:8000/updataInfo/', {
             method: 'POST',
@@ -67,22 +68,21 @@ var EditInfo = (props) => {
             })
         })
             .then(function(data){
-                console.log(data.text());
-                return data;
+                return data.json();
             })
             .then((responseText) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'information/loadingFalse'
                 });
-                if(responseText.result == 1) {
+                if(responseText[0].result == 1) {
                     Toast.fail("修改失败！", 1);
                     Actions.pop();
                     return responseText;
                 }
-                Toast.success("修改成功！" + responseText.result,1);
+                Toast.success("修改成功！" + responseText[0].result,1);
                 //TODO:这里服务器应该返回昵称和简介
                 dispatch({
-                    type: './information/editSuccess',
+                    type: 'information/editSuccess',
                     payload: {
                         nickname: nickname,
                         password: password,
@@ -91,12 +91,11 @@ var EditInfo = (props) => {
                 });
                 //这里应该有一个界面跳转
                 Actions.pop();
-                console.log(responseText);
                 return responseText;
             })
             .catch((error) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'information/loadingFalse'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
@@ -171,7 +170,7 @@ var EditInfo = (props) => {
             <ActivityIndicator
                 toast
                 text="正在加载"
-                animating={props.loading}
+                animating={information.loading}
             />
         </View>
     );
