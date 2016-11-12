@@ -18,6 +18,7 @@ import StateConst from '../consts/roomstate';
 
 import VoteResult from './stateless/voteresult';
 import GuessRole from './stateless/guessrole';
+import Socket from '../services/websocket'
 
 
 export default class Tabview extends Component {
@@ -648,6 +649,7 @@ export default class Tabview extends Component {
                           backgroundColor:'#f7f7f7',
                       }}
                 >
+                    <Socket/>
                     {this._renderCard()}
                     <Modal
                         title={this.state.modaltitle}

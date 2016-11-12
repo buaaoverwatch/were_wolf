@@ -46,7 +46,10 @@ export default {
         wolf_lastkill:"",
         round: 1,
         curstate: StateConst.cupid,
-        request_id:0,
+
+        room_request_id:0,
+        user_request_id:0,
+
         lastvote: {},
         nextstep: false,
         witch_save:false,
@@ -68,9 +71,24 @@ export default {
     },
 
     reducers: {
+        //WebSocket相关
         showLoading(state) {
             return {...state, loading: true};
         },
+        setsocket(state,action)
+        {
+            return{...state,socket:action.payload};
+        },
+        addUserRequestID(state)
+        {
+            let i=state.user_request_id+1;
+            return{...state,user_request_id:i};
+        },
+        setRoomRequestID(state,action)
+        {
+            return{...state,room_request_id:action.payload};
+        },
+
         changeselid(state,action)
         {
             let selid1=state.player_selectedid;
@@ -115,10 +133,9 @@ export default {
         {
             return{...state,sheriff_id:action.payload};
         },
-        setsocket(state,action)
-        {
-            return{...state,socket:action.payload};
-        },
+
+
+
         changeNextStep(state) {
             return { ...state, nextstep: !state.nextstep};
         },
