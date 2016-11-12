@@ -85,6 +85,7 @@ const GameSetting = (props) => {
     }
     function sendsetting(){
         if(room.socket!=null)
+        {
             ws = new WebSocket('ws://115.29.193.48:8088');
             ws.send({
                 "Werewolf": room.Werewolf,
@@ -96,6 +97,7 @@ const GameSetting = (props) => {
                 "Guard":room.Guard,
                 "WolfWinCondition":room.WolfWinCondition
             });
+        }
         else
         {
 //          Socket.handlesocket();

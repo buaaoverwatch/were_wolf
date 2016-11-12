@@ -17,6 +17,9 @@ import UserGrid from './stateless/usergrid';
 import Next from './stateless/next';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
+
+import StateConst from '../consts/roomstate';
+
 const Test1 = (props) => {
     const { dispatch, room } = props;
     function genusergriddata()
@@ -29,6 +32,8 @@ const Test1 = (props) => {
                     issheriff=true;
                 let issel=false;
                 if(item==room.player_selectedid)
+                    issel=true;
+                if(item==room.player_selectedid2&&room.curstate==StateConst.cupid)
                     issel=true;
                 function handlePress() {
                     dispatch({ type: 'room/changeselid',payload:item });
@@ -46,6 +51,13 @@ const Test1 = (props) => {
                 }
             }
         )
+    }
+    function test()
+    {
+        if(room.nextstep==false)
+            return 'false';
+        else
+            return 'true';
     }
     const usergriddata=genusergriddata();
     return (
@@ -75,7 +87,7 @@ const Test1 = (props) => {
                         狼人行动阶段
                     </Text>
                     <Text style={ styles.sectionTitleText }>
-                        啦啦啦啦啦
+                        {test()}
                     </Text>
                 </View>
             )}
@@ -93,7 +105,7 @@ const Test1 = (props) => {
                 </View>
             )}
         >
-            <TabView room={room}/>
+            <TabView room={room} dispatch={dispatch}/>
         </ParallaxScrollView>
     );
 };

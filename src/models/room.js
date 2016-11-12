@@ -1,3 +1,4 @@
+import StateConst from '../consts/roomstate';
 export default {
 
     namespace: 'room',
@@ -5,26 +6,30 @@ export default {
     state: {
         room_id: null,
         room_name: '',
-        client_id:'a2',
+        client_id:'a3',
         owner_id: '',
         player_num: 10,
         player_id: ["a1", "a2", "a3", "a4"],
-        player_index: {},
+        player_index: {"a1": 1, "a2": 2, "a3": 3, "a4": 4},
         index_id: ["a1", "a2", "a3", "a4"],
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         guess_role: {},
-        player_role: {"a1":"witch", "a2":"wolf", "a3":"villager", "a4": "hunter",},
+        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "hunter",},
         player_avatar: {},
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},
         player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
         sheriff_id: "a4",
         sheriff_list:[],
         player_selectedid:"",
-        round: null,
-        curstate: 4,
+        player_selectedid2:"",
+        wolf_lastkill:"",
+        round: 1,
+        curstate: StateConst.cupid,
         request_id:0,
         lastvote: {},
         nextstep: false,
+        witch_save:false,
+        witch_kill:false,
 
         Werewolf:4,
         Villager:4,
@@ -54,7 +59,23 @@ export default {
         },
         changeselid(state,action)
         {
-            return{...state,player_selectedid:action.payload};
+            let selid1=state.player_selectedid;
+            let selid2=state.player_selectedid2;
+            if(state.curstate==StateConst.cupid)
+            {
+                if(state.player_selectedid2=="")
+                    return{...state,player_selectedid2:action.payload};
+                else if(state.player_selectedid=="")
+                    return{...state,player_selectedid:action.payload};
+                else if(action.payload==state.player_selectedid)
+                    return{...state,player_selectedid:action.payload};
+                else if(action.payload==state.player_selectedid2)
+                    return{...state,player_selectedid2:action.payload};
+                else
+                    return{...state,player_selectedid2:action.payload,player_selectedid:selid2};
+            }
+            else
+                return{...state,player_selectedid:action.payload};
         },
         changeCharacterNum(state,action)
         {
@@ -86,6 +107,12 @@ export default {
         },
         changeNextStep(state) {
             return { ...state, nextstep: !state.nextstep};
+        },
+        changeWitchSave(state,action) {
+            return { ...state, nextstep: action.payload};
+        },
+        changeWitchKill(state,action) {
+            return { ...state, nextstep: action.payload};
         },
 
 
