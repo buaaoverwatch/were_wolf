@@ -94,11 +94,6 @@ const GameRoom = (props) => {
                         >
                             房间名
                         </List.Item>
-                        <List.Item
-                            extra={information.roomOwnerName}
-                        >
-                            房主
-                        </List.Item>
                     </List>
                 </View>
                 {members()}

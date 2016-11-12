@@ -28,7 +28,7 @@ export default{
         loading: false,
         roomID: "8501",
         roomName: "",
-        roomOwnerName: "dudu",
+        ownerID: "",
         roomMembers: [
             "测试一号玩家",
             "测试二号玩家",
@@ -41,17 +41,7 @@ export default{
             "9",
             "10",
             "11",
-            "测试一号玩家",
-            "测试二号玩家",
-            "测试三号玩家",
-            "测试四号玩家",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
+            "12"
         ],
         ifOwner: false
     },
@@ -84,11 +74,13 @@ export default{
     reducers: {
         registerSuccess(state, action) {
           return { ...state, username: action.payload.username, nickname: action.payload.nickname
-              , password: action.payload.password, introduce: action.payload.introduce};
+              , password: action.payload.password, introduce: action.payload.introduce
+                , userID: action.payload.userID};
         },
         loginSuccess(state, action) {
           return { ...state, username: action.payload.username, nickname: action.payload.nickname
-              , password: action.payload.password, introduce: action.payload.introduce};
+              , password: action.payload.password, introduce: action.payload.introduce
+                , userID: action.payload.userID};
         },
         editSuccess(state, action) {
             return { ...state, nickname: action.payload.nickname,
@@ -104,10 +96,12 @@ export default{
             return { ...state, loading: !state.loading};
         },
         createRoomSuccess(state, action) {
-            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName};
+            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName
+                    , ownerID: action.payload.ownerID};
         },
         addRoomSuccess(state, action) {
-            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName};
+            return { ...state, roomID: action.payload.roomID, roomName: action.payload.roomName
+                    , ownerID: action.payload.ownerID};
         },
         changeRoomID(state, action) {
             return { ...state, roomID: action.payload};

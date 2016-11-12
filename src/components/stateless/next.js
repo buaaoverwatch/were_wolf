@@ -53,13 +53,12 @@ export default class Next extends Component {
                         transparent
                         onClose={this.onClose}
                         visible={this.state.visible}
-                        style={{height:200,width:300,}}
+                        style={{height:200, width:300, alignItems: 'center'}}
                     >
                         <Text style={{marginTop:30,
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
                             技能未使用!{this.props.nextstep}</Text>
-                        <Text></Text>
                     </Modal>
             </View>
         )
