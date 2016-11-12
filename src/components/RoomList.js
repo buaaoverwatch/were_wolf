@@ -27,7 +27,7 @@ import WhiteSpace from 'antd-mobile/lib/white-space';
 const RoomList = (props) => {
     const { dispatch, ALLROOM } = props;
     var n = 0;
-    function getRoomList(i) {
+    function getRoomList(i) {//todo 把card修改为list
         var roomname = '房间名:'+i.room_name;
         var roomid = '房间号:'+i.room_id;
         var roomholder = '房主名:'+i.room_holder;

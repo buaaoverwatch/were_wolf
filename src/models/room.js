@@ -4,19 +4,40 @@ export default {
     namespace: 'room',
 
     state: {
+        //登录->创建或加入->玩家列表->选座->设置->开始游戏
+        client_id:'a3',
+        //
         room_id: null,
         room_name: '',
-        client_id:'a3',
         owner_id: '',
+        //
+        player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
+        player_avatar: {},
         player_num: 10,
         player_id: ["a1", "a2", "a3", "a4"],
-        player_index: {"a1": 1, "a2": 2, "a3": 3, "a4": 4},
-        index_id: ["a1", "a2", "a3", "a4"],
-        player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
+        //
+        player_index: {"a1": 1, "a2": 2, "a3": 3, "a4": 4},//玩家选位之后
+        //
+        index_id: ["a1", "a2", "a3", "a4"],//所有玩家选位之后
+
+        Werewolf:4,
+        Villager:4,
+        Cupid:1,
+        Seer:1,
+        Witch:1,
+        Hunter:1,
+        Guard:1,
+        WolfWinCondition:1,
+        //上面七个是设置游戏的时候，以及玩的时候
+
+        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "hunter",},//房主开始游戏之后
+        player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},//房主开始游戏之后
+
+
+
+
+
         guess_role: {},
-        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "hunter",},
-        player_avatar: {},
-        player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},
         player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
         sheriff_id: "a4",
         sheriff_list:[],
@@ -31,20 +52,13 @@ export default {
         witch_save:false,
         witch_kill:false,
 
-        Werewolf:4,
-        Villager:4,
-        Cupid:1,
-        Seer:1,
-        Witch:1,
-        Hunter:1,
-        Guard:1,
-        WolfWinCondition:1,
 
 
 
         socket:null,
         loading : false,
         myseat:0,
+        //玩家选座的时候
     },
 
     subscriptions: {},

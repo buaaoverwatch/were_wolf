@@ -21,21 +21,29 @@ import {
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 import Socket from '../services/websocket';
-
-
+/*
+  这个应该是：如果自己是房主，一号位置显示自己的头像，不能选择其他座位
+  其他人选择了头像则在界面上显示
+  如果自己不是房主，一号位置显示房主头像，自己选择座位，同时其他人选择了座位也在面板上更新
+*/
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
     var Views = [];
+    //这个的数据源有点问题
+    //首先playerid和nick和avatar都是创建游戏之后就有了的。
+    //然后我要把房主的设置为1号，并打印在界面上，然后每当选择了之后就更新，也就是我需要一个默认值
+    //model中初始化player_index中的键都为初始默认值，初始默认值对应一个nick，对应一个avatar
     function addRow(n){
         var row = [];
-        //此处设置onpress事件用于修改state中的值
+
         for(let i = n;i<n+4&&i<room.player_num;i++){
-            row.push(
+
+                row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
                     <View  style={styles.single} >
-                        <Image source={require('../images/wolf.png')} style={styles.portrait} />
+                        <Image source={getPlayerAvatar(i)} style={styles.portrait} />
                         <Text style={styles.portraitText}>
-                            此座位无人
+                            {getPlayerNick(i)}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -49,6 +57,29 @@ const ChooseSeat = (props) => {
 
 
     }
+    function getPlayerAvatar(i){
+        if(i===0)
+            return player_avatar[owner_id];
+        else
+        {
+            if()//如果这个index还没有人的话
+                return //某张默认头像的地址
+            else
+                return player_avatar[i];
+
+        }
+    }
+    function getPlayerNick(i){
+        if(i===0)
+            return player_nick[owner_id];
+        else
+        {
+            if()
+                return ;
+        }
+
+    }
+    //这个是用来存放所有用户头像的东西，这个倒是没有什么问题
     function Seats(){
         Views = [];
         for(let i = 0; i < room.player_num; i = i+4){
@@ -61,16 +92,18 @@ const ChooseSeat = (props) => {
         );
 
     }
-    function setMySeat(n)//用于修改state中的myseat变量，将myseat设置为选定的值
+    function setMySeat(n)
     {
         dispatch({
            type:'room/changemyseat',
            payload:n,
         });
         dispatch({
-            type:'room/changechooseseatloding',
+            type:'room/changechooseseatloading',
             payload:true,
-        });
+        });//设置loading为true
+        //以下进行与后台的通信
+
         if(socket!=null)
             room.socket.send({"type":"2",
                                 "request_id":"asdas",
@@ -89,7 +122,7 @@ const ChooseSeat = (props) => {
     }
 
 
-
+    //todo 修改opacity的action
     return (
             <View style={{flex: 1}}>
                 <View style={styles.header}>
