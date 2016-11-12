@@ -110,39 +110,31 @@ const GameSetting = (props) => {
         {
             msg=JSON.stringify({
                 type:3,
+                request_id:room.user_request_id,
+                room_id:room.room_id,
+                user_id:room.owner_id,
+                wolf_num: room.Werewolf,
+                seer_num: room.Seer,
+                hunter_num:room.Hunter,
+                village_num: room.Villager,
+                witch_num:room.Witch,
+                cupid_num: room.Cupid,
+                guard_num:room.Guard,
+                rule:room.WolfWinCondition,
 
-            })
-            room.socket.send({
-                "type":"3",
-                "request_id":"",
-                "room_id":room.room_id.toString(),
-                "user_id":room.owner_id.toString(),
-                "wolf_num": room.Werewolf.toString(),
-                "seer_num": room.Seer.toString(),
-                "hunter_num":room.Hunter.toString(),
-                "village_num": room.Villager.toString(),
-                "witch_num":room.Witch.toString(),
-                "cupid_num": room.Cupid.toString(),
-                "guard_num":room.Guard.toString(),
-                "rule":room.WolfWinCondition.toString()
             });
+            room.socket.send(msg);
         }
         else
         {
-//          Socket.handlesocket();
-            room.socket.send({
-                "type":"3",
-                "request_id":"",
-                "room_id":room.room_id.toString(),
-                "user_id":room.owner_id.toString(),
-                "wolf_num": room.Werewolf.toString(),
-                "seer_num": room.Seer.toString(),
-                "hunter_num":room.Hunter.toString(),
-                "village_num": room.Villager.toString(),
-                "witch_num":room.Witch.toString(),
-                "cupid_num": room.Cupid.toString(),
-                "guard_num":room.Guard.toString(),
-                "rule":room.WolfWinCondition.toString()
+            Alert.alert('没有socket',
+                alertMessage,[
+                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+
+                ])
+            dispatch({
+                type:'room/changeloading',
+                payload:false,
             });
         }
         dispatch({
@@ -167,7 +159,7 @@ const GameSetting = (props) => {
                 <Text style={styles.headerText}>
                     游戏设置
                 </Text>
-                <TouchableOpacity onPress={CheckSetting}>
+                <TouchableOpacity onPress={CheckSetting()}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>下一步
                         </Text>
@@ -180,10 +172,10 @@ const GameSetting = (props) => {
                         showsVerticalScrollIndicator={false}
             >
             <List renderHeader = {() => '角色及人数'}>
-                <List.Item extra={<Stepper max={(max)=> setWolfMax()} min={1} value={room.Werewolf} readOnly = {false} onChange={(value) => SetWolf(value)} />}>
+                <List.Item extra={<Stepper max={room.player_num} min={1} value={room.Werewolf} readOnly = {false} onChange={(value) => SetWolf(value)} />}>
                     狼人
                 </List.Item>
-                <List.Item extra={<Stepper max={(max)=> setVillMax()} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
+                <List.Item extra={<Stepper max={room.player_num} min={1} value={room.Villager} readOnly = {false} onChange={(value)=>SetVill(value)} />}>
                 村民
                 </List.Item>
                 <List.Item extra={<Stepper max={1} min={0} value={room.Cupid} readOnly = {false} onChange={(value)=>SetCupido(value)} />}>
