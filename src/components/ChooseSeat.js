@@ -108,30 +108,54 @@ const ChooseSeat = (props) => {
             payload:n,
         });
         dispatch({
-            type:'room/changechooseseatloading',
+            type:'room/changeloading',
             payload:true,
         });//设置loading为true
         //以下进行与后台的通信
 
-        if(socket!=null)
-            room.socket.send({"type":"2",
-                "request_id":"asdas",
-                "room_id":room.room_id.toString(),
-                "user_id":room.client_id.toString(),
-                "seat":n.toString()});
+        if(room.hassocket)
+        {
+            msg = JSON.stringify({
+                type:2,
+                request_id:room.user_request_id,
+                room_id:room.room_id,
+                user_id:room.user_id,
+                seat:n,
+
+            })
+            room.socket.send(msg);
+        }
         else
         {
-            Socket.handlesocket();
-            room.socket.send({"type":"2",
-                "request_id":"asdas",
-                "room_id":room.room_id.toString(),
-                "user_id":room.client_id.toString(),
-                "seat":n.toString()});
+            Alert.alert('没有socket',
+            alertMessage,[
+                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+
+                ])
+            dispatch({
+                type:'room/changeloading',
+                payload:false,
+            });
         }
     }
     function checkSeat(){
-        if(room.player_index[room.client_id]!=null)
-            Actions.GameSetting();
+        if(room.player_index[room.client_id]!=null)//如果已经选座
+        {
+            if(room.client_id==room.owner_id)//如果是房主
+            {
+                Actions.GameSetting();
+            }
+            else//不是房主
+            {
+                dispatch({
+                    type:'room/changeloading',
+                    payload:true,
+                });
+                //等待服务器返回消息
+
+            }
+        }
+
         else
             Alert.alert(
                 '请选择座位！',
@@ -173,7 +197,7 @@ const ChooseSeat = (props) => {
                         showsVerticalScrollIndicator={false}
             >
                 {Seats()}
-
+                <Socket/>
             </ScrollView>
             <ActivityIndicator
                 toast

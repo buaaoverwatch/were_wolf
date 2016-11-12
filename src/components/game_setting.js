@@ -106,9 +106,12 @@ const GameSetting = (props) => {
         }
     }
     function sendsetting(){
-        if(room.socket!=null)
+        if(room.hassocket)
         {
+            msg=JSON.stringify({
+                type:3,
 
+            })
             room.socket.send({
                 "type":"3",
                 "request_id":"",
