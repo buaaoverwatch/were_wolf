@@ -9,7 +9,8 @@ import {
     StyleSheet,
     PixelRatio,
     Dimensions,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -26,7 +27,7 @@ var roomID;
 var roomName;
 
 var CARoom = (props) => {
-    const { dispatch, information } = props;
+    const { dispatch, room } = props;
     const {getFieldProps} = props.form;
 
     function createRoom() {
@@ -55,7 +56,7 @@ var CARoom = (props) => {
     }
     function createclickhttp() {
         dispatch({
-            type: 'information/loadingTrue'
+            type: 'room/showLoading'
         });
         fetch('http://10.138.73.83:8000/create/', {
             method: 'POST',
@@ -64,7 +65,7 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: information.userID,
+                user_id: room.client_id,
                 room_name: roomName,
             })
         })
@@ -73,7 +74,7 @@ var CARoom = (props) => {
             })
             .then((responseText) => {
                 dispatch({
-                    type: 'information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 if(responseText.result == 1) {
                     Toast.fail("创建房间失败！", 1);
@@ -81,11 +82,11 @@ var CARoom = (props) => {
                 }
                 Toast.success("创建房间成功！", 1);
                 dispatch({
-                    type: 'information/createRoomSuccess',
+                    type: 'room/createRoomSuccess',
                     payload: {
                         roomID: responseText.number,
                         roomName: roomName,
-                        ownerID: information.userID
+                        ownerID: room.client_id
                     }
                 });
                 //这里应该有一个界面跳转
@@ -95,7 +96,7 @@ var CARoom = (props) => {
             })
             .catch((error) => {
                 dispatch({
-                    type: 'information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
@@ -122,9 +123,8 @@ var CARoom = (props) => {
     }
     function addclickhttp() {
         dispatch({
-            type: 'information/loadingTrue'
+            type: 'room/showLoading'
         });
-        console.log("111");
         fetch('http://10.138.73.83:8000/join/', {
             method: 'POST',
             headers: {
@@ -132,18 +132,16 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: information.userID,
+                user_id: room.client_id,
                 room_id: roomID,
             })
         })
             .then(function(data){
-                console.log("222");
                 return data.json();
             })
             .then((responseText) => {
-                console.log("333");
                 dispatch({
-                    type: 'information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 if(responseText.result == 1) {
                     Toast.fail("房间不存在！", 1);
@@ -157,7 +155,7 @@ var CARoom = (props) => {
                 }
                 Toast.success("加入房间成功！", 1);
                 dispatch({
-                    type: 'information/addRoomSuccess',
+                    type: 'room/addRoomSuccess',
                     payload: {
                         roomID: roomID,
                         roomName: responseText.room_name,
@@ -171,12 +169,37 @@ var CARoom = (props) => {
             })
             .catch((error) => {
                 dispatch({
-                    type: 'information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
             });
     }
+
+    var userID = "11", username = "22";
+    AsyncStorage.getItem('userID', function (error, result) {
+        if(error) {
+            console.log(error);
+            return;
+        }
+        userID = result;
+    });
+    AsyncStorage.getItem('username', function (error, result) {
+        if(error) {
+            console.log(error);
+            return;
+        }
+        username = result;
+    });
+    dispatch({
+        type: 'room/setuserinfo',
+        payload: {
+            userID: userID,
+            username: username
+        }
+    });
+
+
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -220,7 +243,7 @@ var CARoom = (props) => {
             <ActivityIndicator
                 toast
                 text="正在加载"
-                animating={information.loading}
+                animating={room.loading}
             />
         </View>
     );
@@ -250,4 +273,4 @@ const styles = StyleSheet.create({
 });
 
 CARoom = createForm()(CARoom);
-export default connect(information => information)(CARoom);
+export default connect(room => room)(CARoom);

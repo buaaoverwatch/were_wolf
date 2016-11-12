@@ -21,7 +21,7 @@ import Toast from 'antd-mobile/lib/toast';
 import List from 'antd-mobile/lib/list';
 
 const GameRoom = (props) => {
-    const { dispatch, information } = props;
+    const { dispatch, room } = props;
     var Views = [];
     var list;
     function addRow(n) {
@@ -44,7 +44,10 @@ const GameRoom = (props) => {
     }
     function members() {
         Views = [];
-        list = information.roomMembers;
+        list = [];
+        for(let key in room.player_nick) {
+            list.push(room.player_nick[key]);
+        }
         for(let i = 0; i < list.length; i = i + 4) {
             Views.push(addRow(i));
         }
@@ -85,12 +88,12 @@ const GameRoom = (props) => {
                 <View style={styles.toastContainer}>
                     <List>
                         <List.Item
-                            extra={information.roomID}
+                            extra={room.room_id}
                         >
                             房间号
                         </List.Item>
                         <List.Item
-                            extra={information.roomName}
+                            extra={room.room_name}
                         >
                             房间名
                         </List.Item>
@@ -178,4 +181,4 @@ const styles = StyleSheet.create({
 });
 
 //export default connect(information => information)(GameRoom);
-export default connect(information => information)(GameRoom);
+export default connect(room => room)(GameRoom);
