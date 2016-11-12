@@ -151,7 +151,7 @@ const ChooseSeat = (props) => {
                     type:'room/changeloading',
                     payload:true,
                 });
-                //等待服务器返回消息
+                //等待服务器返回消息，等待房主设置游戏，直到返回角色分配
 
             }
         }

@@ -62,9 +62,13 @@ const Socket = (props) => {
                                 )
                             }//最终修改loading的状态
                             dispatch({
-                                type: 'room/changechooseseatloading',
+                                type: 'room/changeloading',
                                 payload:false,
                             })
+                        }
+                        else if(msg.type===4)
+                        {
+
                         }
                         else if(msg.type===5)
                         {

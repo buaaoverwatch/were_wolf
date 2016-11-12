@@ -26,6 +26,8 @@ import Stepper from 'antd-mobile/lib/stepper';
 import Radio from 'antd-mobile/lib/radio';
 import Button from 'antd-mobile/lib/button'
 import Socket from '../services/websocket';
+
+
 const RadioItem = Radio.RadioItem;
 const GameSetting = (props) => {
     const {dispatch,room} = props;
@@ -106,6 +108,10 @@ const GameSetting = (props) => {
         }
     }
     function sendsetting(){
+        dispatch({
+            type:'room/changeloading',
+            payload:'true',//此处发送消息，等待服务端返回
+        })
         if(room.hassocket)
         {
             msg=JSON.stringify({
@@ -135,14 +141,12 @@ const GameSetting = (props) => {
             dispatch({
                 type:'room/changeloading',
                 payload:false,
-            });
+            });//没有收到消息
         }
-        dispatch({
-            type:'room/changeloading',
-            payload:true,
-        });
 
-        Actions.Test1();
+
+
+        Action.seeMySelf();
     }
 
     return (
