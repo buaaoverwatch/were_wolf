@@ -57,7 +57,7 @@ export default {
         round: 1,
         curstate: StateConst.cupid,
 
-        room_request_id:0,
+        room_request_id:'0',
         user_request_id:0,
 
         lastvote: {},
