@@ -36,3 +36,5 @@ room_aliver_wolf_num = {'room_id': 0}      #房间号->狼人数
 #房间待发送的消息
 room_request_content = {'room_id': []}      #房间号 -> [json1,json2]
 
+#丘比特指定情侣
+room_couples_id = {'room_id':[]}

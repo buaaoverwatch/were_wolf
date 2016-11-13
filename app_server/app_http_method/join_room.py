@@ -14,16 +14,25 @@ import demjson
 
 def join(u_id,r_id):
 
-    if glob.room_id[r_id] == 0:
-        return 1
+
+
+    data = {'result':'0','room_name':'null','owner_id':'0'}
+    if glob.room_id[int(r_id)] == 0:
+        data['result'] = '1'
+        return data
     elif glob.room_open[r_id] == False:
-        return 2
+        data['result'] = '2'
+        return data
 
 
     # 操作数据库
     user = UserInfo.objects.get(id = int(u_id))
     # 修改房间信息
     r = RoomInfo.objects.get(room_id=r_id)
+
+    data['room_name'] = r.room_name
+    data['owner_id'] = r.owner_id
+
     r.player_num = r.player_num+1
     r.player_id = r.player_id + ',' + u_id
     r.player_nick = r.player_nick + ',' + user.nick_name
@@ -54,4 +63,4 @@ def join(u_id,r_id):
     json = demjson.encode(message)
     send_message.send(r_id,json)
 
-    return 0
+    return data

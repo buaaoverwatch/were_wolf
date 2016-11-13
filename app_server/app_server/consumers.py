@@ -40,13 +40,14 @@ def ws_message(message):
     print data['type']
     #确认消息只需记录一下，不用返回
     if data['type'] == '0':
-        process_request.process(json)
+        process_request.process(data)
+        print 1
     else:
-        js = demjson.encode({'type': '0','request_id':data['request_id']})
+        js = demjson.encode({'type': '0','user_request_id':str(data['request_id'])})
         data2 = {'text': js}
         message.reply_channel.send(data2)
-        print 'in'
-        #process_request.process(message,data)
+        print 2
+        #process_request.process(data)
 
 
 

@@ -138,6 +138,11 @@ def leave(r_id,u_id):
 
 
 
+def connet_couples(r_id,u_id,o1_id,o2_id):
+    glob.room_couples_id[r_id].append(o1_id)
+    glob.room_couples_id[r_id].append(o2_id)
+    return
+
 def test(r_id,u_id,seat):
     message = {'type': '3', 'room_request_id': str(100), 'user_id': u_id, 'seat': seat,
                'result': 'true'}

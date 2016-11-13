@@ -86,8 +86,7 @@ def joinRoom(request):
 	room_id = data['room_id']
 	user_id = data['user_id']
 
-	result = join_room.join(user_id, room_id)
-	data = {'result':str(result)}
+	data = join_room.join(user_id, room_id)
 	js = demjson.encode(data)
 	return HttpResponse(js)
 
@@ -111,13 +110,14 @@ def updataInfo(request):
 	data = json.loads(key[0])
 
 	user_id = data['user_id']
-	nick = data['nick']
+	nick = data['nick_name']
 	password = data['password']
 	intro = data['intro']
 
 	result = updata_user_info.updata(user_id, nick, password, intro)
 	data = {'result': str(result)}
 	js = demjson.encode(data)
+	print js
 	return HttpResponse(js)
 
 #获取房间列表
