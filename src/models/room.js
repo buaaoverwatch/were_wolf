@@ -13,7 +13,7 @@ export default {
 
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
-        client_id:'a3',
+        client_id:'a4',
         username: "",
         //
         room_id: null,
@@ -40,7 +40,7 @@ export default {
         WolfWinCondition:1,
         //上面七个是设置游戏的时候，以及玩的时候
 
-        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "hunter",},//房主开始游戏之后
+        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "seer",},//房主开始游戏之后
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},//房主开始游戏之后
 
 
@@ -55,7 +55,7 @@ export default {
         player_selectedid2:"",
         wolf_lastkill:"",
         round: 1,
-        curstate: StateConst.cupid,
+        curstate: StateConst.seer,
 
         room_request_id:'0',
         user_request_id:0,
@@ -158,8 +158,8 @@ export default {
 
 
 
-        changeNextStep(state) {
-            return { ...state, nextstep: !state.nextstep};
+        changeNextStep(state,action) {
+            return { ...state, nextstep: action.payload};
         },
         changeWitchSave(state,action) {
             return { ...state, nextstep: action.payload};

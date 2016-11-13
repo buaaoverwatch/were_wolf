@@ -14,6 +14,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 import { Card, Button ,List, ListItem} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux';
 import Modal from 'antd-mobile/lib/modal';
+import Toast from 'antd-mobile/lib/toast';
 import StateConst from '../consts/roomstate';
 
 import VoteResult from './stateless/voteresult';
@@ -40,6 +41,8 @@ export default class Tabview extends Component {
             modaltitle:'',
             modalcontent:'',
             visible:false,
+            seercontent:'',
+            seertitle:'',
             extrafun:()=>{},
         };
         this.onClose = this.onClose.bind(this);
@@ -97,8 +100,26 @@ export default class Tabview extends Component {
                     this.setState({modaltitle:"请确认"});
                     this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要杀他么`});
                     press=()=>{
-                        this.props.dispatch({ type: 'room/changeNextStep'});
+                        this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                        if(this.props.room.hassocket)
+                        {
+                            msg=JSON.stringify({
+                                type:5,
+                                request_id:this.props.room.user_request_id,
+                                room_id:this.props.room.room_id,
+                                user_id:this.props.room.client_id,
+                                object_id:this.props.room.player_selectedid,
+                                action:0,
+                                content:'',
+                            });
+                            this.props.room.socket.send(msg);
+                            this.props.dispatch({
+                                type: 'room/WebSocketsend',
+                                payload: {msg},
+                            });
+                        }
                     };
+                    this.setState({extrafun:press});
                     this.setState({visible:true});
                 }
             }
@@ -120,9 +141,27 @@ export default class Tabview extends Component {
             {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:"您确定要自爆么，自爆后将会结束这轮白天的所有行动跳到下一个黑夜"});
-                function press() {
-                    //TODO:加入回调函数
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:5,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object_id:this.props.room.client_id,
+                            action:5,
+                            content:'',
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
                 };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
         }
@@ -150,9 +189,27 @@ export default class Tabview extends Component {
             {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要向Ta开枪么`});
-                function press() {
-                    //TODO:加入回调函数
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:5,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object_id:this.props.room.player_selectedid,
+                            action:0,
+                            content:'',
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
                 };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
         }
@@ -186,10 +243,27 @@ export default class Tabview extends Component {
             {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`这轮死亡的是${this.props.room.player_index[this.props.room.wolf_lastkill]}号玩家，您确定要救他么`});
-                function press() {
-                    //TODO:加入回调函数
-                    //TODO:加入取消键
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:5,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object_id:this.props.room.player_selectedid,
+                            action:1,
+                            content:'',
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
                 };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
         }
@@ -223,9 +297,27 @@ export default class Tabview extends Component {
             {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要对他使用毒药么`});
-                function press() {
-                    //TODO:加入回调函数
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:5,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object_id:this.props.room.player_selectedid,
+                            action:0,
+                            content:'',
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
                 };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
         }
@@ -254,7 +346,23 @@ export default class Tabview extends Component {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家和${this.props.room.player_index[this.props.room.player_selectedid2]}号玩家，您确定要链接两位玩家成为情侣么`});
                 press=()=>{
-                    this.props.dispatch({ type: 'room/changeNextStep'});
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:9,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object1_id:this.props.room.player_selectedid,
+                            object2_id:this.props.room.player_selectedid2,
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
                 };
                 this.setState({extrafun:press});
                 this.setState({visible:true});
@@ -271,7 +379,18 @@ export default class Tabview extends Component {
             else if(this.props.room.nextstep)
             {
                 this.setState({modaltitle:"出错啦"});
-                this.setState({modalcontent:"您这轮已经看过玩家的身份了,请点击下一步按钮"});
+                this.setState({modalcontent:"您这轮已经看过玩家的身份了，要再次查看么，如果不需要，请点击下一步"});
+                press=()=>{
+                    if(this.state.seertitle=='wolf')
+                    {
+                        Toast.fail(this.state.seercontent, 2);
+                    }
+                    else if(this.state.seertitle=='good')
+                    {
+                        Toast.success(this.state.seercontent, 2);
+                    }
+                };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
             else if(this.props.room.player_selectedid=="")
@@ -284,9 +403,22 @@ export default class Tabview extends Component {
             {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要查看Ta的身份么`});
-                function press() {
-                    //TODO:加入回调函数
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.player_role[this.props.room.player_selectedid]=='wolf')
+                    {
+                        this.setState({seercontent:`${this.props.room.player_index[this.props.room.player_selectedid]}号是狼人`});
+                        this.setState({seertitle:'wolf'});
+                        Toast.fail(`${this.props.room.player_index[this.props.room.player_selectedid]}号是狼人`, 2);
+                    }
+                    else
+                    {
+                        this.setState({seercontent:`${this.props.room.player_index[this.props.room.player_selectedid]}号是好人`});
+                        this.setState({seertitle:'good'});
+                        Toast.success(`${this.props.room.player_index[this.props.room.player_selectedid]}号是好人`, 2);
+                    }
                 };
+                this.setState({extrafun:press});
                 this.setState({visible:true});
             }
         }
@@ -315,7 +447,7 @@ export default class Tabview extends Component {
                 this.setState({modaltitle:"请确认"});
                 this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要守护Ta么`});
                 function press() {
-                    //TODO:加入回调函数
+                    //TODO:守卫接口尚未定义
                 };
                 this.setState({visible:true});
             }
