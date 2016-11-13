@@ -1,0 +1,135 @@
+
+/*****************************************************************/
+HTTP
+
+http://host:8000/register/
+1. 注册 	
+user_name
+nick_name
+password
+introduce
+
+http://host:8000/login/
+2. 登录
+user_name 
+password
+
+http://host:8000/create/
+3. 创建房间
+user_id
+room_name
+
+http://host:8000/join/
+4. 加入房间
+user_id
+room_id
+
+http://host:8000/getRecord/
+5. 战绩
+user_id
+
+http://host:8000/updataInfo/
+6. 修改
+user_id
+type	0 nick_name; 1 password
+data
+
+http://host:8000/getRoomList/
+7.	获取房间列表
+
+http://host:8000/getRoomInfo/
+8.	获取单个房间信息
+room_id
+
+
+/*****************************************************************/
+Websocket
+
+对于确认消息不用返回确认消息
+1. 确认消息：
+type = 0
+room_id
+user_id
+room_request_id  用来指明这个确认消息是房间哪个请求的，防止前个请求的确认消息对后个请求造成影响
+
+2. 锁定房间(房主)	
+type = 1
+request_id
+room_id
+user_id
+
+
+3. 选位
+type = 2
+request_id
+room_id
+user_id
+seat		1~人数 	
+
+
+4. 角色配置(房主)
+type = 3
+request_id
+room_id
+user_id
+wolf_num
+seer_num  预言家
+hunter_num  猎人
+village_num  村民
+witch_num 	女巫
+cupid_num 	丘比特
+guard_num 	守卫
+rule 	结束游戏条件：0 杀光所有人； 1  杀光村民或非村民
+
+
+5. 下一步(收到指定人下一步之后，房间进入下一个状态)
+type = 4
+request_id
+room_id
+user_id
+need_num 	需要多少人点了下一步才能继续
+
+
+
+6. 操作
+type = 5
+request_id
+room_id
+user_id
+object_id	操作对象id  狼人聊天这个随便填
+action		操作类型，0杀人   1救人   2狼人选人  3 给警徽  4 不给警徽  5 自爆  6 狼人聊天
+content 	不属于狼人聊天该内容随便填即可
+
+
+7. 选择是否竞选警长
+type = 6
+request_id
+room_id
+user_id
+sheriff		true/false
+
+
+8. 投票
+type = 7
+request_id
+room_id
+user_id
+object_id	投票对象id
+
+
+9. 退出房间(玩家死亡，request_id清0)
+type = 8
+request_id
+room_id
+user_id
+
+10. 丘比特
+type = 9
+request_id
+room_id
+user_id
+object1_id 		情侣的id
+object2_id
+
+
+
