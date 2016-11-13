@@ -3,6 +3,7 @@ import demjson
 import glob
 import send_message
 from app_db.models import RoomInfo
+import close_room
 
 #游戏是否结束的判断也放在这里
 #先改变状态之后，再把上个状态发生的操作一起发回去。
@@ -29,12 +30,13 @@ def change(type,r_id):
                    'reason': '3', 'request_content':glob.room_request_content[r_id]}
         json = demjson.encode(message)
         send_message.send(r_id, json)
+        close_room.close(r_id,3)
         return
 
     #判断狼人是否还有存活的
-    for i in range(len(id_list)):
-        role = glob.user_role[id_list[i]]
-        alive = glob.user_alive[id_list[i]]
+    for i in id_list:
+        role = glob.user_role[i]
+        alive = glob.user_alive[i]
         if role == 'wolf' and alive == 'true':
             game_over = False
             break
@@ -43,21 +45,23 @@ def change(type,r_id):
                     'reason': '1', 'request_content': glob.room_request_content[r_id]}
         json = demjson.encode(message)
         send_message.send(r_id, json)
+        close_room.close(r_id, 1)
         return
 
     game_over = True
 
+    #判断好人活是否存
     if rule == 0:
-        for i in range(len(id_list)):
-            role = glob.user_role[id_list[i]]
-            alive = glob.user_alive[id_list[i]]
+        for i in id_list:
+            role = glob.user_role[i]
+            alive = glob.user_alive[i]
             if role != 'wolf' and alive == 'true':
                 game_over = False
                 break
     else:
-        for i in range(len(id_list)):
-            role = glob.user_role[id_list[i]]
-            alive = glob.user_alive[id_list[i]]
+        for i in id_list:
+            role = glob.user_role[i]
+            alive = glob.user_alive[i]
             if role != 'wolf' and role != 'village' and alive == 'true':
                 game_over = False
                 break
@@ -67,6 +71,28 @@ def change(type,r_id):
                     'reason': '0', 'request_content': glob.room_request_content[r_id]}
         json = demjson.encode(message)
         send_message.send(r_id, json)
+        close_room.close(r_id, 0)
+        return
+
+
+    #判断丘比特和情侣是否赢
+    game_over = True
+    couples = glob.room_couples_id[r_id]
+    if (glob.user_role[couples[0]] == 'wolf' and glob.user_role[couples[1]] != 'wolf') or (glob.user_role[couples[0]] != 'wolf' and glob.user_role[couples[1]] == 'wolf'):
+        for id in id_list:
+            if id in couples:
+                if glob.user_alive[id] == 'false':
+                    game_over = False
+            else:
+                if glob.user_alive[id] == 'true':
+                    game_over = False
+
+    if game_over == True:
+        message = {'type': '12', 'room_request_id': str(glob.room_request_id[r_id]),
+                    'reason': '2', 'request_content': glob.room_request_content[r_id]}
+        json = demjson.encode(message)
+        send_message.send(r_id, json)
+        close_room.close(r_id, 2)
         return
 
 
