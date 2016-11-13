@@ -98,10 +98,9 @@ const Socket = (props) => {
                         }
                         else if(msg.type===7)
                         {
-                            let alivelist={...room.player_alive,...msg.change};
                             dispatch({
                                 type: 'room/setalive' ,
-                                payload:alivelist,
+                                payload:msg.change,
                             });
                         }
                         else if(msg.type===8)
@@ -122,7 +121,7 @@ const Socket = (props) => {
                         {
                             dispatch({
                                 type: 'room/setsheriff' ,
-                                payload:msg.sheriff_id,
+                                payload:msg.list,
                             });
                         }
                     }

@@ -22,7 +22,7 @@ export default {
         //
         index_player:{0:this.owner_id,1:"null",2:"asdsa",3:"asss"},
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
-        player_avatar: {},
+        player_avatar: {"a1": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a2": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a3": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a4": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'},
         player_num: 10,
         player_id: ["a1", "a2", "a3", "a4"],
         //
@@ -60,7 +60,7 @@ export default {
         room_request_id:'0',
         user_request_id:0,
 
-        lastvote: {},
+        lastvote: {"a1": 'a3', "a2":'a4', "a3":'a4', "a4": 'a4'},
         nextstep: false,
         witch_save:false,
         witch_kill:false,
@@ -141,7 +141,7 @@ export default {
         },
         setalive(state,action)
         {
-            return{...state,player_alive:Object.assign(this.player_alive,action.payload)};
+            return{...state,player_alive:Object.assign(state.player_alive,action.payload)};
         },
         setsherifflist(state,action)
         {
@@ -153,7 +153,11 @@ export default {
         },
         setsheriff(state,action)
         {
-            return{...state,sheriff_id:action.payload};
+            //TODO:如果old不是当前警长
+            if(action.payload[state.sheriff_id]=='-1')
+                return{...state,sheriff_id:''};
+            else
+                return{...state,sheriff_id:action.payload[state.sheriff_id]};
         },
 
 
@@ -178,7 +182,7 @@ export default {
         },
         changeplayerindex(state)
         {
-            return {  ... state,player_index:Object.assign(this.player_index,{client_id:this.myseat})};
+            return {  ... state,player_index:Object.assign(state.player_index,{client_id:state.myseat})};
         },
         changemyseat(state,action)
         {
