@@ -9,7 +9,7 @@ import actions
 
 
 #   成功发送请求后 glob.room_request_id++
-def process(message,data):
+def process(data):
 
     type = data['type']
     room_id = data['room_id']
@@ -18,6 +18,7 @@ def process(message,data):
     message = {}
     #处理确认消息
     if type == '0':
+        print 3
         r_request_id = data['room_request_id']
         if int(r_request_id) == glob.room_request_id[room_id]:
             glob.room_mark[room_id][user_id] = 1
@@ -36,6 +37,7 @@ def process(message,data):
         send_message.send(room_id, json)
         return
     else:
+        print 4
         glob.user_request_id[user_id] = glob.user_request_id[user_id] + 1
 
 
@@ -70,7 +72,9 @@ def process(message,data):
         methods.leave(room_id, user_id)
 
     elif type == '9':
-        methods.connect_again(room_id, user_id)
+        object1_id = data['object1_id']
+        object2_id = data['object2_id']
+        methods.connet_couples(room_id,user_id,object1_id,object2_id)
 
     elif type == '100':
         seat = data['seat']

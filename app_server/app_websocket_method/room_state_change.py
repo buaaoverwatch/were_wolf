@@ -26,7 +26,7 @@ def change(type,r_id):
     game_over = True   #True 代表结束
     if owner_id not in id_list:     #房主离开游戏
         message = {'type': '12', 'room_request_id': str(glob.room_request_id[r_id]),
-                   'reason': '2', 'request_content':glob.room_request_content[r_id]}
+                   'reason': '3', 'request_content':glob.room_request_content[r_id]}
         json = demjson.encode(message)
         send_message.send(r_id, json)
         return

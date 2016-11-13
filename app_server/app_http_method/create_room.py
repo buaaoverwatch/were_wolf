@@ -8,17 +8,19 @@ import app_websocket_method.glob
 from app_websocket_method import glob
 
 def create(u_id,r_name):
+    RoomInfo.objects.all().delete()
     # 获取一个未使用的房间号
     mark = False
     room_id = 0
-    for i in range(len(app_websocket_method.glob.room_id)):
-        if app_websocket_method.glob.room_id[i] == 0:
+    for i in range(len(glob.room_id)):
+        if glob.room_id[i] == 0:
+            glob.room_id[i] = 1
             room_id = i
             mark = True
             break
     if mark == False:
-        room_id = len(app_websocket_method.glob.room_id)
-        app_websocket_method.glob.room_id.append(1)
+        room_id = len(glob.room_id)
+        glob.room_id.append(1)
 
 
 
