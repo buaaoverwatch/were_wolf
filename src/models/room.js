@@ -151,7 +151,7 @@ export default {
         //以下三个是change添加的，用于修改loading
         //用于修改player_index,用于修改myseat
         //当服务端返回为true时，ws会调用第二个reducer
-        changechooseseatloading(state,action)
+        changeloading(state,action)
         {
             return {...state,loading:action.payload};
         },
