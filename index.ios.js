@@ -59,7 +59,7 @@ class App extends Component {
     return (
         <Router>
           <Scene key="root">
-            <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
+            <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
             <Scene key="Launch" component={Launch}  hideNavBar/>
             <Scene
                 key="tabbar"
@@ -85,10 +85,10 @@ class App extends Component {
                   icon={TabIcon}
               >
                 <Scene key="GameTab" hideNavBar>
-                  <Scene key="CARoom" component={CARoom} />
+                  <Scene key="CARoom" component={CARoom}/>
                   <Scene key="GameRoom" component={GameRoom} hideTabBar/>
-                  <Scene key="GameSetting" component={GameSetting} hideTabBar />
-                  <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar />
+                  <Scene key="GameSetting" component={GameSetting} hideTabBar/>
+                  <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
                   <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
                 </Scene>
               </Scene>

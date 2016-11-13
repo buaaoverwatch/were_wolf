@@ -29,6 +29,7 @@ const Socket = (props) => {
                 msg=JSON.parse(e.data);
                 if(msg.type==='0')
                 {
+                    console.log(room.user_request_id);
                     if(msg.user_request_id==room.user_request_id.toString())//收到了发送消息的确认消息
                     {
                         dispatch({
@@ -44,8 +45,15 @@ const Socket = (props) => {
                 else
                 {
                     sendcomfirm(msg);
-                    if(msg.room_request_id!=room.room_id)
+                    if(msg.room_request_id!=room.room_request_id)
                     {
+                        //修改当前回调函数中的局部值
+                        room.room_request_id=msg.room_request_id;
+                        //修改room model中的值
+                        dispatch({
+                            type: 'room/setRoomRequestID',
+                            payload: msg.room_request_id,
+                        });
                         if(msg.type===3)
                         {
                             if(msg.result)//返回true时修改自己的座位
