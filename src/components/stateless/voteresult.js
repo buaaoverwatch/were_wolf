@@ -31,6 +31,7 @@ export default class VoteResult extends Component {
         datasource:[
             {
                 userindex:1,
+                userid:'a1',
                 username:'lalala',
                 votecount:10,
                 avatar_url:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
@@ -38,6 +39,7 @@ export default class VoteResult extends Component {
             },
             {
                 userindex:2,
+                userid:'a2',
                 username:'llllfl',
                 votecount:6,
                 avatar_url:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
@@ -52,7 +54,6 @@ export default class VoteResult extends Component {
         super(props)
         // 设置初始状态
         this.state = {
-            datasource: props.datasource,
             modalvisible:false,
             modalcontent:'',
         }
@@ -115,12 +116,12 @@ export default class VoteResult extends Component {
 
     // 主渲染函数
     render() {
-        let { datasource,modalcontent,modalvisible} = this.state;
+        let { modalcontent,modalvisible} = this.state;
         let { source, containerStyle } = this.props;
         return (
             <View style={[styles.container, containerStyle]}>
                 <List>
-                    { this._renderList(datasource) }
+                    { this._renderList(this.props.datasource) }
                 </List>
                 <Modal
                     title="投给Ta的玩家"

@@ -765,6 +765,34 @@ export default class Tabview extends Component {
     prepend(arr, item) {
         return [item].concat(arr);
     };
+    genVoteResult()
+    {
+        let list=[];
+        for (let key of Object.keys(this.props.room.lastvote)) {
+            let idx=list.findIndex(x => x.userid==this.props.room.lastvote[key]);
+            if(idx!=-1)
+            {
+                list[idx].votelist.push(this.props.room.player_index[key]);
+                list[idx].votecount++;
+            }
+            else
+            {
+                let newitem={
+                        userindex:this.props.room.player_index[this.props.room.lastvote[key]],
+                        userid:this.props.room.lastvote[key],
+                        username:this.props.room.player_nick[this.props.room.lastvote[key]],
+                        votecount:1,
+                        avatar_url:this.props.room.player_avatar[this.props.room.lastvote[key]],
+                        votelist:[this.props.room.player_index[key]],
+                    };
+                    list.push(newitem);
+            }
+        }
+        list.sort(function (a, b) {
+            return b.votecount-a.votecount;
+        });
+        return list;
+    }
     render() {
         const window = Dimensions.get('window');
         return (
@@ -829,6 +857,7 @@ export default class Tabview extends Component {
                 >
                     <VoteResult
                         containerStyle={{width:window.width}}
+                        datasource={this.genVoteResult()}
                     />
                 </View>
                 {this._renderWolf()}
