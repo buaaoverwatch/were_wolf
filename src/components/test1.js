@@ -62,57 +62,61 @@ const Test1 = (props) => {
     }
     const usergriddata=genusergriddata();
     return (
-        <ParallaxScrollView
-            headerBackgroundColor="#333"
-            stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
-            parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
-            backgroundSpeed={10}
+        <View style={{flex:1}}>
+            <ParallaxScrollView
+                headerBackgroundColor="#333"
+                stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
+                parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
+                backgroundSpeed={10}
 
-            renderBackground={() => (
-                <View key="background">
-                    <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
-                        width: window.width,
-                        height: PARALLAX_HEADER_HEIGHT}}/>
-                    <View style={{position: 'absolute',
-                        top: 0,
-                        width: window.width,
-                        backgroundColor: 'rgba(0,0,0,.4)',
-                        height: PARALLAX_HEADER_HEIGHT}}/>
-                </View>
-            )}
+                renderBackground={() => (
+                    <View key="background">
+                        <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
+                            width: window.width,
+                            height: PARALLAX_HEADER_HEIGHT}}/>
+                        <View style={{position: 'absolute',
+                            top: 0,
+                            width: window.width,
+                            backgroundColor: 'rgba(0,0,0,.4)',
+                            height: PARALLAX_HEADER_HEIGHT}}/>
+                    </View>
+                )}
 
-            renderForeground={() => (
-                <View key="parallax-header" style={ styles.parallaxHeader }>
-                    <UserGrid data={usergriddata} dispatch={dispatch}/>
-                    <Text style={ styles.sectionSpeakerText }>
-                        狼人行动阶段
-                    </Text>
-                    <Text style={ styles.sectionTitleText }>
-                        {test()}
-                    </Text>
-                </View>
-            )}
+                renderForeground={() => (
+                    <View key="parallax-header" style={ styles.parallaxHeader }>
+                        <UserGrid data={usergriddata} dispatch={dispatch}/>
+                        <Text style={ styles.sectionSpeakerText }>
+                            狼人行动阶段
+                        </Text>
+                        <Text style={ styles.sectionTitleText }>
+                            {test()}
+                        </Text>
+                    </View>
+                )}
 
 
-            renderStickyHeader={() => (
-                <View key="sticky-header" style={styles.stickySection}>
-                    <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
-                </View>
-            )}
+                renderStickyHeader={() => (
+                    <View key="sticky-header" style={styles.stickySection}>
+                        <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
+                    </View>
+                )}
 
-            renderFixedHeader={() => (
-                <View key="fixed-header" style={styles.fixedSection}>
-                    <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
-                </View>
-            )}
-        >
-            <TabView room={room} dispatch={dispatch}/>
+                renderFixedHeader={() => (
+                    <View key="fixed-header" style={styles.fixedSection}>
+                        <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
+                    </View>
+                )}
+            >
+                <TabView room={room} dispatch={dispatch}/>
+            </ParallaxScrollView>
             <ActivityIndicator
                 toast
                 text="正在加载"
                 animating={room.loading}
             />
-        </ParallaxScrollView>
+        </View>
+
+
     );
 };
 
