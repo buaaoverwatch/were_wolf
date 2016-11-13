@@ -80,7 +80,7 @@ export default {
         *WebSocketsend({ payload }, { put, call }) {
             //const WebSocket = yield select(state => state.socket);
             yield put({ type: 'showLoading' });
-            yield call(delay, 5000);
+            yield call(delay, 2000);
             yield put({ type: 'checkLoading' });
         },
     },
@@ -91,6 +91,11 @@ export default {
             return {...state, loading: true};
         },
         hideLoading(state) {
+            return {...state, loading: false};
+        },
+        checkLoading(state) {
+            if(state.loading==true)
+                Toast.offline('网络连接失败,请重试',1);
             return {...state, loading: false};
         },
         setsocket(state,action)

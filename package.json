@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "antd-mobile": "^0.9.6",
+    "antd-mobile": "^0.9.8",
     "dva": "^1.1.0",
     "rc-form": "^1.0.1",
     "react": "15.3.2",
