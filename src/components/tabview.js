@@ -96,8 +96,8 @@ export default class Tabview extends Component {
                 {
                     this.setState({modaltitle:"请确认"});
                     this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要杀他么`});
-                    function press() {
-                        //TODO:加入回调函数
+                    press=()=>{
+                        this.props.dispatch({ type: 'room/changeNextStep'});
                     };
                     this.setState({visible:true});
                 }

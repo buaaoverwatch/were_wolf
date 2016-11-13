@@ -9,7 +9,8 @@ import {
     StyleSheet,
     PixelRatio,
     Dimensions,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -26,7 +27,7 @@ var roomID;
 var roomName;
 
 var CARoom = (props) => {
-    const { dispatch, information } = props;
+    const { dispatch, room } = props;
     const {getFieldProps} = props.form;
 
     function createRoom() {
@@ -34,32 +35,28 @@ var CARoom = (props) => {
             Toast.fail("房间名输入错误！", 1);
             return;
         }
-        function timeout(ms) {
-            return new Promise((resolve, reject) => {
-                setTimeout(resolve, ms, 'done');
-            });
-        }
-
-        dispatch({
-            type: 'information/loadingTrue'
-        });
-
-        timeout(1000).then((value) => {
-            console.log(value);
-            dispatch({
-                type: 'information/loadingFalse'
-            });
-            Actions.GameRoom();
-        });
-
+        // function timeout(ms) {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(resolve, ms, 'done');
+        //     });
+        // }
+        //
         // dispatch({
-        //     type: 'information/createRoom'
+        //     type: 'information/loadingTrue'
         // });
-        // Actions.GameRoom();
+        //
+        // timeout(1000).then((value) => {
+        //     console.log(value);
+        //     dispatch({
+        //         type: 'information/loadingFalse'
+        //     });
+        //     Actions.GameRoom();
+        // });
+        createclickhttp();
     }
     function createclickhttp() {
         dispatch({
-            type: './information/loadingTrue'
+            type: 'room/showLoading'
         });
         fetch('http://10.138.73.83:8000/create/', {
             method: 'POST',
@@ -68,28 +65,28 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: information.userID,
-                room_name: information.roomName,
+                user_id: room.client_id,
+                room_name: roomName,
             })
         })
             .then(function(data){
-                console.log(data.text());
-                return data;
+                return data.json();
             })
             .then((responseText) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 if(responseText.result == 1) {
                     Toast.fail("创建房间失败！", 1);
                     return responseText;
                 }
-                Toast.success("创建房间成功！" + responseText.result,1);
+                Toast.success("创建房间成功！", 1);
                 dispatch({
-                    type: './information/createRoomSuccess',
+                    type: 'room/createRoomSuccess',
                     payload: {
                         roomID: responseText.number,
-                        roomName: roomName
+                        roomName: roomName,
+                        ownerID: room.client_id
                     }
                 });
                 //这里应该有一个界面跳转
@@ -99,14 +96,14 @@ var CARoom = (props) => {
             })
             .catch((error) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
             });
     }
     function addRoom() {
-        if(!roomID || roomID.length != 4) {
+        if(!roomID) {
             Toast.fail("输入房间号码错误！", 1);
             return;
         }
@@ -117,15 +114,16 @@ var CARoom = (props) => {
         //     type: 'information/addRoom',
         //     payload: roomID,
         // });
-        dispatch({
-            type: 'information/changeRoomID',
-            payload: roomID
-        });
-        Actions.GameRoom();
+        // dispatch({
+        //     type: 'information/changeRoomID',
+        //     payload: roomID
+        // });
+        // Actions.GameRoom();
+        addclickhttp();
     }
     function addclickhttp() {
         dispatch({
-            type: './information/loadingTrue'
+            type: 'room/showLoading'
         });
         fetch('http://10.138.73.83:8000/join/', {
             method: 'POST',
@@ -134,17 +132,16 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: information.userID,
-                room_id: information.roomID,
+                user_id: room.client_id,
+                room_id: roomID,
             })
         })
             .then(function(data){
-                console.log(data.text());
-                return data;
+                return data.json();
             })
             .then((responseText) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 if(responseText.result == 1) {
                     Toast.fail("房间不存在！", 1);
@@ -156,12 +153,13 @@ var CARoom = (props) => {
                     Toast.fail("未知错误！", 1);
                     return responseText;
                 }
-                Toast.success("加入房间成功！" + responseText.result,1);
+                Toast.success("加入房间成功！", 1);
                 dispatch({
-                    type: './information/addRoomSuccess',
+                    type: 'room/addRoomSuccess',
                     payload: {
                         roomID: roomID,
-                        roomName: responseText.roomName
+                        roomName: responseText.room_name,
+                        ownerID: responseText.owner_id
                     }
                 });
                 //这里应该有一个界面跳转
@@ -171,12 +169,37 @@ var CARoom = (props) => {
             })
             .catch((error) => {
                 dispatch({
-                    type: './information/loadingFalse'
+                    type: 'room/hideLoading'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
             });
     }
+
+    var userID = "11", username = "22";
+    AsyncStorage.getItem('userID', function (error, result) {
+        if(error) {
+            console.log(error);
+            return;
+        }
+        userID = result;
+    });
+    AsyncStorage.getItem('username', function (error, result) {
+        if(error) {
+            console.log(error);
+            return;
+        }
+        username = result;
+    });
+    dispatch({
+        type: 'room/setuserinfo',
+        payload: {
+            userID: userID,
+            username: username
+        }
+    });
+
+
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -196,7 +219,7 @@ var CARoom = (props) => {
                     clear
                     placeholder="起个名字吧"
                 >房间名</InputItem>
-                <Button type="primary" onClick={Actions.GameRoom}>
+                <Button type="primary" onClick={createRoom}>
                     创建房间
                 </Button>
             </View>
@@ -211,7 +234,7 @@ var CARoom = (props) => {
                     type="number"
                     maxLength="4"
                     clear
-                    placeholder="请输入四位房间号码"
+                    placeholder="请输入一至四位房间号码"
                 >房间号</InputItem>
                 <Button type="primary" onClick={addRoom}>
                     加入房间
@@ -220,7 +243,7 @@ var CARoom = (props) => {
             <ActivityIndicator
                 toast
                 text="正在加载"
-                animating={information.loading}
+                animating={room.loading}
             />
         </View>
     );
@@ -250,4 +273,4 @@ const styles = StyleSheet.create({
 });
 
 CARoom = createForm()(CARoom);
-export default connect(information => information)(CARoom);
+export default connect(room => room)(CARoom);

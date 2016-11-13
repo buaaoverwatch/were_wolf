@@ -68,7 +68,7 @@ class Login extends Component {
                 return data.json();
             })
             .then((responseText) => {
-                _this.dispatch({
+                _this.props.dispatch({
                     type: 'information/loadingFalse'
                 });
                 if(responseText[0].type == 1) {
@@ -80,13 +80,14 @@ class Login extends Component {
                 }
                 Toast.success("登录成功！",1);
                 //TODO:这里服务器应该返回昵称和简介
-                dispatch({
-                    type: './information/loginSuccess',
+                _this.props.dispatch({
+                    type: 'information/loginSuccess',
                     payload: {
                         username: username,
-                        nickname: 'nickname',
+                        nickname: responseText[0].nick,
                         password: password,
-                        introduce: 'introduce'
+                        introduce: responseText[0].intro,
+                        userID: responseText[0].id
                     }
                 });
                 //这里应该有一个界面跳转
@@ -95,8 +96,8 @@ class Login extends Component {
                 return responseText;
             })
             .catch((error) => {
-                dispatch({
-                    type: './information/loadingFalse'
+                _this.props.dispatch({
+                    type: 'information/loadingFalse'
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
@@ -131,7 +132,7 @@ class Login extends Component {
                 </List>
                 <WhiteSpace size="lg"/>
                 <WingBlank>
-                    <Button type="default" onClick={Actions.tabbar}>登录</Button>
+                    <Button type="default" onClick={this.onClick.bind(this)}>登录</Button>
                 </WingBlank>
                 <WhiteSpace size="lg"/>
                 <WingBlank>

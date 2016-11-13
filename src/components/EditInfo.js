@@ -30,12 +30,8 @@ var EditInfo = (props) => {
     const {getFieldProps} = props.form;
     function click() {
         var Regx = /(^[A-Za-z0-9]+$)/;
-        if(nickname === information.nickname &&
-        password === information.password &&
-        introduce === information.introduce) {
-            Toast.success("修改成功！1", 1);
-            alert(nickname + '  ' + password + '  ' + introduce);
-            Actions.pop();
+        if(!(nickname && password && introduce)) {
+            Toast.fail("信息填写不完整！", 1);
             return;
         }
         //密码是否符合规则
@@ -63,24 +59,25 @@ var EditInfo = (props) => {
             },
             body:JSON.stringify({
                 user_id: information.userID,
-                nickname: nickname,
+                nick_name: nickname,
                 password: password,
-                introduce: introduce
+                intro: introduce
             })
         })
             .then(function(data){
                 return data.json();
             })
             .then((responseText) => {
+                console.log(responseText);
                 dispatch({
                     type: 'information/loadingFalse'
                 });
-                if(responseText[0].result == 1) {
+                if(responseText.result == 1) {
                     Toast.fail("修改失败！", 1);
                     Actions.pop();
                     return responseText;
                 }
-                Toast.success("修改成功！" + responseText[0].result,1);
+                Toast.success("修改成功！",1);
                 //TODO:这里服务器应该返回昵称和简介
                 dispatch({
                     type: 'information/editSuccess',
@@ -102,9 +99,6 @@ var EditInfo = (props) => {
                 console.warn(error);
             });
     }
-    nickname = information.nickname;
-    password = information.password;
-    introduce = information.introduce;
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>

@@ -1,4 +1,12 @@
 import StateConst from '../consts/roomstate';
+import Toast from 'antd-mobile/lib/toast';
+
+function delay(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
+
 export default {
 
     namespace: 'room',
@@ -6,6 +14,7 @@ export default {
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
         client_id:'a3',
+        username: "",
         //
         room_id: null,
         room_name: '',
@@ -68,7 +77,12 @@ export default {
     subscriptions: {},
 
     effects: {
-
+        *WebSocketsend({ payload }, { put, call }) {
+            //const WebSocket = yield select(state => state.socket);
+            yield put({ type: 'showLoading' });
+            yield call(delay, 5000);
+            yield put({ type: 'checkLoading' });
+        },
     },
 
     reducers: {
@@ -76,14 +90,16 @@ export default {
         showLoading(state) {
             return {...state, loading: true};
         },
+        hideLoading(state) {
+            return {...state, loading: false};
+        },
         setsocket(state,action)
         {
             return{...state,socket:action.payload,hassocket:true};
         },
         addUserRequestID(state)
         {
-            let i=state.user_request_id+1;
-            return{...state,user_request_id:i};
+            return{...state,user_request_id:state.user_request_id+1};
         },
         setRoomRequestID(state,action)
         {
@@ -196,7 +212,20 @@ export default {
         setwincondition(state,action)
         {
             return {...state,WolfWinCondition:action.payload}
-        }
+        },
+
+        //qingchanghan
+        setuserinfo(state, action) {
+            return { ...state, client_id: action.payload.userID, username: action.payload.username};
+        },
+        createRoomSuccess(state, action) {
+            return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
+                , owner_id: action.payload.ownerID};
+        },
+        addRoomSuccess(state, action) {
+            return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
+                , owner_id: action.payload.ownerID};
+        },
     }
 
 };/**

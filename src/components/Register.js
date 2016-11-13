@@ -48,7 +48,7 @@ class Register extends Component {
                     type: 'information/loadingFalse'
                 });
                 const type = responseText[0].type;
-                if(type == 1) {
+                if(type == -1) {
                     Toast.fail("用户名已存在！", 1);
                     return responseText;
                 } else if (type == 2) {
@@ -62,7 +62,8 @@ class Register extends Component {
                         username: username,
                         nickname: nickname,
                         password: password,
-                        introduce: introduce
+                        introduce: introduce,
+                        userID: responseText[0].id
                     }
                 });
                 //这里应该有一个界面跳转
