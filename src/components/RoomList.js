@@ -33,7 +33,7 @@ const RoomList = (props) => {
         dispatch({
             type:'ALLROOM/showloading'
         });
-        fetch('http://10.138.73:8000/getRoomList',{
+        fetch('http://10.138.73.83:8000/getRoomList',{
             method:'POST',
             header:{
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
