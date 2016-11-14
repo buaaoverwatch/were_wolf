@@ -40,6 +40,22 @@ const Test1 = (props) => {
                     issel=true;
                 function handlePress() {
                     dispatch({ type: 'room/changeselid',payload:item });
+                    if(room.curstate==StateConst.wolf)
+                    {
+                        if(room.hassocket)
+                        {
+                            msg=JSON.stringify({
+                                type: '5',
+                                request_id:room.room_request_id,
+                                room_id:room.room_id,
+                                user_id:room.client_id,
+                                object_id:item,
+                                action:'2',
+                                content:'',
+                            });
+                            room.socket.send(msg);
+                        }
+                    }
                 }
                 return {
                     key: i,

@@ -35,7 +35,7 @@ import CARoom from './src/components/Create_AddRoom';
 import GameRoom from './src/components/GameRoom';
 import GameSetting from './src/components/game_setting';
 import ChooseSeat from './src/components/ChooseSeat';
-//import seeMySelf from './src/components/seeMySelf';
+import seeMySelf from './src/components/seeMySelf';
 import Test1 from './src/components/test1';
 //个人信息
 import MyInfo from './src/components/MyInfo';
@@ -63,14 +63,14 @@ class App extends Component {
           <StatusBar barStyle="light-content" />
           <Router>
             <Scene key="root">
-              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
+              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
               <Scene
                   key="tabbar"
                   tabs
                   tabBarStyle={styles.tabBarStyle}
                   tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                  initial={infoModel.state.ifLogin === false}
+                  initial={infoModel.state.ifLogin === true}
               >
                 <Scene
                     key="RoomPage"
@@ -93,8 +93,8 @@ class App extends Component {
                     <Scene key="GameRoom" component={GameRoom} hideTabBar/>
                     <Scene key="GameSetting" component={GameSetting} hideTabBar/>
                     <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
-
-                    <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
+                    <Scene key="seeMySelf" component={seeMySelf} hideTabBar/>
+                    <Scene key="Test1" component={Test1} hideTabBar initial={false}/>
                   </Scene>
                 </Scene>
                 <Scene
