@@ -145,6 +145,7 @@ const Socket = (props) => {
                                 payload:m,
                             });
                         }
+                        //TODO:加入狼人选位接收
                     }
                 }
             }
