@@ -62,8 +62,8 @@ const Socket = (props) => {
                             {
                                 dispatch({
                                     type: 'room/changeplayerindex',
-                                    payload: msg.result,
                                 });
+                                Actions.seeMySelf();
                             }
                             else//否则返回错误消息，不修改座位
                             {

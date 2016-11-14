@@ -20,7 +20,7 @@ export default {
         room_name: '',
         owner_id: '213',
         //
-        index_player:{0:this.owner_id,1:"null",2:"asdsa",3:"asss"},
+        index_player:{1:this.owner_id,2:"null",3:"asdsa",4:"asss"},
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         player_avatar: {"a1": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a2": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a3": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a4": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'},
         player_num: 10,

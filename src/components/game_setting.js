@@ -87,12 +87,7 @@ const GameSetting = (props) => {
             payload:val,
         });
     }
-    function setWolfMax(){
-        return room.player_num-room.Villager-room.Cupid-room.Seer-room.Witch-room.Hunter-room.Guard;
-    }
-    function setVillMax(){
-        return room.player_num-room.Werewolf-room.Cupid-room.Seer-room.Witch-room.Hunter-room.Guard;
-    }
+
     function CheckSetting(){
         if(room.Werewolf+room.Villager+room.Cupid+room.Seer+room.Witch+room.Hunter+room.Guard===room.player_num) {
                    sendsetting();
@@ -115,18 +110,18 @@ const GameSetting = (props) => {
         if(room.hassocket)
         {
             msg=JSON.stringify({
-                type:3,
-                request_id:room.user_request_id,
-                room_id:room.room_id,
-                user_id:room.owner_id,
-                wolf_num: room.Werewolf,
-                seer_num: room.Seer,
-                hunter_num:room.Hunter,
-                village_num: room.Villager,
-                witch_num:room.Witch,
-                cupid_num: room.Cupid,
-                guard_num:room.Guard,
-                rule:room.WolfWinCondition,
+                type:"3",
+                request_id:room.user_request_id.toString(),
+                room_id:room.room_id.toString(),
+                user_id:room.owner_id.toString(),
+                wolf_num: room.Werewolf.toString(),
+                seer_num: room.Seer.toString(),
+                hunter_num:room.Hunter.toString(),
+                village_num: room.Villager.toString(),
+                witch_num:room.Witch.toString(),
+                cupid_num: room.Cupid.toString(),
+                guard_num:room.Guard.toString(),
+                rule:room.WolfWinCondition.toString(),
 
             });
             room.socket.send(msg);
@@ -163,7 +158,7 @@ const GameSetting = (props) => {
                 <Text style={styles.headerText}>
                     游戏设置
                 </Text>
-                <TouchableOpacity onPress={CheckSetting()}>
+                <TouchableOpacity onPress={CheckSetting}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>下一步
                         </Text>

@@ -46,7 +46,7 @@ const ChooseSeat = (props) => {
         for(let i = n;i<n+4&&i<room.player_num;i++){
 
             row.push(
-                <TouchableOpacity key={i} onPress = {() => setMySeat(i)}>
+                <TouchableOpacity key={i} onPress = {() => setMySeat(i+1)}>
                     <View  style={styles.single} >
                         <Image source={getPlayerAvatar(i)} style={styles.portrait} />
                         <Text style={styles.portraitText}>
@@ -103,8 +103,9 @@ const ChooseSeat = (props) => {
     }
     function setMySeat(n)
     {
-        if(n===0)
+        if(n===1)
         {
+            //
             return ;
         }
         dispatch({
@@ -147,6 +148,7 @@ const ChooseSeat = (props) => {
         {
             if(room.client_id==room.owner_id)//如果是房主
             {
+                //todo 判断是否所有人都选了座位
                 Actions.GameSetting();
             }
             else//不是房主
@@ -172,7 +174,7 @@ const ChooseSeat = (props) => {
     }
 
 
-    //todo 修改opacity的action
+
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -188,7 +190,7 @@ const ChooseSeat = (props) => {
                 <Text style={styles.headerText}>
                     顺时针选择座位
                 </Text>
-                <TouchableOpacity onPress={checkSeat()}>
+                <TouchableOpacity onPress={checkSeat}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>
                             下一步
@@ -201,7 +203,7 @@ const ChooseSeat = (props) => {
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
             >
-                {Seats()}
+                {Seats}
                 <Socket/>
             </ScrollView>
             <ActivityIndicator
