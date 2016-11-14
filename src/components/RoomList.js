@@ -117,7 +117,7 @@ const RoomList = (props) => {
                     当前正在游戏的房间
                 </Text>
             </View>
-            <Button onClick={refreshlist()}>刷新房间列表</Button>
+            <Button onClick={refreshlist}>刷新房间列表</Button>
             <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
                         automaticallyAdjustContentInsets={false}
                         showsHorizontalScrollIndicator={false}
