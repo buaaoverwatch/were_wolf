@@ -78,30 +78,6 @@ const Test1 = (props) => {
         else
             return 'true';
     }
-    function neednum() {
-        let neednum;
-        let list = room.player_role;
-        switch (room.curstate) {
-            case state.gameend: neednum = -1;
-                break;
-            case state.waitngplayer: neednum = -1;
-                break;
-            case state.roomblock: neednum = -1;
-                break;
-            case state.checkrole: neednum = 1;
-                break;
-            case state.cupid: neednum = 1;
-                break;
-            case state.lover: neednum = 2;
-                break;
-            case state.guard: neednum = 1;
-                break;
-            case state.wolf:
-                break;
-
-        }
-        return neednum;
-    }
     const usergriddata=genusergriddata();
     return (
         <View style={{flex:1}}>
@@ -146,8 +122,7 @@ const Test1 = (props) => {
                 renderFixedHeader={() => (
                     <View key="fixed-header" style={styles.fixedSection}>
                         <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}
-                        request_id={room.user_request_id} room_id={room.room_id} user_id={room.client_id}
-                        need_num={neednum()}/>
+                        request_id={room.user_request_id} room_id={room.room_id} user_id={room.client_id}/>
                     </View>
                 )}
             >

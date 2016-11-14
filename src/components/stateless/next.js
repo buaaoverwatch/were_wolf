@@ -37,6 +37,18 @@ export default class Next extends Component {
         this.props.dispatch({
             type: 'room/changeNextStep'
         });
+        if(room.hassocket) {
+            let msg = JSON.stringify({
+                type: "4",
+                request_id: this.props.request_id,
+                room_id: this.props.room_id,
+                user_id: this.props.user_id
+            });
+            room.socket.send(msg);
+        } else {
+            console.log("websocket error!");
+            alert("websocket error!");
+        }
     }
 
     render() {
