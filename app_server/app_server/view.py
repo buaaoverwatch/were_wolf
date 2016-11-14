@@ -4,7 +4,7 @@ import demjson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from app_db.models import UserInfo
-
+from app_websocket_method import send_message
 from app_http_method import Register, Login, create_room, join_room, get_record, updata_user_info, get_room_info, get_room_list
 
 
@@ -45,13 +45,14 @@ def login(request):
 		password = data['password']
 
 		_id = Login.checkUser(name, password)
-		user =UserInfo.objects.get(user_name = name)
+
 
 		if _id == -1:
 			data = [{'type':'1','id':'-1','nick':'null','intro':'null'}]
 		elif _id == -2:
 			data = [{'type': '2', 'id': '-1','nick':'null','intro':'null'}]
 		else :
+			user = UserInfo.objects.get(user_name=name)
 			data = [{'type': '0', 'id': str(_id),'nick':user.nick_name,'intro':user.introduce}]
 
 		js = demjson.encode(data)
