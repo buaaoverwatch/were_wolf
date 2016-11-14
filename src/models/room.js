@@ -13,7 +13,7 @@ export default {
 
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
-        client_id:'a3',
+        client_id:'a2',
         username: "",
         //
         room_id: null,
@@ -22,7 +22,7 @@ export default {
         //
         index_player:{0:this.owner_id,1:"null",2:"asdsa",3:"asss"},
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
-        player_avatar: {},
+        player_avatar: {"a1": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a2": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a3": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a4": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'},
         player_num: 10,
         player_id: ["a1", "a2", "a3", "a4"],
         //
@@ -40,7 +40,7 @@ export default {
         WolfWinCondition:1,
         //上面七个是设置游戏的时候，以及玩的时候
 
-        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "hunter",},//房主开始游戏之后
+        player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "seer",},//房主开始游戏之后
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},//房主开始游戏之后
 
 
@@ -54,13 +54,14 @@ export default {
         player_selectedid:"",
         player_selectedid2:"",
         wolf_lastkill:"",
+        wolf_msg:[],
         round: 1,
-        curstate: StateConst.cupid,
+        curstate: StateConst.wolf,
 
         room_request_id:'0',
         user_request_id:0,
 
-        lastvote: {},
+        lastvote: {"a1": 'a3', "a2":'a4', "a3":'a4', "a4": 'a4'},
         nextstep: false,
         witch_save:false,
         witch_kill:false,
@@ -110,6 +111,11 @@ export default {
         {
             return{...state,room_request_id:action.payload};
         },
+        setWolfMsg(state,action)
+        {
+            let m={key:state.wolf_msg.length,...action.payload}
+            return{...state,wolf_msg:state.wolf_msg.push(m)};
+        },
 
         changeselid(state,action)
         {
@@ -141,7 +147,7 @@ export default {
         },
         setalive(state,action)
         {
-            return{...state,player_alive:Object.assign(this.player_alive,action.payload)};
+            return{...state,player_alive:Object.assign(state.player_alive,action.payload)};
         },
         setsherifflist(state,action)
         {
@@ -153,13 +159,17 @@ export default {
         },
         setsheriff(state,action)
         {
-            return{...state,sheriff_id:action.payload};
+            //TODO:如果old不是当前警长
+            if(action.payload[state.sheriff_id]=='-1')
+                return{...state,sheriff_id:''};
+            else
+                return{...state,sheriff_id:action.payload[state.sheriff_id]};
         },
 
 
 
-        changeNextStep(state) {
-            return { ...state, nextstep: !state.nextstep};
+        changeNextStep(state,action) {
+            return { ...state, nextstep: action.payload};
         },
         changeWitchSave(state,action) {
             return { ...state, nextstep: action.payload};
@@ -178,7 +188,7 @@ export default {
         },
         changeplayerindex(state)
         {
-            return {  ... state,player_index:Object.assign(this.player_index,{client_id:this.myseat})};
+            return {  ... state,player_index:Object.assign(state.player_index,{client_id:state.myseat})};
         },
         changemyseat(state,action)
         {
@@ -221,6 +231,8 @@ export default {
 
         //qingchanghan
         setuserinfo(state, action) {
+            console.log("id: " + action.payload.userID);
+            console.log("name: " + action.payload.username);
             return { ...state, client_id: action.payload.userID, username: action.payload.username};
         },
         createRoomSuccess(state, action) {

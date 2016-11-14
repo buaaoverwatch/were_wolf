@@ -34,6 +34,7 @@ import CARoom from './src/components/Create_AddRoom';
 import GameRoom from './src/components/GameRoom';
 import GameSetting from './src/components/game_setting';
 import ChooseSeat from './src/components/ChooseSeat';
+import seeMySelf from './src/components/seeMySelf';
 import Test1 from './src/components/test1';
 //个人信息
 import MyInfo from './src/components/MyInfo';
@@ -89,6 +90,7 @@ class App extends Component {
                   <Scene key="GameRoom" component={GameRoom} hideTabBar/>
                   <Scene key="GameSetting" component={GameSetting} hideTabBar />
                   <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar />
+                  <Scene key="seeMySelf" component={seeMySelf} hideTabBar/>
                   <Scene key="Test1" component={Test1} hideTabBar />
                 </Scene>
               </Scene>

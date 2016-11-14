@@ -8,7 +8,8 @@ import {
     StyleSheet,
     Text,
     Dimensions,
-    PixelRatio
+    PixelRatio,
+    StatusBar,
 } from 'react-native';
 
 import dva from 'dva/mobile';
@@ -34,6 +35,7 @@ import CARoom from './src/components/Create_AddRoom';
 import GameRoom from './src/components/GameRoom';
 import GameSetting from './src/components/game_setting';
 import ChooseSeat from './src/components/ChooseSeat';
+//import seeMySelf from './src/components/seeMySelf';
 import Test1 from './src/components/test1';
 //个人信息
 import MyInfo from './src/components/MyInfo';
@@ -57,58 +59,63 @@ app.model(infoModel);
 class App extends Component {
   render() {
     return (
-        <Router>
-          <Scene key="root">
-            <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
-            <Scene key="Launch" component={Launch}  hideNavBar/>
-            <Scene
-                key="tabbar"
-                tabs
-                tabBarStyle={styles.tabBarStyle}
-                tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                initial={infoModel.state.ifLogin === false}
-            >
+        <View style={{ flex: 1 }}>
+          <StatusBar barStyle="light-content" />
+          <Router>
+            <Scene key="root">
+              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
+              <Scene key="Launch" component={Launch}  hideNavBar/>
               <Scene
-                  key="RoomPage"
-                  title="房间"
-                  hideNavBar
-                  icon={TabIcon}
+                  key="tabbar"
+                  tabs
+                  tabBarStyle={styles.tabBarStyle}
+                  tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
+                  initial={infoModel.state.ifLogin === false}
               >
-                <Scene key="RoomTab" hideNavBar>
-                  <Scene key="RoomList" component={RoomList} />
+                <Scene
+                    key="RoomPage"
+                    title="房间"
+                    hideNavBar
+                    icon={TabIcon}
+                >
+                  <Scene key="RoomTab" hideNavBar>
+                    <Scene key="RoomList" component={RoomList} />
+                  </Scene>
                 </Scene>
-              </Scene>
-              <Scene
-                  key="GamePage"
-                  title="游戏"
-                  hideNavBar
-                  icon={TabIcon}
-              >
-                <Scene key="GameTab" hideNavBar>
-                  <Scene key="CARoom" component={CARoom}/>
-                  <Scene key="GameRoom" component={GameRoom} hideTabBar/>
-                  <Scene key="GameSetting" component={GameSetting} hideTabBar/>
-                  <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
-                  <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
+                <Scene
+                    key="GamePage"
+                    title="游戏"
+                    hideNavBar
+                    icon={TabIcon}
+                >
+                  <Scene key="GameTab" hideNavBar>
+                    <Scene key="CARoom" component={CARoom}/>
+                    <Scene key="GameRoom" component={GameRoom} hideTabBar/>
+                    <Scene key="GameSetting" component={GameSetting} hideTabBar/>
+                    <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
+
+                    <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
+                  </Scene>
                 </Scene>
-              </Scene>
-              <Scene
-                  key="MinePage"
-                  title="我的"
-                  icon={TabIcon}
-                  hideNavBar
-              >
-                <Scene key="MineTab" hideNavBar>
-                  <Scene key="MyInfo" component={MyInfo} />
-                  <Scene key="EditInfo" component={EditInfo} hideTabBar/>
-                  <Scene key="MyFriend" component={MyFriend} hideTabBar/>
-                  <Scene key="MyRecord" component={MyRecord} hideTabBar/>
-                  <Scene key="Setting" component={Setting} hideTabBar/>
+                <Scene
+                    key="MinePage"
+                    title="我的"
+                    icon={TabIcon}
+                    hideNavBar
+                >
+                  <Scene key="MineTab" hideNavBar>
+                    <Scene key="MyInfo" component={MyInfo} />
+                    <Scene key="EditInfo" component={EditInfo} hideTabBar/>
+                    <Scene key="MyFriend" component={MyFriend} hideTabBar/>
+                    <Scene key="MyRecord" component={MyRecord} hideTabBar/>
+                    <Scene key="Setting" component={Setting} hideTabBar/>
+                  </Scene>
                 </Scene>
               </Scene>
             </Scene>
-          </Scene>
-        </Router>
+          </Router>
+        </View>
+
     );
   }
 }

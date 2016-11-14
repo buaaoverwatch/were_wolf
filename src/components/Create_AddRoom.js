@@ -29,8 +29,42 @@ var roomName;
 var CARoom = (props) => {
     const { dispatch, room } = props;
     const {getFieldProps} = props.form;
+    var userID = "", username = "";
 
     function createRoom() {
+        if(userID == "" || username == "") {
+            AsyncStorage.getItem('userID', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                console.log("result: " + result);
+                userID = result;
+            });
+            AsyncStorage.getItem('username', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                console.log("result: " + result);
+                username = result;
+                dispatch({
+                    type: 'room/setuserinfo',
+                    payload: {
+                        userID: userID,
+                        username: username
+                    }
+                });
+                console.log("id1: " + room.client_id);
+                console.log("name1: " + room.username);
+                if(!roomName) {
+                    Toast.fail("房间名输入错误！", 1);
+                    return;
+                }
+                createclickhttp();
+            });
+            return;
+        }
         if(!roomName) {
             Toast.fail("房间名输入错误！", 1);
             return;
@@ -50,7 +84,7 @@ var CARoom = (props) => {
         //     dispatch({
         //         type: 'information/loadingFalse'
         //     });
-        //     Actions.GameRoom();
+             //Actions.GameRoom();
         // });
         createclickhttp();
     }
@@ -65,7 +99,7 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: room.client_id,
+                user_id: userID.toString(),
                 room_name: roomName,
             })
         })
@@ -103,6 +137,35 @@ var CARoom = (props) => {
             });
     }
     function addRoom() {
+        if(userID == "" || username == "") {
+            AsyncStorage.getItem('userID', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                userID = result;
+            });
+            AsyncStorage.getItem('username', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                username = result;
+                dispatch({
+                    type: 'room/setuserinfo',
+                    payload: {
+                        userID: userID,
+                        username: username
+                    }
+                });
+                if(!roomID) {
+                    Toast.fail("输入房间号码错误！", 1);
+                    return;
+                }
+                addclickhttp();
+            });
+            return;
+        }
         if(!roomID) {
             Toast.fail("输入房间号码错误！", 1);
             return;
@@ -118,7 +181,7 @@ var CARoom = (props) => {
         //     type: 'information/changeRoomID',
         //     payload: roomID
         // });
-        // Actions.GameRoom();
+         //Actions.GameRoom();
         addclickhttp();
     }
     function addclickhttp() {
@@ -132,8 +195,8 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: room.client_id,
-                room_id: roomID,
+                user_id: userID.toString(),
+                room_id: roomID.toString(),
             })
         })
             .then(function(data){
@@ -175,30 +238,6 @@ var CARoom = (props) => {
                 console.warn(error);
             });
     }
-
-    var userID = "11", username = "22";
-    AsyncStorage.getItem('userID', function (error, result) {
-        if(error) {
-            console.log(error);
-            return;
-        }
-        userID = result;
-    });
-    AsyncStorage.getItem('username', function (error, result) {
-        if(error) {
-            console.log(error);
-            return;
-        }
-        username = result;
-    });
-    dispatch({
-        type: 'room/setuserinfo',
-        payload: {
-            userID: userID,
-            username: username
-        }
-    });
-
 
     return (
         <View style={{flex: 1}}>

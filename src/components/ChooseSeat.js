@@ -1,6 +1,7 @@
 'use-strict';
 import React, { Component } from 'react';
 import {
+    Alert,
     AppRegistry,
     View,
     StyleSheet,
@@ -26,6 +27,9 @@ import Socket from '../services/websocket';
  其他人选择了头像则在界面上显示
  如果自己不是房主，一号位置显示房主头像，自己选择座位，同时其他人选择了座位也在面板上更新
  */
+
+var alertMessage = '请选择您的座位！';
+var alertMessage1 = '服务器连接失败';
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
     const p1 = require('../images/head_portrait.jpg');
@@ -116,22 +120,22 @@ const ChooseSeat = (props) => {
         if(room.hassocket)
         {
             msg = JSON.stringify({
-                type:2,
-                request_id:room.user_request_id,
-                room_id:room.room_id,
-                user_id:room.user_id,
-                seat:n,
+                type:"2",
+                request_id:room.user_request_id.toString(),
+                room_id:room.room_id.toString(),
+                user_id:room.user_id.toString(),
+                seat:n.toString(),
 
-            })
+            });
             room.socket.send(msg);
         }
         else
         {
             Alert.alert('没有socket',
-            alertMessage,[
+            alertMessage1,[
                     {text: '好的', onPress: () => console.log('OK Pressed!')},
 
-                ])
+                ]);
             dispatch({
                 type:'room/changeloading',
                 payload:false,
@@ -156,7 +160,7 @@ const ChooseSeat = (props) => {
             }
         }
 
-        else
+        else {
             Alert.alert(
                 '请选择座位！',
                 alertMessage,
@@ -164,6 +168,7 @@ const ChooseSeat = (props) => {
                     {text: '好的', onPress: () => console.log('OK Pressed!')},
                 ]
             )
+        }
     }
 
 

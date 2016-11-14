@@ -78,7 +78,6 @@ var EditInfo = (props) => {
                     return responseText;
                 }
                 Toast.success("修改成功！",1);
-                //TODO:这里服务器应该返回昵称和简介
                 dispatch({
                     type: 'information/editSuccess',
                     payload: {

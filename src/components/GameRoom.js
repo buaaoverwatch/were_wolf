@@ -19,7 +19,7 @@ import {
 } from 'react-native-router-flux';
 import Toast from 'antd-mobile/lib/toast';
 import List from 'antd-mobile/lib/list';
-
+import Socket from '../services/websocket';
 const GameRoom = (props) => {
     const { dispatch, room } = props;
     var Views = [];
@@ -101,6 +101,7 @@ const GameRoom = (props) => {
                 </View>
                 {members()}
             </ScrollView>
+            <Socket/>
         </View>
     );
 };

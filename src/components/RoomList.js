@@ -7,10 +7,12 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 import { connect } from 'dva/mobile';
 import {
@@ -21,48 +23,112 @@ import {
 import Card from 'antd-mobile/lib/card';
 import WingBlank from 'antd-mobile/lib/wing-blank';
 import WhiteSpace from 'antd-mobile/lib/white-space';
-
-
+import Toast from 'antd-mobile/lib/toast';
+import Button from 'antd-mobile/lib/button';
 
 const RoomList = (props) => {
     const { dispatch, ALLROOM } = props;
     var n = 0;
-    function getRoomList(i) {//todo 把card修改为list
-        var roomname = '房间名:'+i.room_name;
-        var roomid = '房间号:'+i.room_id;
-        var roomholder = '房主名:'+i.room_holder;
-        var gamestate = '进行到第'+i.nights+'夜';
+    function createhttp(){
+        dispatch({
+            type:'ALLROOM/showloading'
+        });
+        fetch('http://10.138.73:8000/getRoomList',{
+            method:'POST',
+            header:{
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body:JSON.stringify({})
+
+        })
+
+            .then(function(data){
+                return data.json();
+            })
+            .then((responseText)=>{
+                dispatch({
+                    type:'ALLROOM/hideloding'
+                });
+                Toast.success("获取了当前所有房间！",1);
+                for(let i = 0;i<responseText.length;i++)
+                {
+                    dispatch({
+                        type:'ALLROOM/setRoomList',
+                        payload:{
+                            index:i,
+                            room_id:responseText[i].id,
+                            room_name:responseText[i].name,
+                            owner_name:responseText[i].owner_name
+                        }
+                    });
+                }
+                return ;
+            })
+            .catch((error)=>{
+                dispatch({
+                    type:'ALLROOM/hideloding'
+                });
+                Toast.fail("网络错误",1);
+            });
+    }
+
+    function refreshlist() {
+        createhttp();
+        createlist();
+
+    }
+    var room_list = [];
+    function createlist(){
+        for(let i = 0; i < ALLROOM.roomlist.length; i++) {
+            room_list.push(getRoom(ALLROOM.roomlist[i]));
+        }
+
+    }
+
+    function getRoom(i) {//todo 把card修改为list
+        var roomname = i.room_name;
+        var roomid = "NO."+i.room_id;
+        var roomownernick = i.room_owner_nick+"的房间";
+
         return (
             <TouchableOpacity key={n++} onPress={Actions.GameSetting}>
                 <WingBlank size="lg">
                     <WhiteSpace size="lg" />
                     <Card>
                         <Card.Header
-                            title={roomname}
-                            extra={roomid}
+                            title={roomid}
                         />
                         <Card.Body>
-                            <Text>{roomholder}</Text>
+                            <Text>{roomname}</Text>
                         </Card.Body>
-                        <Card.Footer content="当前游戏状态" extra={gamestate} />
+                        <Card.Footer content={roomownernick} />
                     </Card>
                     <WhiteSpace size="lg" />
                 </WingBlank>
             </TouchableOpacity>
         ) ;
     }
-    var room_list = [];
-    for(let i = 0; i < ALLROOM.roomlist.length; i++) {
-        room_list.push(getRoomList(ALLROOM.roomlist[i]));
-    }
+
+
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    当前正在游戏的房间：
+                    当前正在游戏的房间
                 </Text>
             </View>
+            <Button onClick={refreshlist()}>刷新房间列表</Button>
+            <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
+                        automaticallyAdjustContentInsets={false}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}>
             {room_list}
+            </ScrollView>
+            <ActivityIndicator
+                toast
+                text="正在加载"
+                animating={ALLROOM.loading}
+            />
         </View>
     );
 };

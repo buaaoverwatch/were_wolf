@@ -136,6 +136,7 @@ class Login extends Component {
                 </WingBlank>
                 <WhiteSpace size="lg"/>
                 <WingBlank>
+
                     <Button type="default" >忘记密码</Button>
                 </WingBlank>
                 <WhiteSpace size="lg"/>

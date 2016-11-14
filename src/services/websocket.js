@@ -13,7 +13,8 @@ const Socket = (props) => {
     function handlesocket()
     {
         connected=false;
-        ws = new WebSocket('ws://10.138.73.83:8000/1');
+        console.log("roomid: " + room.room_id);
+        ws = new WebSocket('ws://10.138.73.83:8000/' + room.room_id);
         ws.onopen = () => {
             // connection opened
             console.log('OK');
@@ -44,6 +45,7 @@ const Socket = (props) => {
                 }
                 else
                 {
+                    console.log("1111");
                     sendcomfirm(msg);
                     if(msg.room_request_id!=room.room_request_id)
                     {
@@ -54,7 +56,7 @@ const Socket = (props) => {
                             type: 'room/setRoomRequestID',
                             payload: msg.room_request_id,
                         });
-                        if(msg.type===3)
+                        if(msg.type==='3')
                         {
                             if(msg.result)//返回true时修改自己的座位
                             {
@@ -66,63 +68,73 @@ const Socket = (props) => {
                             else//否则返回错误消息，不修改座位
                             {
                                 Alert.alert(
-                                    '此座位已被占用！',
-                                    alertMessage,
-                                    [
-                                        {text: '好的', onPress: () => console.log('OK Pressed!')},
-                                    ]
-                                )
+                                '此座位已被占用！',
+                                alertMessage,
+                                [
+                                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+                                ]
+                            )
                             }//最终修改loading的状态
                             dispatch({
                                 type: 'room/changeloading',
                                 payload:false,
                             })
                         }
-                        else if(msg.type===4)
+                        else if(msg.type==='4')
                         {
 
                         }
-                        else if(msg.type===5)
+                        else if(msg.type==='5')
                         {
                             dispatch({
                                 type: 'room/setroomstate' ,
                                 payload:msg.room_state,
                             });
                         }
-                        else if(msg.type===6)
+                        else if(msg.type==='6')
                         {
                             dispatch({
                                 type: 'room/setroomstate' ,
                                 payload:msg.room_state,
                             });
                         }
-                        else if(msg.type===7)
+                        else if(msg.type==='7')
                         {
-                            let alivelist={...room.player_alive,...msg.change};
                             dispatch({
                                 type: 'room/setalive' ,
-                                payload:alivelist,
+                                payload:msg.change,
                             });
                         }
-                        else if(msg.type===8)
+                        else if(msg.type==='8')
                         {
                             dispatch({
                                 type: 'room/setsherifflist' ,
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type===9)
+                        else if(msg.type==='9')
                         {
                             dispatch({
                                 type: 'room/setlastvote' ,
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type===10)
+                        else if(msg.type==='10')
                         {
                             dispatch({
                                 type: 'room/setsheriff' ,
-                                payload:msg.sheriff_id,
+                                payload:msg.list,
+                            });
+                        }
+                        else if(msg.type==='14')
+                        {
+                            let m={
+                                user_id:msg.user_id,
+                                content:msg.content,
+                            }
+                            dispatch({
+                                type: 'room/setsheriff' ,
+                                payload:m,
                             });
                         }
                     }
@@ -167,12 +179,13 @@ const Socket = (props) => {
         }
     }
     function sendcomfirm(data) {
-        if (data.type!=0)
+        if (data.type!='0')
         {
+            console.log("room_id: " + props.room.room_id);
             msg=JSON.stringify({
-                type: 0,
-                room_id:room.room_id,
-                user_id:room.client_id,
+                type: '0',
+                room_id:props.room.room_id,
+                user_id:props.room.client_id,
                 room_request_id:data.room_request_id,
             });
             ws.send(msg);
