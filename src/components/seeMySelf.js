@@ -32,13 +32,13 @@ import Socket from '../services/websocket';
 const seeMySelf = (props) => {
     const {dispatch, room} = props;
 
-    const wolf = require('');
-    const vill = require('');
-    const cupid = require('');
-    const hunter = require('');
-    const guard = require('');
-    const witch = require('');
-    const seer = require('');
+    //const wolf = require('');
+    //const vill = require('');
+    //const cupid = require('');
+    //const hunter = require('');
+    //const guard = require('');
+    //const witch = require('');
+    //const seer = require('');
 
     function  getChaPic() {
         if(room.player_role[room.client_id]==="wolf"){
