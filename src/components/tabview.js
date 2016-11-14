@@ -465,14 +465,34 @@ export default class Tabview extends Component {
         return list.map((item, i) => {
             return (
                 <ListItem
-                    key={i}
+                    key={item.key}
                     roundAvatar
-                    avatar={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
-                    title={item}
+                    avatar={{uri:this.props.room.player_avatar[item.user_id]}}
+                    title={`${this.props.room.player_index[item.user_id]}号:${item.content}`}
                 />
             )
         });
     };
+    sendWolfMsg(data)
+    {
+        if(this.props.room.hassocket)
+        {
+            msg=JSON.stringify({
+                type:5,
+                request_id:this.props.room.user_request_id,
+                room_id:this.props.room.room_id,
+                user_id:this.props.room.client_id,
+                object_id:this.props.room.client_id,
+                action:6,
+                content:data,
+            });
+            this.props.room.socket.send(msg);
+            this.props.dispatch({
+                type: 'room/WebSocketsend',
+                payload: {msg},
+            });
+        }
+    }
     _renderWolf(){
         if(this.props.room.player_role[this.props.room.client_id]=='wolf'&&this.props.room.curstate==StateConst.wolf)
         {
@@ -489,7 +509,7 @@ export default class Tabview extends Component {
                         backgroundColor:'white'}}>
                         <ScrollView style={{flex:1,marginBottom:20}}>
                             <List>
-                                { this._renderMsg(this.state.msg) }
+                                { this._renderMsg(this.props.room.wolf_msg) }
                             </List>
                         </ScrollView>
                     </View>
@@ -527,7 +547,7 @@ export default class Tabview extends Component {
                             title='发送'
                             backgroundColor='#2db7f5'
                             buttonStyle={{marginTop:15,width:150}}
-                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg1_1+this.state.msg1_2+this.state.msg1_3)})}
+                            onPress={()=>this.sendWolfMsg(this.state.msg1_1+this.state.msg1_2+this.state.msg1_3)}
                         />
                     </View>
                     <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
@@ -561,7 +581,7 @@ export default class Tabview extends Component {
                             title='发送'
                             backgroundColor='#fd661b'
                             buttonStyle={{marginTop:15,width:150}}
-                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg2_1+this.state.msg2_2)})}
+                            onPress={()=>this.sendWolfMsg(this.state.msg2_1+this.state.msg2_2+this.state.msg2_3)}
                         />
                     </View>
                 </View>

@@ -54,6 +54,7 @@ export default {
         player_selectedid:"",
         player_selectedid2:"",
         wolf_lastkill:"",
+        wolf_msg:[],
         round: 1,
         curstate: StateConst.cupid,
 
@@ -109,6 +110,11 @@ export default {
         setRoomRequestID(state,action)
         {
             return{...state,room_request_id:action.payload};
+        },
+        setWolfMsg(state,action)
+        {
+            let m={key:state.wolf_msg.length,...action.payload}
+            return{...state,wolf_msg:state.wolf_msg.push(m)};
         },
 
         changeselid(state,action)

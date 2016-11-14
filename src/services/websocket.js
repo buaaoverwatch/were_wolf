@@ -126,6 +126,17 @@ const Socket = (props) => {
                                 payload:msg.list,
                             });
                         }
+                        else if(msg.type===14)
+                        {
+                            let m={
+                                user_id:msg.user_id,
+                                content:msg.content,
+                            }
+                            dispatch({
+                                type: 'room/setsheriff' ,
+                                payload:m,
+                            });
+                        }
                     }
                 }
             }
