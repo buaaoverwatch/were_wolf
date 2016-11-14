@@ -82,6 +82,14 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='4')
                         {
+                            dispatch({
+                                type: 'room/setRoomRequestID',
+                                payload: msg.room_request_id.toString()
+                            });
+                            dispatch({
+                                type: 'room/setroomstate',
+                                payload: msg.room_state
+                            });
 
                         }
                         else if(msg.type==='5')
@@ -133,7 +141,7 @@ const Socket = (props) => {
                                 content:msg.content,
                             }
                             dispatch({
-                                type: 'room/setsheriff' ,
+                                type: 'room/setWolfMsg' ,
                                 payload:m,
                             });
                         }
