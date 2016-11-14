@@ -81,9 +81,7 @@ const Test1 = (props) => {
             case state.guard: neednum = 1;
                 break;
             case state.wolf:
-                (let key in list) {
-
-            }
+                break;
 
         }
         return neednum;

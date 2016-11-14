@@ -13,8 +13,8 @@ const Socket = (props) => {
     function handlesocket()
     {
         connected=false;
-        console.log("roomid: " + props.room_id);
-        ws = new WebSocket('ws://10.138.73.83:8000/' + props.room_id);
+        console.log("roomid: " + room.room_id);
+        ws = new WebSocket('ws://10.138.73.83:8000/' + room.room_id);
         ws.onopen = () => {
             // connection opened
             console.log('OK');
