@@ -13,7 +13,7 @@ export default {
 
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
-        client_id:'a4',
+        client_id:'a3',
         username: "",
         //
         room_id: null,
@@ -55,7 +55,7 @@ export default {
         player_selectedid2:"",
         wolf_lastkill:"",
         round: 1,
-        curstate: StateConst.seer,
+        curstate: StateConst.cupid,
 
         room_request_id:'0',
         user_request_id:0,
