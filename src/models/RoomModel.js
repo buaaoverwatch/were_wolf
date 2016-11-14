@@ -2,19 +2,9 @@ export default{
     namespace: 'ALLROOM',
     state: {
         roomlist : [
-            {
-                room_name : '傻逼的房间',
-                room_id : '23323',
-                room_holder : '青河',
-                nights : '5'
-            },
-            {
-                room_name : '傻逼叶清河的房间',
-                room_id : '2333',
-                room_holder : '叶青河',
-                nights : '5'
-            },
+
         ],
+        loading:false,
     },
     subscriptions: {
         //setup({ dispatch, history }) {
@@ -25,5 +15,18 @@ export default{
     },
     reducers: {
         //这里应该没有reducers，基本都是从网上fetch吧大概
+        hideloading(state){
+            return {...state, loading: false};
+        },
+        showloading(state){
+            return {...state, loading:true};
+        },
+        setRoomList(state,action){
+            return {...state,action:roomlist.push({
+                room_name:payload.room_name,
+                room_id:payload.room_id,
+                room_owner_nick:payload.owner_name
+            })};
+        }
     },
 }

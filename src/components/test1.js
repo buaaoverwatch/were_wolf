@@ -64,9 +64,27 @@ const Test1 = (props) => {
     }
     function neednum() {
         let neednum;
+        let list = room.player_role;
         switch (room.curstate) {
-            case 1: neednum = 1;
-                break
+            case state.gameend: neednum = -1;
+                break;
+            case state.waitngplayer: neednum = -1;
+                break;
+            case state.roomblock: neednum = -1;
+                break;
+            case state.checkrole: neednum = 1;
+                break;
+            case state.cupid: neednum = 1;
+                break;
+            case state.lover: neednum = 2;
+                break;
+            case state.guard: neednum = 1;
+                break;
+            case state.wolf:
+                (let key in list) {
+
+            }
+
         }
         return neednum;
     }
