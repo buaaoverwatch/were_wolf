@@ -15,6 +15,8 @@ import {
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import UserGrid from './stateless/usergrid';
 import Next from './stateless/next';
+import state from '../consts/roomstate';
+import statename from '../consts/roomstatename';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
@@ -60,6 +62,14 @@ const Test1 = (props) => {
         else
             return 'true';
     }
+    function neednum() {
+        let neednum;
+        switch (room.curstate) {
+            case 1: neednum = 1;
+                break
+        }
+        return neednum;
+    }
     const usergriddata=genusergriddata();
     return (
         <View style={{flex:1}}>
@@ -86,7 +96,7 @@ const Test1 = (props) => {
                     <View key="parallax-header" style={ styles.parallaxHeader }>
                         <UserGrid data={usergriddata} dispatch={dispatch}/>
                         <Text style={ styles.sectionSpeakerText }>
-                            狼人行动阶段
+                            {statename[room.curstate]}
                         </Text>
                         <Text style={ styles.sectionTitleText }>
                             {test()}
@@ -103,7 +113,9 @@ const Test1 = (props) => {
 
                 renderFixedHeader={() => (
                     <View key="fixed-header" style={styles.fixedSection}>
-                        <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}/>
+                        <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}
+                        request_id={room.user_request_id} room_id={room.room_id} user_id={room.client_id}
+                        need_num={neednum()}/>
                     </View>
                 )}
             >

@@ -34,7 +34,7 @@ export default class Next extends Component {
             return;
         }
         //给服务器发请求，进入下一阶段
-        dispatch({
+        this.props.dispatch({
             type: 'room/changeNextStep'
         });
     }

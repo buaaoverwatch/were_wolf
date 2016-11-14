@@ -122,7 +122,7 @@ const ChooseSeat = (props) => {
                 user_id:room.user_id,
                 seat:n,
 
-            })
+            });
             room.socket.send(msg);
         }
         else
