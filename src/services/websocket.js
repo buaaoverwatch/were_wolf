@@ -13,7 +13,8 @@ const Socket = (props) => {
     function handlesocket()
     {
         connected=false;
-        ws = new WebSocket('ws://10.138.73.83:8000/1');
+        console.log("roomid: " + props.room_id);
+        ws = new WebSocket('ws://10.138.73.83:8000/' + props.room_id);
         ws.onopen = () => {
             // connection opened
             console.log('OK');
@@ -44,6 +45,7 @@ const Socket = (props) => {
                 }
                 else
                 {
+                    console.log("1111");
                     sendcomfirm(msg);
                     if(msg.room_request_id!=room.room_request_id)
                     {
@@ -168,10 +170,11 @@ const Socket = (props) => {
     function sendcomfirm(data) {
         if (data.type!=0)
         {
+            console.log("room_id: " + props.room.room_id);
             msg=JSON.stringify({
                 type: 0,
-                room_id:room.room_id,
-                user_id:room.client_id,
+                room_id:props.room.room_id,
+                user_id:props.room.client_id,
                 room_request_id:data.room_request_id,
             });
             ws.send(msg);
