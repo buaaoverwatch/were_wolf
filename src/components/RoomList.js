@@ -33,7 +33,7 @@ const RoomList = (props) => {
         dispatch({
             type:'ALLROOM/showloading'
         });
-        fetch('http://10.138.73.83:8000/getRoomList',{
+        fetch('http://10.138.73.83:8000/getRoomList/',{
             method:'POST',
             header:{
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -47,40 +47,42 @@ const RoomList = (props) => {
             })
             .then((responseText)=>{
                 dispatch({
-                    type:'ALLROOM/hideloding'
+                    type:'ALLROOM/hideloading'
                 });
                 Toast.success("获取了当前所有房间！",1);
+                console.log(responseText);
                 for(let i = 0;i<responseText.length;i++)
                 {
                     dispatch({
                         type:'ALLROOM/setRoomList',
                         payload:{
-                            index:i,
                             room_id:responseText[i].id,
                             room_name:responseText[i].name,
                             owner_name:responseText[i].owner_name
                         }
                     });
                 }
-                return ;
+                createlist();
+                return responseText;
             })
             .catch((error)=>{
                 dispatch({
-                    type:'ALLROOM/hideloding'
+                    type:'ALLROOM/hideloading'
                 });
+                console.warn(error);
                 Toast.fail("网络错误",1);
             });
     }
 
     function refreshlist() {
         createhttp();
-        createlist();
 
     }
     var room_list = [];
     function createlist(){
-        for(let i = 0; i < ALLROOM.roomlist.length; i++) {
-            room_list.push(getRoom(ALLROOM.roomlist[i]));
+        alert(props.ALLROOM.roomlist.length);
+        for(let i = 0; i < props.ALLROOM.roomlist.length; i++) {
+            room_list.push(getRoom(props.ALLROOM.roomlist[i]));
         }
 
     }

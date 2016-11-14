@@ -22,11 +22,10 @@ export default{
             return {...state, loading:true};
         },
         setRoomList(state,action){
-            return {...state,action:roomlist.push({
-                room_name:payload.room_name,
-                room_id:payload.room_id,
-                room_owner_nick:payload.owner_name
-            })};
+            let list = state.roomlist;
+            list.push(action.payload);
+            console.log(action.payload);
+            return {...state,roomlist:list};
         }
     },
 }
