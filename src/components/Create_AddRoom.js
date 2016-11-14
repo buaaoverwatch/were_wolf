@@ -38,6 +38,7 @@ var CARoom = (props) => {
                     console.log(error);
                     return;
                 }
+                console.log("result: " + result);
                 userID = result;
             });
             AsyncStorage.getItem('username', function (error, result) {
@@ -45,15 +46,24 @@ var CARoom = (props) => {
                     console.log(error);
                     return;
                 }
+                console.log("result: " + result);
                 username = result;
-            });
-            dispatch({
-                type: 'room/setuserinfo',
-                payload: {
-                    userID: userID,
-                    username: username
+                dispatch({
+                    type: 'room/setuserinfo',
+                    payload: {
+                        userID: userID,
+                        username: username
+                    }
+                });
+                console.log("id1: " + room.client_id);
+                console.log("name1: " + room.username);
+                if(!roomName) {
+                    Toast.fail("房间名输入错误！", 1);
+                    return;
                 }
+                createclickhttp();
             });
+            return;
         }
         if(!roomName) {
             Toast.fail("房间名输入错误！", 1);
@@ -74,9 +84,9 @@ var CARoom = (props) => {
         //     dispatch({
         //         type: 'information/loadingFalse'
         //     });
-             Actions.GameRoom();
+             //Actions.GameRoom();
         // });
-        //createclickhttp();
+        createclickhttp();
     }
     function createclickhttp() {
         dispatch({
@@ -89,7 +99,7 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: room.client_id,
+                user_id: userID.toString(),
                 room_name: roomName,
             })
         })
@@ -141,14 +151,20 @@ var CARoom = (props) => {
                     return;
                 }
                 username = result;
-            });
-            dispatch({
-                type: 'room/setuserinfo',
-                payload: {
-                    userID: userID,
-                    username: username
+                dispatch({
+                    type: 'room/setuserinfo',
+                    payload: {
+                        userID: userID,
+                        username: username
+                    }
+                });
+                if(!roomID) {
+                    Toast.fail("输入房间号码错误！", 1);
+                    return;
                 }
+                addclickhttp();
             });
+            return;
         }
         if(!roomID) {
             Toast.fail("输入房间号码错误！", 1);
@@ -165,8 +181,8 @@ var CARoom = (props) => {
         //     type: 'information/changeRoomID',
         //     payload: roomID
         // });
-         Actions.GameRoom();
-        //addclickhttp();
+         //Actions.GameRoom();
+        addclickhttp();
     }
     function addclickhttp() {
         dispatch({
@@ -179,8 +195,8 @@ var CARoom = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id: room.client_id,
-                room_id: roomID,
+                user_id: userID.toString(),
+                room_id: roomID.toString(),
             })
         })
             .then(function(data){

@@ -225,6 +225,8 @@ export default {
 
         //qingchanghan
         setuserinfo(state, action) {
+            console.log("id: " + action.payload.userID);
+            console.log("name: " + action.payload.username);
             return { ...state, client_id: action.payload.userID, username: action.payload.username};
         },
         createRoomSuccess(state, action) {

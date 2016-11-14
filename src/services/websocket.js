@@ -66,12 +66,12 @@ const Socket = (props) => {
                             else//否则返回错误消息，不修改座位
                             {
                                 Alert.alert(
-                                    '此座位已被占用！',
-                                    alertMessage,
-                                    [
-                                        {text: '好的', onPress: () => console.log('OK Pressed!')},
-                                    ]
-                                )
+                                '此座位已被占用！',
+                                alertMessage,
+                                [
+                                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+                                ]
+                            )
                             }//最终修改loading的状态
                             dispatch({
                                 type: 'room/changeloading',

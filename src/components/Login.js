@@ -132,10 +132,11 @@ class Login extends Component {
                 </List>
                 <WhiteSpace size="lg"/>
                 <WingBlank>
-                    <Button type="default" onClick={Actions.tabbar}>登录</Button>
+                    <Button type="default" onClick={this.onClick.bind(this)}>登录</Button>
                 </WingBlank>
                 <WhiteSpace size="lg"/>
                 <WingBlank>
+
                     <Button type="default" >忘记密码</Button>
                 </WingBlank>
                 <WhiteSpace size="lg"/>
