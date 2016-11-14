@@ -7,10 +7,12 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 import { connect } from 'dva/mobile';
 import {
@@ -99,7 +101,7 @@ const RoomList = (props) => {
                         <Card.Body>
                             <Text>{roomname}</Text>
                         </Card.Body>
-                        <Card.Footer {roomownernick} />
+                        <Card.Footer content={roomownernick} />
                     </Card>
                     <WhiteSpace size="lg" />
                 </WingBlank>
@@ -115,7 +117,7 @@ const RoomList = (props) => {
                     当前正在游戏的房间
                 </Text>
             </View>
-            <Button onClick={refreshlist()}>刷新房间列表</Button>
+            <Button onClick={refreshlist}>刷新房间列表</Button>
             <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
                         automaticallyAdjustContentInsets={false}
                         showsHorizontalScrollIndicator={false}
@@ -125,7 +127,7 @@ const RoomList = (props) => {
             <ActivityIndicator
                 toast
                 text="正在加载"
-                animating={this.props.loading}
+                animating={ALLROOM.loading}
             />
         </View>
     );
