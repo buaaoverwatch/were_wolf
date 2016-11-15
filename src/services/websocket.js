@@ -6,6 +6,7 @@ import { Alert,View } from 'react-native';
 import dva, { connect } from 'dva/mobile';
 import Button from 'antd-mobile/lib/button';
 import {Actions} from 'react-native-router-flux';
+import state from '../consts/roomstate';
 
 
 const Socket = (props) => {
@@ -82,24 +83,54 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='4')
                         {
-                            dispatch({
-                                type: 'room/setRoomRequestID',
-                                payload: msg.room_request_id.toString()
-                            });
+
+                        }
+                        else if(msg.type==='5')//房间状态改变
+                        {
                             dispatch({
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
                             });
-
-                        }
-                        else if(msg.type==='5')
-                        {
                             dispatch({
-                                type: 'room/setroomstate' ,
-                                payload:msg.room_state,
+                                type: 'room/setrolealive',
+                                payload: msg.role_alive
                             });
+                            var list = msg.request_content;
+                            for(let i = 0; i < list.length; i++) {
+                                if(list[i].type == 1 || list[i].type == 2
+                                    || list[i].type == 3 || list[i].type == 6
+                                    || list[i].type == 12 || list[i].type == 14) {
+                                    console.log("invalid type: " + list[i].type);
+                                    continue;
+                                }
+                                switch (list[i].type) {
+                                    case 4: //TODO:角色配置后发送分配后的角色信息是否要处理
+                                        break;
+                                    case 5: //这里应该不会出现上一个下一步吧
+                                        break;
+                                    case 7: //角色存活状态变化
+                                        break;
+                                    case 8: //竞选警长名单
+                                        break;
+                                    case 9: //投票结果
+                                        break;
+                                    case 10: //警徽归属
+                                        break;
+                                    case 11: //获取房间信息
+                                        break;
+                                    case 13: //离开房间
+                                        break;
+                                    default: //错误情况
+                                        console.log("error type: " + list[i].type);
+                                        break;
+                                }
+                            }
+                            //TODO：根据角色是否存活来决定下一步操作
+                            if(msg.role_alive == false) {
+
+                            }
                         }
-                        else if(msg.type==='6')
+                        else if(msg.type==='6')//狼人选人？
                         {
                             dispatch({
                                 type: 'room/setroomstate' ,

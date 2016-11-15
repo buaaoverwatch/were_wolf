@@ -49,6 +49,7 @@ export default class Next extends Component {
             console.log("websocket error!");
             alert("websocket error!");
         }
+        //TODO:根据投票结果弹窗
     }
 
     render() {

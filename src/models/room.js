@@ -73,6 +73,8 @@ export default {
         loading : false,
         myseat:0,
         //玩家选座的时候
+
+        role_alive: true
     },
 
     subscriptions: {},
@@ -84,6 +86,7 @@ export default {
             yield call(delay, 2000);
             yield put({ type: 'checkLoading' });
         },
+        //TODO:当夜晚对应角色死亡时，加一个计时函数，计时结束时调用发送下一步请求
     },
 
     reducers: {
@@ -242,6 +245,9 @@ export default {
         addRoomSuccess(state, action) {
             return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
                 , owner_id: action.payload.ownerID};
+        },
+        setrolealive(state, action) {
+            return { ...state, role_alive: action.payload};
         },
     }
 
