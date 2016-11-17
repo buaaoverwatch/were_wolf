@@ -20,6 +20,7 @@ import statename from '../consts/roomstatename';
 import TabView from './tabview';
 import { connect } from 'dva/mobile';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
+import { Icon } from 'react-native-elements'
 
 import StateConst from '../consts/roomstate';
 
@@ -76,12 +77,80 @@ const Test1 = (props) => {
             }
         )
     }
-    function test()
+    function _renderSubTitle()
     {
-        if(room.nextstep==false)
-            return 'false';
+        if((room.curstate==StateConst.cupid&&room.player_role[room.client_id]!='cupid')||
+            (room.curstate==StateConst.lover&&room.client_id!=room.lover_id1&&room.client_id!=room.lover_id2)||
+            (room.curstate==StateConst.guard&&room.player_role[room.client_id]!='guard')||
+            (room.curstate==StateConst.wolf&&room.player_role[room.client_id]!='wolf')||
+            (room.curstate==StateConst.witch&&room.player_role[room.client_id]!='witch')||
+            (room.curstate==StateConst.seer&&room.player_role[room.client_id]!='seer'))
+        {
+            return '请不要睁眼呦'
+        }
+        else if((room.curstate==StateConst.cupid)||
+            (room.curstate==StateConst.lover)||
+            (room.curstate==StateConst.guard)||
+            (room.curstate==StateConst.wolf)||
+            (room.curstate==StateConst.witch)||
+            (room.curstate==StateConst.seer))
+        {
+            if(room.nextstep==false)
+                return '请行使技能';
+            else
+                return '请点击\"下一步\"';
+        }
+        else if(room.curstate==StateConst.sheriffchoose)
+            return '请选择是否竞选警长';
+        else if(room.curstate==StateConst.sherifftalk)
+            return '请竞选警长的玩家依次发言';
+        else if(room.curstate==StateConst.sheriffvote)
+            return '请给竞选警长的玩家投票';
+        else if(room.curstate==StateConst.daytalk)
+            return '请存活的玩家依次发言';
+        else if(room.curstate==StateConst.dayvote)
+            return '请投票选出出局的玩家';
+        else if(room.curstate==StateConst.lastword)
+            return '请聆听遗言';
+        else if(room.curstate==StateConst.hunter)
+        {
+            if(room.player_role[room.client_id]=='hunter')
+            {
+                return '请选择您要带走的玩家';
+            }
+            else
+            {
+                return '请等待猎人开枪';
+            }
+        }
+    }
+    function _renderUserGrid(style)
+    {
+        if((room.curstate==StateConst.cupid&&room.player_role[room.client_id]!='cupid')||
+            (room.curstate==StateConst.lover&&room.client_id!=room.lover_id1&&room.client_id!=room.lover_id2)||
+            (room.curstate==StateConst.guard&&room.player_role[room.client_id]!='guard')||
+            (room.curstate==StateConst.wolf&&room.player_role[room.client_id]!='wolf')||
+            (room.curstate==StateConst.witch&&room.player_role[room.client_id]!='witch')||
+            (room.curstate==StateConst.seer&&room.player_role[room.client_id]!='seer'))
+        {
+            return(
+                <View style={style}>
+                    <Icon
+                        raised
+                        name='eye-slash'
+                        type='font-awesome'
+                        color='#f50'
+                        size={80}
+                        onPress={() => console.log('hello')} />
+                </View>
+            )
+        }
         else
-            return 'true';
+        {
+            return(
+                <UserGrid data={usergriddata} dispatch={dispatch}/>
+            )
+        }
     }
     const usergriddata=genusergriddata();
     return (
@@ -107,12 +176,12 @@ const Test1 = (props) => {
 
                 renderForeground={() => (
                     <View key="parallax-header" style={ styles.parallaxHeader }>
-                        <UserGrid data={usergriddata} dispatch={dispatch}/>
+                        {_renderUserGrid(styles.NightNotification)}
                         <Text style={ styles.sectionSpeakerText }>
                             {statename[room.curstate]}
                         </Text>
                         <Text style={ styles.sectionTitleText }>
-                            {test()}
+                            {_renderSubTitle()}
                         </Text>
                     </View>
                 )}
@@ -120,7 +189,7 @@ const Test1 = (props) => {
 
                 renderStickyHeader={() => (
                     <View key="sticky-header" style={styles.stickySection}>
-                        <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
+                        <Text style={styles.stickySectionText}>{statename[room.curstate]}</Text>
                     </View>
                 )}
 
@@ -150,10 +219,14 @@ const AVATAR_SIZE = 120;
 const ROW_HEIGHT = 60;
 const PARALLAX_HEADER_HEIGHT = 350;
 const STICKY_HEADER_HEIGHT = 70;
-var {HEIGHT, WIDTH} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    container: {
+    NightNotification: {
+        height: PARALLAX_HEADER_HEIGHT-120,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    ontainer: {
         flex: 1,
         backgroundColor: 'black'
     },
