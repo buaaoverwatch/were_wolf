@@ -63,14 +63,14 @@ class App extends Component {
           <StatusBar barStyle="light-content" />
           <Router>
             <Scene key="root">
-              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
+              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
               <Scene
                   key="tabbar"
                   tabs
                   tabBarStyle={styles.tabBarStyle}
                   tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                  initial={infoModel.state.ifLogin === true}
+                  initial={infoModel.state.ifLogin === false}
               >
                 <Scene
                     key="RoomPage"
@@ -94,7 +94,7 @@ class App extends Component {
                     <Scene key="GameSetting" component={GameSetting} hideTabBar/>
                     <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
                     <Scene key="seeMySelf" component={seeMySelf} hideTabBar/>
-                    <Scene key="Test1" component={Test1} hideTabBar initial={false}/>
+                    <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
                   </Scene>
                 </Scene>
                 <Scene

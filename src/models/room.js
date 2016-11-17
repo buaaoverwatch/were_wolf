@@ -53,10 +53,11 @@ export default {
         sheriff_list:[],
         player_selectedid:"",
         player_selectedid2:"",
+        player_selectedid_wolf:"",
         wolf_lastkill:"",
         wolf_msg:[],
         round: 1,
-        curstate: StateConst.wolf,
+        curstate: StateConst.cupid,
 
         room_request_id:'0',
         user_request_id:0,
@@ -139,6 +140,24 @@ export default {
             }
             else
                 return{...state,player_selectedid:action.payload};
+        },
+        changeselid_wolf(state)//这里是在狼人选人阶段，由于要利用通信，所以特殊处理
+        {
+            if(state.curstate==StateConst.wolf)
+            {
+                return{...state,player_selectedid:state.player_selectedid_wolf};
+            }
+            else
+                return state;
+        },
+        setselid_wolf(state,action)//这里是在狼人选人阶段，暂存当前选人，等到服务器回复再调change处理
+        {
+            if(state.curstate==StateConst.wolf)
+            {
+                return{...state,player_selectedid_wolf:action.payload};
+            }
+            else
+                return state;
         },
         changeCharacterNum(state,action)
         {
