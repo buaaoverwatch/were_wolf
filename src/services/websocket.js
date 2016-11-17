@@ -154,7 +154,7 @@ const Socket = (props) => {
 
                             }
                         }
-                        else if(msg.type==='6')//狼人选人？
+                        else if(msg.type==='6')//狼人选人 Checked!
                         {
                             let m={
                                 wolf_id:msg.wolf_id,
@@ -170,35 +170,35 @@ const Socket = (props) => {
                             else if(masg.action=='1')//杀人
                             {
                                 dispatch({
-                                    type: 'room/setWolfVote' ,
-                                    payload:m,
+                                    type: 'room/setkillid_wolf' ,
+                                    payload:msg.object_id,
                                 });
                             }
 
 
                         }
-                        else if(msg.type==='7')
+                        else if(msg.type==='7')//不再实时接收
                         {
                             dispatch({
                                 type: 'room/setalive' ,
                                 payload:msg.change,
                             });
                         }
-                        else if(msg.type==='8')
+                        else if(msg.type==='8')//不再实时接收
                         {
                             dispatch({
                                 type: 'room/setsherifflist' ,
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type==='9')
+                        else if(msg.type==='9')//不再实时接收
                         {
                             dispatch({
                                 type: 'room/setlastvote' ,
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type==='10')
+                        else if(msg.type==='10')//不再实时接收
                         {
                             dispatch({
                                 type: 'room/setsheriff' ,
@@ -216,7 +216,6 @@ const Socket = (props) => {
                                 payload:m,
                             });
                         }
-                        //TODO:加入狼人选位接收
                     }
                 }
             }
@@ -275,6 +274,9 @@ const Socket = (props) => {
     return (
         <View>
             <Button onClick={handleclick}>send</Button>
+            <Button onClick={()=>{dispatch({
+                type: 'room/addstate' ,
+            });}}>add</Button>
             <Button onClick={handlesocket}>start</Button>
         </View>
     );

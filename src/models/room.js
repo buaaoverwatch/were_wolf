@@ -45,7 +45,8 @@ export default {
         player_role: {"a1":"witch", "a2":"wolf", "a3":"cupid", "a4": "seer",},//房主开始游戏之后
         player_alive: {"a1": true, "a2": true, "a3": true, "a4": true,},//房主开始游戏之后
 
-
+        lover_id1:"",
+        lover_id2:"",
 
 
 
@@ -60,7 +61,7 @@ export default {
         wolf_lastkill:"",
         wolf_msg:[],
         round: 1,
-        curstate: StateConst.wolf,
+        curstate: StateConst.cupid,
         laststate: StateConst.guard,
 
         room_request_id:'0',
@@ -96,6 +97,11 @@ export default {
 
     reducers: {
         //WebSocket相关
+        addstate(state)//TODO:临时写的，方便测试，需要删
+        {
+            return {...state, curstate: state.curstate + 1};
+        },
+
         showLoading(state) {
             return {...state, loading: true};
         },
@@ -144,6 +150,10 @@ export default {
                 }
             }
             return{...state,list_wolfvote:m,player_wolfvote:n};
+        },
+        setLoverID(state,action)//TODO:在这里加情侣ID
+        {
+            return{...state,lover_id1:action.payload,lover_id2:action.payload};
         },
 
         changeselid(state,action)//这是点选Grid内内容后，切换当前选择玩家的reducer，丘比特因为要选两个人有特殊的判断
