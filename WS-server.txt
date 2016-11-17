@@ -87,20 +87,20 @@ wolf_id
 object_id
 
 
-8.	角色存活状态变化
+8.	角色存活状态变化//
 type = 7
 room_request_id
 change	{'id1':alive1}	谁变了
 list ['id1','id2',...]	谁进行的操作
 
 
-9. 竞选警长人名单
+9. 竞选警长人名单//
 type = 8
 room_request_id
 list {'id',..}		竞选警长名单
 
 
-10. 投票结果
+10. 投票结果//
 type = 9
 room_request_id
 result 				true / false 平票是false

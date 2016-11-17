@@ -59,6 +59,7 @@ export default {
         wolf_msg:[],
         round: 1,
         curstate: StateConst.wolf,
+        laststate: StateConst.guard,
 
         room_request_id:'0',
         user_request_id:0,

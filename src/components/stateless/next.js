@@ -35,16 +35,17 @@ export default class Next extends Component {
         }
         //给服务器发请求，进入下一阶段
         this.props.dispatch({
-            type: 'room/changeNextStep'
+            type: 'room/changeNextStep',
+            payload: false
         });
-        if(room.hassocket) {
+        if(this.props.room.hassocket) {
             let msg = JSON.stringify({
                 type: "4",
-                request_id: this.props.request_id,
-                room_id: this.props.room_id,
-                user_id: this.props.user_id
+                request_id: this.props.room.user_request_id,
+                room_id: this.props.room.room_id,
+                user_id: this.props.room.client_id
             });
-            room.socket.send(msg);
+            this.props.room.socket.send(msg);
         } else {
             console.log("websocket error!");
             alert("websocket error!");

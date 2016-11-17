@@ -126,8 +126,7 @@ const Test1 = (props) => {
 
                 renderFixedHeader={() => (
                     <View key="fixed-header" style={styles.fixedSection}>
-                        <Next nextstep={room.nextstep} dispatch={dispatch} curstate={room.curstate}
-                        request_id={room.user_request_id} room_id={room.room_id} user_id={room.client_id}/>
+                        <Next dispatch={dispatch} room={room}/>
                     </View>
                 )}
             >
