@@ -136,10 +136,26 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='6')//狼人选人？
                         {
-                            dispatch({
-                                type: 'room/setroomstate' ,
-                                payload:msg.room_state,
-                            });
+                            let m={
+                                wolf_id:msg.wolf_id,
+                                object_id:msg.object_id,
+                            };
+                            if(msg.action=='0')//选人
+                            {
+                                dispatch({
+                                    type: 'room/setWolfVote' ,
+                                    payload:m,
+                                });
+                            }
+                            else if(masg.action=='1')//杀人
+                            {
+                                dispatch({
+                                    type: 'room/setWolfVote' ,
+                                    payload:m,
+                                });
+                            }
+
+
                         }
                         else if(msg.type==='7')
                         {
@@ -174,7 +190,7 @@ const Socket = (props) => {
                             let m={
                                 user_id:msg.user_id,
                                 content:msg.content,
-                            }
+                            };
                             dispatch({
                                 type: 'room/setWolfMsg' ,
                                 payload:m,

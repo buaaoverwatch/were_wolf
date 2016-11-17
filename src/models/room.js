@@ -16,7 +16,7 @@ export default {
         client_id:'a2',
         username: "",
         //
-        room_id: null,
+        room_id: "1",
         room_name: '',
         owner_id: '213',
         //
@@ -48,7 +48,8 @@ export default {
 
 
         guess_role: {},
-        player_wolfvote: {"a1": 0, "a2": 0, "a3": 1, "a4": 2},
+        player_wolfvote: {},//根据狼人投票列表渲染
+        list_wolfvote: {"a1":"a3", "a2": "a4"},//狼人投票列表
         sheriff_id: "a4",
         sheriff_list:[],
         player_selectedid:"",
@@ -57,7 +58,7 @@ export default {
         wolf_lastkill:"",
         wolf_msg:[],
         round: 1,
-        curstate: StateConst.cupid,
+        curstate: StateConst.wolf,
 
         room_request_id:'0',
         user_request_id:0,
@@ -117,11 +118,32 @@ export default {
         },
         setWolfMsg(state,action)
         {
-            let m={key:state.wolf_msg.length,...action.payload}
+            let m={key:state.wolf_msg.length,...action.payload};
             return{...state,wolf_msg:state.wolf_msg.push(m)};
         },
+        setWolfVote(state,action)//设置狼人选人ID:ID对
+        {
+            let m={...state.list_wolfvote,[action.payload.wolf_id]:action.payload.object_id};
+            let n={};
+            for (let value of Object.values(m)) {
+                let flag=false;
+                for (let key of Object.keys(n))
+                {
+                    if(key==value)
+                    {
+                        n[key]++;
+                        flag=true;
+                    }
+                }
+                if(flag==false)
+                {
+                    n={...n,[value]:1};
+                }
+            }
+            return{...state,list_wolfvote:m,player_wolfvote:n};
+        },
 
-        changeselid(state,action)
+        changeselid(state,action)//这是点选Grid内内容后，切换当前选择玩家的reducer，丘比特因为要选两个人有特殊的判断
         {
             let selid1=state.player_selectedid;
             let selid2=state.player_selectedid2;
@@ -158,6 +180,10 @@ export default {
             }
             else
                 return state;
+        },
+        setkillid_wolf(state,action)//这里是在狼人阶段，已经有狼人确认杀人以后，调用的reducer，目的是防止狼人杀不同的玩家
+        {
+            return{...state,wolf_lastkill:action.payload};
         },
         changeCharacterNum(state,action)
         {
