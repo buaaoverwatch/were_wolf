@@ -104,6 +104,7 @@ export default class Tabview extends Component {
                         });
                     }
                 };
+                //TODO:为什么这里不能显示loading
                 this.setState({extrafun:press});
                 this.setState({visible:true});
             }
