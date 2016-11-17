@@ -40,6 +40,8 @@ const ChooseSeat = (props) => {
     //首先playerid和nick和avatar都是创建游戏之后就有了的。
     //然后我要把房主的设置为1号，并打印在界面上，然后每当选择了之后就更新，也就是我需要一个默认值
     //model中初始化player_index中的键都为初始默认值，初始默认值对应一个nick，对应一个avatar
+    //key = i , setmyseat i+1,getnick he ava 都是i
+    //
     function addRow(n){
         var row = [];
 
@@ -64,6 +66,7 @@ const ChooseSeat = (props) => {
 
 
     }
+    //youdianwenti
     function getPlayerAvatar(i){
         if(i===0)
             return p1;//一个存了房主照片的文件
@@ -81,7 +84,7 @@ const ChooseSeat = (props) => {
             return room.player_nick[room.owner_id];
         else
         {
-            if(room.index_player[i]=="null")
+            if(room.index_player[i]=="")
                 return "这个座位没有人";
             else
                 return room.player_nick[room.index_player[i]];
@@ -103,15 +106,13 @@ const ChooseSeat = (props) => {
     }
     function setMySeat(n)
     {
-        if(n===1)
+        if(n===0)
         {
             //
             return ;
         }
-        dispatch({
-            type:'room/changemyseat',
-            payload:n,
-        });
+
+
         dispatch({
             type:'room/changeloading',
             payload:true,
@@ -123,8 +124,8 @@ const ChooseSeat = (props) => {
             msg = JSON.stringify({
                 type:"2",
                 request_id:room.user_request_id.toString(),
-                room_id:room.room_id.toString(),
-                user_id:room.user_id.toString(),
+                room_id:room.room_id,
+                user_id:room.client_id,
                 seat:n.toString(),
 
             });
@@ -203,8 +204,7 @@ const ChooseSeat = (props) => {
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
             >
-                {Seats}
-                <Socket/>
+                {Seats()}
             </ScrollView>
             <ActivityIndicator
                 toast
@@ -214,8 +214,6 @@ const ChooseSeat = (props) => {
         </View>
 
     );
-
-
 }  ;
 
 

@@ -94,8 +94,8 @@ const GameSetting = (props) => {
         }
         else {
             Alert.alert(
+                '选择错误',
                 '角色总数与房间人数不符！',
-                alertMessage,
                 [
                     {text: '好的', onPress: () => console.log('OK Pressed!')},
                 ]
@@ -138,10 +138,7 @@ const GameSetting = (props) => {
                 payload:false,
             });//没有收到消息
         }
-
-
-
-        Action.seeMySelf();
+        Actions.seeMyself();
     }
 
     return (

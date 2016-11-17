@@ -87,7 +87,7 @@ const RoomList = (props) => {
     function getRoom(i) {//todo 把card修改为list
         var roomname = i.room_name;
         var roomid = "NO."+i.room_id;
-        var roomownernick = i.room_owner_nick+"的房间";
+        var roomownernick = i.owner_name+"的房间";
 
         return (
             <TouchableOpacity key={n++} onPress={Actions.GameSetting}>

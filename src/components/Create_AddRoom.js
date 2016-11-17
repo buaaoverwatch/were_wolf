@@ -120,7 +120,7 @@ var CARoom = (props) => {
                     payload: {
                         roomID: responseText.number,
                         roomName: roomName,
-                        ownerID: room.client_id
+                        ownerID: props.room.client_id
                     }
                 });
                 //这里应该有一个界面跳转

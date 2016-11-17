@@ -18,14 +18,16 @@ export default {
         //
         room_id: "1",
         room_name: '',
-        owner_id: '213',
+        owner_id: 'djsdka',
         //
-        index_player:{1:this.owner_id,2:"null",3:"asdsa",4:"asss"},
+
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
         player_avatar: {"a1": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a2": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a3": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg', "a4": 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'},
-        player_num: 10,
+        player_num: 4,
         player_id: ["a1", "a2", "a3", "a4"],
         //
+        //
+        index_player:{1:"",2:"",3:"",4:""},
         player_index: {"a1": 1, "a2": 2, "a3": 3, "a4": 4},//玩家选位之后
         //
         index_id: ["a1", "a2", "a3", "a4"],//所有玩家选位之后
@@ -294,6 +296,18 @@ export default {
         },
         setrolealive(state, action) {
             return { ...state, role_alive: action.payload};
+        },
+
+
+        //已经写了修改角色列表的东西，and已经做了设置playindex的东西
+
+        setrolelist(state,action){
+            return {...state,player_role:action.payload};
+        },
+        setplayerindex(state,action){
+            let i = action.payload.u_id;
+
+            return {...state,player_index:Object.assign(state.player_index,{i:action.payload.seat})};
         },
     }
 

@@ -61,32 +61,52 @@ const Socket = (props) => {
                             type: 'room/setRoomRequestID',
                             payload: msg.room_request_id,
                         });
-                        if(msg.type==='3')
+                        if(msg.type==='2')
                         {
-                            if(msg.result)//返回true时修改自己的座位
+
+                        }
+                        else if(msg.type==='3')
+                        {
+                            if(msg.result=="true")
                             {
                                 dispatch({
-                                    type: 'room/changeplayerindex',
+                                    type:'room/setplayerindex',
+                                    payload:{
+                                        u_id:msg.user_id,
+                                        seat:msg.seat,
+                                    },
                                 });
-                                Actions.seeMySelf();
+
                             }
-                            else//否则返回错误消息，不修改座位
+                            else
                             {
-                                Alert.alert(
-                                '此座位已被占用！',
-                                alertMessage,
-                                [
-                                    {text: '好的', onPress: () => console.log('OK Pressed!')},
-                                ]
-                            )
-                            }//最终修改loading的状态
-                            dispatch({
-                                type: 'room/changeloading',
-                                payload:false,
-                            })
+                                if(msg.user_id===room.client_id)
+                                {
+                                    Alert.alert(
+                                        '选位失败',
+                                        '请重新选择你的座位',
+                                        [
+                                            {text: '好的', onPress: () => console.log('OK Pressed!')},
+                                        ]
+                                    )
+                                }
+                            }
                         }
                         else if(msg.type==='4')
                         {
+                            dispatch({
+                                type:'room/setrolelist',
+                                payload:msg.list,
+                            });
+                            if(room.client_id==room.owner_id)
+                            {
+
+                            }
+                            else
+                            {
+                                Actions.seeMySelf();
+                            }
+
 
                         }
                         else if(msg.type==='5')//房间状态改变
