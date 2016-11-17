@@ -62,7 +62,6 @@ const RoomList = (props) => {
                         }
                     });
                 }
-                createlist();
                 return responseText;
             })
             .catch((error)=>{
@@ -76,15 +75,13 @@ const RoomList = (props) => {
 
     function refreshlist() {
         createhttp();
-
     }
-    var room_list = [];
     function createlist(){
-        alert(props.ALLROOM.roomlist.length);
+        var room_list = [];
         for(let i = 0; i < props.ALLROOM.roomlist.length; i++) {
             room_list.push(getRoom(props.ALLROOM.roomlist[i]));
         }
-
+        return room_list;
     }
 
     function getRoom(i) {//todo 把card修改为list
@@ -124,7 +121,7 @@ const RoomList = (props) => {
                         automaticallyAdjustContentInsets={false}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}>
-            {room_list}
+            {createlist()}
             </ScrollView>
             <ActivityIndicator
                 toast
