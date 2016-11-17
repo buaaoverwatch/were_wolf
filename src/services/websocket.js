@@ -11,6 +11,7 @@ import state from '../consts/roomstate';
 
 const Socket = (props) => {
     const { dispatch,room} = props;
+    let laststate;
     function handlesocket()
     {
         connected=false;
@@ -111,6 +112,7 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='5')//房间状态改变
                         {
+                            laststate = room.curstate;
                             dispatch({
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
@@ -119,39 +121,112 @@ const Socket = (props) => {
                                 type: 'room/setrolealive',
                                 payload: msg.role_alive
                             });
-                            var list = msg.request_content;
+                            let list = msg.request_content;
+                            let temp;
                             for(let i = 0; i < list.length; i++) {
-                                if(list[i].type == 1 || list[i].type == 2
-                                    || list[i].type == 3 || list[i].type == 6
-                                    || list[i].type == 12 || list[i].type == 14) {
-                                    console.log("invalid type: " + list[i].type);
+                                temp = list[i];
+                                if(!(temp.type == 6 || temp.type == 7
+                                    || temp.type == 8 || temp.type == 9)) {
+                                    console.log("invalid type: " + temp.type);
                                     continue;
                                 }
-                                switch (list[i].type) {
-                                    case 4: //TODO:角色配置后发送分配后的角色信息是否要处理
-                                        break;
-                                    case 5: //这里应该不会出现上一个下一步吧
+                                switch (temp.type) {
+                                    case 6: //狼人选人、杀人
+                                        if(temp.action == 0 || msg.room_state != state.witch || laststate != state.wolf) {
+                                            break;//狼人选人信息不处理 若状态不是狼人到女巫也不处理
+                                        }
+                                        dispatch({
+                                            type: 'room/setkillid_wolf',
+                                            payload: temp.object_id
+                                        });
                                         break;
                                     case 7: //角色存活状态变化
+                                        if(laststate == state.guard && msg.room_state == state.wolf && temp.role == "guard") {
+                                            for(let key in temp.change) {
+                                                if(change[key] == true) {
+                                                    dispatch({
+                                                        type: 'room/setlastguard',
+                                                        payload: key
+                                                    });
+                                                    console.log("守卫守人id：" + key);
+                                                } else {
+                                                    console.log("守卫把人守死了？");
+                                                }
+                                            }
+                                        } else if(laststate == state.wolf && msg.room_state == state.witch && temp.role == "wolf") {
+                                            for(let key in temp.change) {
+                                                if(change[key] == false) {
+                                                    dispatch({
+                                                        type: 'room/setkillid_wolf',
+                                                        payload: key
+                                                    });
+                                                    console.log("狼人杀人id：" + key);
+                                                } else {
+                                                    console.log("狼人把人救活了？");
+                                                }
+                                            }
+                                        } else if(laststate == state.witch && msg.room_state == state.seer && temp.role == "witch") {
+                                            for(let key in temp.change) {
+                                                if(change[key] == true) {
+                                                    dispatch({
+                                                        type: 'room/setlastwitchsave',
+                                                        payload: key
+                                                    });
+                                                    console.log("女巫救人id:" + key);
+                                                } else if(change[key] == false) {
+                                                    dispatch({
+                                                        type: 'room/setlastwitchkill',
+                                                        payload: key
+                                                    });
+                                                    console.log("女巫毒人id：" + key);
+                                                } else {
+                                                    console.log("格式不是bool型");
+                                                }
+                                            }
+                                        } else {
+                                            console.log("这个阶段不应该有角色存活转变");
+                                        }
                                         break;
                                     case 8: //竞选警长名单
+                                        if(laststate == state.sheriffchoose && msg.room_state == state.sherifftalk) {
+                                            dispatch({
+                                                type: 'room/setjoinsheriff',
+                                                payload: temp.list
+                                            });
+                                        } else {
+                                            console.log("此时不应该有竞选警长名单");
+                                        }
                                         break;
                                     case 9: //投票结果
-                                        break;
-                                    case 10: //警徽归属
-                                        break;
-                                    case 11: //获取房间信息
-                                        break;
-                                    case 13: //离开房间
+                                        if((msg.room_state == state.daytalk && laststate == state.sheriffvote)
+                                            || (msg.room_state == state.hunter && (laststate == state.sheriffvote || laststate == state.dayvote))
+                                            || (msg.room_state == state.lastword && (laststate == state.sheriffvote || laststate == state.dayvote))) {
+                                            //TODO：这里应该根据temp.result是否为false做一些处理
+                                            dispatch({
+                                                type: 'room/setalastvote',
+                                                payload: temp.list
+                                            });
+                                            alert("请在下方投票栏中查看投票结果");
+                                        }
                                         break;
                                     default: //错误情况
-                                        console.log("error type: " + list[i].type);
+                                        console.log("error type: " + temp.type);
                                         break;
                                 }
                             }
+                            if(msg.room_state == state.daytalk) {
+                                //白天发言阶段 将之前的保存的存活状态更新
+                                //TODO：加上情侣
+                                dispatch({
+                                    type: 'room/updatealive'
+                                });
+                            }
                             //TODO：根据角色是否存活来决定下一步操作
-                            if(msg.role_alive == false) {
-
+                            if(msg.role_alive == false && (msg.room_state == state.guard ||
+                                msg.room_state == state.witch || msg.room_state == state.seer)){
+                                dispatch({
+                                    type: 'room/timerstate'
+                                });
                             }
                         }
                         else if(msg.type==='6')//狼人选人 Checked!

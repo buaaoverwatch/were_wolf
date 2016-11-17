@@ -45,7 +45,6 @@ import Setting from './src/components/Setting';
 
 
 
-
 // 1. Initialize
 const app = dva();
 

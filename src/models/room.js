@@ -49,6 +49,9 @@ export default {
         lover_id2:"",
 
 
+        joinsheriff: ["a1", "a2"],//参与警长竞选名单
+        lastwordlist: [],//需要留遗言玩家名单
+
 
         guess_role: {},
         player_wolfvote: {},//根据狼人投票列表渲染
@@ -58,7 +61,10 @@ export default {
         player_selectedid:"",
         player_selectedid2:"",
         player_selectedid_wolf:"",
-        wolf_lastkill:"",
+        wolf_lastkill:"",//狼人杀死的人id
+        last_guard: "",//守卫守的人id
+        last_witch_save: "",//女巫救的人id
+        last_witch_kill: "",//女巫毒的人id
         wolf_msg:[],
         round: 1,
         curstate: StateConst.cupid,
@@ -93,6 +99,10 @@ export default {
             yield put({ type: 'checkLoading' });
         },
         //TODO:当夜晚对应角色死亡时，加一个计时函数，计时结束时调用发送下一步请求
+        *timerstate(_, { put, call }) {
+            yield call(delay, 10000);
+            yield put({ type: 'sendstate'});
+        },
     },
 
     reducers: {
@@ -306,6 +316,48 @@ export default {
         },
         setrolealive(state, action) {
             return { ...state, role_alive: action.payload};
+        },
+        setlastguard(state, action) {
+            return { ...state, last_guard: action.payload};
+        },
+        setlastwitchsave(state, action) {
+            return { ...state, last_witch_save: action.payload};
+        },
+        setlastwitchkill(state, action) {
+            return { ...state, last_witch_kill: action.payload};
+        },
+        setjoinsheriff(state, action) {
+            return { ...state, joinsheriff: action.payload};
+        },
+        updatealive(state) {
+            let lastwordlist = [];
+            let alive = state.player_alive;
+            if(state.wolf_lastkill == state.last_guard || state.wolf_lastkill == state.last_witch_save) {
+                console.log("狼人杀的人没有死");
+            } else {
+                alive[state.wolf_lastkill] = false;
+                lastwordlist.push(state.wolf_lastkill);
+            }
+            if(state.last_witch_kill != "") {
+                alive[state.last_witch_kill] = false;
+                lastwordlist.push(state.last_witch_kill);
+            }
+            return { ...state, last_witch_save: "", last_witch_kill: "",
+                player_alive: alive, lastwordlist: lastwordlist};
+        },
+        sendstate(state) {
+            if(state.hassocket) {
+                let msg = JSON.stringify({
+                    type: "4",
+                    request_id: state.user_request_id,
+                    room_id: state.props.room.room_id,
+                    user_id: state.props.room.client_id
+                });
+                state.socket.send(msg);
+            } else {
+                console.log("websocket error!");
+                alert("websocket error!");
+            }
         },
 
 
