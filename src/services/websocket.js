@@ -41,6 +41,10 @@ const Socket = (props) => {
                         dispatch({
                             type: 'room/hideLoading',
                         });
+                        dispatch({
+                            type: 'room/changeselid_wolf',
+                        });
+
                         //TODO:loading置false
                     }
                 }

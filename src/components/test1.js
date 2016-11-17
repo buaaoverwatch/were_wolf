@@ -39,14 +39,13 @@ const Test1 = (props) => {
                 if(item==room.player_selectedid2&&room.curstate==StateConst.cupid)
                     issel=true;
                 function handlePress() {
-                    dispatch({ type: 'room/changeselid',payload:item });
                     if(room.curstate==StateConst.wolf)
                     {
                         if(room.hassocket)
                         {
                             msg=JSON.stringify({
                                 type: '5',
-                                request_id:room.room_request_id,
+                                request_id:room.user_request_id,
                                 room_id:room.room_id,
                                 user_id:room.client_id,
                                 object_id:item,
@@ -54,7 +53,13 @@ const Test1 = (props) => {
                                 content:'',
                             });
                             room.socket.send(msg);
+                            dispatch({ type: 'room/setselid_wolf',payload:item });
+                            dispatch({ type: 'room/WebSocketsend',payload:item });
                         }
+                    }
+                    else
+                    {
+                        dispatch({ type: 'room/changeselid',payload:item });
                     }
                 }
                 return {
