@@ -80,6 +80,34 @@ export default class Tabview extends Component {
                 this.setState({modalcontent:"您这轮已经杀过人了,请点击下一步按钮"});
                 this.setState({visible:true});
             }
+            else if(this.props.room.wolf_lastkill!=""&&this.props.room.player_selectedid!=this.props.room.wolf_kill_id)
+            {
+                this.setState({modaltitle:"出错啦"});
+                this.setState({modalcontent:`您的队友这轮已经确认选择杀${this.props.room.player_index[this.props.room.wolf_lastkill]}号玩家，您只能选择杀这名玩家。确认修改您的选择杀${this.props.room.player_index[this.props.room.wolf_lastkill]}号玩家么？`});
+                press=()=>{
+                    this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                    if(this.props.room.hassocket)
+                    {
+                        msg=JSON.stringify({
+                            type:5,
+                            request_id:this.props.room.user_request_id,
+                            room_id:this.props.room.room_id,
+                            user_id:this.props.room.client_id,
+                            object_id:this.props.room.wolf_lastkill,
+                            action:0,
+                            content:'',
+                        });
+                        this.props.room.socket.send(msg);
+                        this.props.dispatch({
+                            type: 'room/WebSocketsend',
+                            payload: {msg},
+                        });
+                    }
+                };
+                //TODO:为什么这里不能显示loading
+                this.setState({extrafun:press});
+                this.setState({visible:true});
+            }
             else
             {
                 j=0;
@@ -98,7 +126,7 @@ export default class Tabview extends Component {
                 else
                 {
                     this.setState({modaltitle:"请确认"});
-                    this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要杀他么`});
+                    this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家，您确定要杀他么？注意，在您确认之后，您的队友将不能选择杀其他玩家，同时您也不能修改您的选择`});
                     press=()=>{
                         this.props.dispatch({ type: 'room/changeNextStep',payload:true});
                         if(this.props.room.hassocket)
@@ -841,7 +869,7 @@ export default class Tabview extends Component {
                         style={{height:200,width:300,alignItems: 'center'}}
                     >
                         <View style={{alignItems: 'center'}}>
-                            <Text style={{marginTop:30,
+                            <Text style={{marginTop:20,
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
                                 {this.state.modalcontent}
