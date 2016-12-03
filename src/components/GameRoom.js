@@ -11,6 +11,7 @@ import {
     Dimensions,
     Image,
     ScrollView,
+    BackAndroid
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -20,6 +21,7 @@ import {
 import Toast from 'antd-mobile/lib/toast';
 import List from 'antd-mobile/lib/list';
 import Socket from '../services/websocket';
+
 const GameRoom = (props) => {
     const { dispatch, room } = props;
     var Views = [];
@@ -57,6 +59,10 @@ const GameRoom = (props) => {
             </View>
         );
     }
+    BackAndroid.addEventListener('hardwareBackPress',function(){
+        Toast.info("无法返回上一页！", 0.5);
+        return true;
+    });
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>

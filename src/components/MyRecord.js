@@ -9,7 +9,8 @@ import {
     StyleSheet,
     PixelRatio,
     Dimensions,
-    Image
+    Image,
+    BackAndroid
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -19,13 +20,14 @@ import {
 import Card from 'antd-mobile/lib/card';
 import WingBlank from 'antd-mobile/lib/wing-blank';
 import WhiteSpace from 'antd-mobile/lib/white-space';
+import Toast from 'antd-mobile/lib/toast';
 
 const MyRecord = (props) => {
     const { dispatch, information } = props;
     function getRecord(i) {
-        var text = '角色： ' + i.type + '\n' + '结果：' + i.time;
+        let text = '角色： ' + i.type + '\n' + '结果：' + i.time;
         return (
-            <WingBlank size="lg">
+            <WingBlank key={n} size="lg">
                 <WhiteSpace size="lg" />
                 <Card>
                     <Card.Header
@@ -41,10 +43,16 @@ const MyRecord = (props) => {
             </WingBlank>
         );
     }
-    var records = [];
+    let records = [];
+    let n = 0;
     for(let i = 0; i < information.recordList.length; i++) {
         records.push(getRecord(information.recordList[i]));
+        n++;
     }
+    BackAndroid.addEventListener('hardwareBackPress',function(){
+        Toast.info("无法返回上一页！", 0.5);
+        return true;
+    });
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>

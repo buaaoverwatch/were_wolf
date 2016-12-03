@@ -13,6 +13,8 @@ import {
     AsyncStorage
 } from 'react-native';
 
+import IP from '../consts/ip';
+
 import { connect } from 'dva/mobile';
 import {
     Actions
@@ -92,7 +94,7 @@ var CARoom = (props) => {
         dispatch({
             type: 'room/showLoading'
         });
-        fetch('http://10.138.73.83:8000/create/', {
+        fetch(IP.ip+':8000/create/', {
             method: 'POST',
             headers: {
                 //'Accept': 'application/json',
@@ -188,7 +190,7 @@ var CARoom = (props) => {
         dispatch({
             type: 'room/showLoading'
         });
-        fetch('http://10.138.73.83:8000/join/', {
+        fetch(IP.ip+':8000/join/', {
             method: 'POST',
             headers: {
                 //'Accept': 'application/json',

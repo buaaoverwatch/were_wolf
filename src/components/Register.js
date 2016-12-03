@@ -18,6 +18,7 @@ import { createForm } from 'rc-form';
 import {
     Actions
 } from 'react-native-router-flux';
+import IP from '../consts/ip';
 
 
 var username, nickname, password, introduce;
@@ -26,7 +27,7 @@ class Register extends Component {
         _this.props.dispatch({
             type: 'information/loadingTrue'
         });
-        fetch('http://10.138.73.83:8000/register/', {
+        fetch(IP.ip+':8000/register/', {
             method: 'POST',
             headers: {
                 //'Accept': 'application/json',
@@ -94,7 +95,7 @@ class Register extends Component {
             return;
         }
         //密码是否符合规则
-        if(password.length < 6 || password > 12) {
+        if(password.length < 6 || password.length > 12) {
             Toast.fail("密码长度错误！", 1);
             return;
         }

@@ -15,6 +15,8 @@ import Toast from 'antd-mobile/lib/toast';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 import { createForm } from 'rc-form';
 
+import IP from '../consts/ip';
+
 import {
     Actions
 } from 'react-native-router-flux';
@@ -37,7 +39,7 @@ class Login extends Component {
             return;
         }
         //密码是否符合规则
-        if(password.length < 6 || password > 12) {
+        if(password.length < 6 || password.length > 12) {
             Toast.fail("密码长度错误！", 1);
             return;
         }
@@ -53,7 +55,8 @@ class Login extends Component {
         _this.props.dispatch({
             type: 'information/loadingTrue'
         });
-        fetch('http://10.138.73.83:8000/login/', {
+        console.log(IP.ip+':8000/login/');
+        fetch(IP.ip+':8000/login/', {
             method: 'POST',
             headers: {
                 //'Accept': 'application/json',
@@ -76,6 +79,9 @@ class Login extends Component {
                     return responseText;
                 } else if (responseText[0].type == 2) {
                     Toast.fail("密码错误！", 1);
+                    return responseText;
+                } else if(responseText[0].type == 3) {
+                    Toast.fail("用户已登录！", 1);
                     return responseText;
                 }
                 Toast.success("登录成功！",1);

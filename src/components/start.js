@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   img: {
     flex: 1,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height+PixelRatio.get()*15,
     resizeMode: 'contain',
     paddingTop: PixelRatio.get() * 120,
       justifyContent: 'center',

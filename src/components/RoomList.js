@@ -26,6 +26,8 @@ import WhiteSpace from 'antd-mobile/lib/white-space';
 import Toast from 'antd-mobile/lib/toast';
 import Button from 'antd-mobile/lib/button';
 
+import IP from '../consts/ip';
+
 const RoomList = (props) => {
     const { dispatch, ALLROOM } = props;
     var n = 0;
@@ -33,7 +35,7 @@ const RoomList = (props) => {
         dispatch({
             type:'ALLROOM/showloading'
         });
-        fetch('http://10.138.73.83:8000/getRoomList/',{
+        fetch(IP.ip+':8000/getRoomList/',{
             method:'POST',
             header:{
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

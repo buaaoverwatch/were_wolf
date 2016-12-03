@@ -7,6 +7,7 @@ import dva, { connect } from 'dva/mobile';
 import Button from 'antd-mobile/lib/button';
 import {Actions} from 'react-native-router-flux';
 import state from '../consts/roomstate';
+import IP from '../consts/ip';
 
 
 const Socket = (props) => {
@@ -16,7 +17,7 @@ const Socket = (props) => {
     {
         connected=false;
         console.log("roomid: " + room.room_id);
-        ws = new WebSocket('ws://10.138.73.83:8000/' + room.room_id);
+        ws = new WebSocket(IP.wsip+':8000/' + room.room_id);
         ws.onopen = () => {
             // connection opened
             console.log('OK');

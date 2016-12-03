@@ -51,7 +51,7 @@ var EditInfo = (props) => {
         dispatch({
             type: 'information/loadingTrue'
         });
-        fetch('http://10.138.73.83:8000/updataInfo/', {
+        fetch(IP.ip+':8000/updataInfo/', {
             method: 'POST',
             headers: {
                 //'Accept': 'application/json',

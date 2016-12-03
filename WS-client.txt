@@ -41,6 +41,9 @@ http://host:8000/getRoomInfo/
 8.	获取单个房间信息
 room_id
 
+http://host:8000/login/
+9. 登出
+user_name
 
 /*****************************************************************/
 Websocket
@@ -97,7 +100,7 @@ request_id
 room_id
 user_id
 object_id	操作对象id  狼人聊天这个随便填
-action		操作类型，0杀人   1救人   2狼人选人  3 给警徽  4 不给警徽  5 自爆  6 狼人聊天 7 狼人杀人
+action		操作类型，0杀人   1救人   2狼人选人  3 给警徽  4 不给警徽  5 自爆  6 狼人聊天 7 狼人杀人  8 守卫
 content 	不属于狼人聊天该内容随便填即可
 
 
@@ -109,7 +112,7 @@ user_id
 sheriff		true/false
 
 
-8. 投票
+8. 警长投票
 type = 7
 request_id
 room_id
@@ -131,5 +134,10 @@ user_id
 object1_id 		情侣的id
 object2_id
 
-
+11. 白天投票
+type = 10
+request_id
+room_id
+user_id
+object_id	投票对象id
 
