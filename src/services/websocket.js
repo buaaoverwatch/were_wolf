@@ -54,7 +54,7 @@ const Socket = (props) => {
                 {
                     console.log("1111");
                     sendcomfirm(msg);
-                    if(msg.room_request_id!=room.room_request_id)
+                    if(msg.room_request_id==room.room_request_id)
                     {
                         //修改当前回调函数中的局部值
                         room.room_request_id=msg.room_request_id;
@@ -65,7 +65,12 @@ const Socket = (props) => {
                         });
                         if(msg.type==='2')
                         {
-
+                            dispatch({
+                                type: 'room/joinroom',
+                                payload: msg.id_nick
+                            });
+                            console.log("ws:");
+                            console.log(msg.id_nick);
                         }
                         else if(msg.type==='3') {//这里要改的是index_player不是player_index
                             if(msg.result=="true") {
@@ -330,17 +335,17 @@ const Socket = (props) => {
     {
         if(connected)
         {
-            msg=JSON.stringify({
+            msg1=JSON.stringify({
                 type:100,
                 request_id:room.user_request_id,
                 room_id:room.room_id,
                 user_id:room.client_id,
                 seat:100,
             });
-            ws.send(msg);
+            ws.send(msg1);
             dispatch({
                 type: 'room/WebSocketsend',
-                payload: {msg},
+                payload: {msg1},
             });
             console.log('Ol'+room.user_request_id);
         }
@@ -349,13 +354,13 @@ const Socket = (props) => {
         if (data.type!='0')
         {
             console.log("room_id: " + props.room.room_id);
-            msg=JSON.stringify({
+            msg1=JSON.stringify({
                 type: '0',
                 room_id:props.room.room_id,
                 user_id:props.room.client_id,
                 room_request_id:data.room_request_id,
             });
-            ws.send(msg);
+            ws.send(msg1);
 
         }
     }

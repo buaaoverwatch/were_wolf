@@ -227,6 +227,10 @@ var CARoom = (props) => {
                         ownerID: responseText.owner_id
                     }
                 });
+                dispatch({
+                    type: 'room/joinroom',
+                    payload: responseText.id_nick
+                });
                 //这里应该有一个界面跳转
                 Actions.GameRoom();
                 console.log(responseText);

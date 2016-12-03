@@ -359,6 +359,22 @@ export default {
                 alert("websocket error!");
             }
         },
+        joinroom(state, action) {
+            let player_index = {};
+            let index_player = {};
+            let player_id = [];
+            let i = 1;
+            for(let key in action.payload) {
+                player_id.push(key);
+                index_player[i] = "";
+                player_index[key] = null;
+                i++;
+            }
+            console.log("room:");
+            console.log(action.payload);
+            return {...state, player_nick: action.payload, player_index: player_index,
+                index_player: index_player, player_id: player_id, player_num: action.payload.length};
+        },
 
 
         //已经写了修改角色列表的东西，and已经做了设置playindex的东西

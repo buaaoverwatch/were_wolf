@@ -49,7 +49,7 @@ class Register extends Component {
                     type: 'information/loadingFalse'
                 });
                 const type = responseText[0].type;
-                if(type == -1) {
+                if(type == 1) {
                     Toast.fail("用户名已存在！", 1);
                     return responseText;
                 } else if (type == 2) {
