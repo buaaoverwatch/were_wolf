@@ -32,13 +32,13 @@ import Socket from '../services/websocket';
 const seeMySelf = (props) => {
     const {dispatch, room} = props;
 
-    //const wolf = require('');
-    //const vill = require('');
-    //const cupid = require('');
-    //const hunter = require('');
-    //const guard = require('');
-    //const witch = require('');
-    //const seer = require('');
+    const wolf = require('../images/were_wolf.jpg');
+    const vill = require('../images/villager.jpg');
+    const cupid = require('../images/cupid.jpg');
+    const hunter = require('../images/hunter.jpg');
+    const guard = require('../images/guard.jpg');
+    const witch = require('../images/witch.jpg');
+    const seer = require('../images/seer.jpg');
 
     function  getChaPic() {
         if(room.player_role[room.client_id]==="wolf"){
@@ -65,7 +65,12 @@ const seeMySelf = (props) => {
 
     }
 
+    function  getCharacter() {
+        return room.player_role[room.client_id];
 
+
+
+    }
 
     return(
         <View style={{flex: 1}}>
@@ -81,7 +86,7 @@ const seeMySelf = (props) => {
                 </TouchableOpacity>
             </View>
             <Image style ={ styles.Character}
-            source ={getChaPic()}
+            source ={getChaPic}
             />
             <Text>{getCharacter()}</Text>
             <ActivityIndicator

@@ -109,7 +109,7 @@ const GameSetting = (props) => {
         })
         if(room.hassocket)
         {
-            msg=JSON.stringify({
+            let msg=JSON.stringify({
                 type:"3",
                 request_id:room.user_request_id.toString(),
                 room_id:room.room_id.toString(),
@@ -138,7 +138,7 @@ const GameSetting = (props) => {
                 payload:false,
             });//没有收到消息
         }
-        Actions.seeMyself();
+        //Actions.seeMyself();
     }
 
     return (

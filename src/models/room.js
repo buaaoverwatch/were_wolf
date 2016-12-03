@@ -368,8 +368,21 @@ export default {
         },
         setplayerindex(state,action){
             let i = action.payload.u_id;
-
-            return {...state,player_index:Object.assign(state.player_index,{i:action.payload.seat})};
+            let m = paseInt(action.payload.seat);
+            return {...state,player_index:Object.assign(state.player_index,{i:m})};
+        },
+        playerindex2indexplayer(state,action){
+            let i =action.payload.u_id;
+            let m = action.payload.seat;
+            return {...state,index_player:Object.assign(state.index_player,{m,i})};
+        },
+        set_index_id(state,action){
+            let list = [];
+            for(let i = 0;i<action.payload.size();i++)
+            {
+                list.push(action.payload[i+1]);
+            }
+            return {...state,index_id:list};
         },
     }
 

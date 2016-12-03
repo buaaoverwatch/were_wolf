@@ -21,7 +21,7 @@ import {
 } from 'react-native-router-flux';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
-import Socket from '../services/websocket';
+import Socket from  '../services/websocket';
 /*
  这个应该是：如果自己是房主，一号位置显示自己的头像，不能选择其他座位
  其他人选择了头像则在界面上显示
@@ -30,6 +30,7 @@ import Socket from '../services/websocket';
 
 var alertMessage = '请选择您的座位！';
 var alertMessage1 = '服务器连接失败';
+var alertMessage2 = '请提醒他们选择自己的座位！'
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
     const p1 = require('../images/head_portrait.jpg');
@@ -50,7 +51,7 @@ const ChooseSeat = (props) => {
             row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i+1)}>
                     <View  style={styles.single} >
-                        <Image source={getPlayerAvatar(i)} style={styles.portrait} />
+                        <Image source={() =>getPlayerAvatar(i)} style={styles.portrait} />
                         <Text style={styles.portraitText}>
                             {getPlayerNick(i)}
                         </Text>
@@ -72,7 +73,7 @@ const ChooseSeat = (props) => {
             return p1;//一个存了房主照片的文件
         else
         {
-            if(room.index_player[i]=="null")//如果这个index还没有人的话
+            if(room.index_player[i]==="")//如果这个index还没有人的话
                 return p2;//某张默认头像的地址
             else
                 return p3;
@@ -84,7 +85,7 @@ const ChooseSeat = (props) => {
             return room.player_nick[room.owner_id];
         else
         {
-            if(room.index_player[i]=="")
+            if(room.index_player[i]==="")
                 return "这个座位没有人";
             else
                 return room.player_nick[room.index_player[i]];
@@ -104,24 +105,18 @@ const ChooseSeat = (props) => {
         );
 
     }
-    function setMySeat(n)
-    {
-        if(n===0)
+    function setMySeat(n) {
+        if(n===0||n===1)
         {
-            //
+            //alert
             return ;
         }
-
-
         dispatch({
             type:'room/changeloading',
             payload:true,
-        });//设置loading为true
-        //以下进行与后台的通信
-
-        if(room.hassocket)
-        {
-            msg = JSON.stringify({
+        });
+        if(room.hassocket) {
+            let msg = JSON.stringify({
                 type:"2",
                 request_id:room.user_request_id.toString(),
                 room_id:room.room_id,
@@ -131,10 +126,10 @@ const ChooseSeat = (props) => {
             });
             room.socket.send(msg);
         }
-        else
-        {
+        else {
             Alert.alert('没有socket',
-            alertMessage1,[
+                alertMessage1,
+                [
                     {text: '好的', onPress: () => console.log('OK Pressed!')},
 
                 ]);
@@ -150,7 +145,26 @@ const ChooseSeat = (props) => {
             if(room.client_id==room.owner_id)//如果是房主
             {
                 //todo 判断是否所有人都选了座位
-                Actions.GameSetting();
+                let i = 0;
+                for(;i<room.player_index.size();i++)
+                {
+                    if(room.player_index[room.player_id[i]]==null)
+                    {
+                        break;
+                    }
+
+                }
+                if(i == room.player_index.size())
+                    Actions.GameSetting();
+                else
+                {
+                    Alert.alert('还有人未选座！',
+                        alertMessage2,
+                        [
+                            {text: '好的', onPress: () => console.log('下一步123456OK Pressed!')},
+
+                        ]);
+                }//todo :  alert
             }
             else//不是房主
             {

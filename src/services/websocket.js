@@ -67,10 +67,8 @@ const Socket = (props) => {
                         {
 
                         }
-                        else if(msg.type==='3')
-                        {
-                            if(msg.result=="true")
-                            {
+                        else if(msg.type==='3') {//这里要改的是index_player不是player_index
+                            if(msg.result=="true") {
                                 dispatch({
                                     type:'room/setplayerindex',
                                     payload:{
@@ -78,12 +76,26 @@ const Socket = (props) => {
                                         seat:msg.seat,
                                     },
                                 });
-
+                                dispatch({
+                                    type:'room/playerindex2indexplayer',
+                                    payload:{
+                                        u_id:msg.user_id,
+                                        seat:paseInt(msg.seat),
+                                    },
+                                });
+                                if(msg.user_id===room.client_id) {
+                                    dispatch({
+                                        type: 'room/changeloading',
+                                        payload: false,
+                                    });
+                                }
                             }
-                            else
-                            {
-                                if(msg.user_id===room.client_id)
-                                {
+                            else {
+                                if(msg.user_id===room.client_id) {
+                                    dispatch({
+                                        type:'room/changeloading',
+                                        payload:false,
+                                    });
                                     Alert.alert(
                                         '选位失败',
                                         '请重新选择你的座位',
@@ -97,18 +109,18 @@ const Socket = (props) => {
                         else if(msg.type==='4')
                         {
                             dispatch({
+                                type:'room/changeloading',
+                                payload:false,
+                            });
+                            dispatch({
                                 type:'room/setrolelist',
                                 payload:msg.list,
                             });
-                            if(room.client_id==room.owner_id)
-                            {
-
-                            }
-                            else
-                            {
-                                Actions.seeMySelf();
-                            }
-
+                            dispatch({
+                                type:'room/set_index_id',
+                                payload:room.index_player,
+                            });
+                            Actions.seeMySelf();
 
                         }
                         else if(msg.type==='5')//房间状态改变
