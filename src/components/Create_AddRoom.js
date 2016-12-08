@@ -31,7 +31,7 @@ var roomName;
 var CARoom = (props) => {
     const { dispatch, room } = props;
     const {getFieldProps} = props.form;
-    var userID = "", username = "";
+    var userID = "", username = "", nickname = "";
 
     function createRoom() {
         if(userID == "" || username == "") {
@@ -42,6 +42,14 @@ var CARoom = (props) => {
                 }
                 console.log("result: " + result);
                 userID = result;
+            });
+            AsyncStorage.getItem('nickname', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                console.log('nickname: ' + result);
+                nickname = result;
             });
             AsyncStorage.getItem('username', function (error, result) {
                 if(error) {
@@ -54,11 +62,13 @@ var CARoom = (props) => {
                     type: 'room/setuserinfo',
                     payload: {
                         userID: userID,
-                        username: username
+                        username: username,
+                        nickname: nickname
                     }
                 });
-                console.log("id1: " + room.client_id);
-                console.log("name1: " + room.username);
+                console.log("id1: " + props.room.client_id);
+                console.log("name1: " + props.room.username);
+                console.log('nickname1: ' + props.room.nickname);
                 if(!roomName) {
                     Toast.fail("房间名输入错误！", 1);
                     return;
@@ -71,23 +81,6 @@ var CARoom = (props) => {
             Toast.fail("房间名输入错误！", 1);
             return;
         }
-        // function timeout(ms) {
-        //     return new Promise((resolve, reject) => {
-        //         setTimeout(resolve, ms, 'done');
-        //     });
-        // }
-        //
-        // dispatch({
-        //     type: 'information/loadingTrue'
-        // });
-        //
-        // timeout(1000).then((value) => {
-        //     console.log(value);
-        //     dispatch({
-        //         type: 'information/loadingFalse'
-        //     });
-             //Actions.GameRoom();
-        // });
         createclickhttp();
     }
     function createclickhttp() {
@@ -121,8 +114,7 @@ var CARoom = (props) => {
                     type: 'room/createRoomSuccess',
                     payload: {
                         roomID: responseText.number,
-                        roomName: roomName,
-                        ownerID: props.room.client_id
+                        roomName: roomName
                     }
                 });
                 //这里应该有一个界面跳转
@@ -147,6 +139,14 @@ var CARoom = (props) => {
                 }
                 userID = result;
             });
+            AsyncStorage.getItem('nickname', function (error, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+                console.log('nickname: ' + result);
+                nickname = result;
+            });
             AsyncStorage.getItem('username', function (error, result) {
                 if(error) {
                     console.log(error);
@@ -157,9 +157,13 @@ var CARoom = (props) => {
                     type: 'room/setuserinfo',
                     payload: {
                         userID: userID,
-                        username: username
+                        username: username,
+                        nickname: nickname
                     }
                 });
+                console.log("id1: " + props.room.client_id);
+                console.log("name1: " + props.room.username);
+                console.log('nickname1: ' + props.room.nickname);
                 if(!roomID) {
                     Toast.fail("输入房间号码错误！", 1);
                     return;
@@ -172,18 +176,6 @@ var CARoom = (props) => {
             Toast.fail("输入房间号码错误！", 1);
             return;
         }
-        // dispatch({
-        //     type: 'information/changeLoading'
-        // });
-        // dispatch({
-        //     type: 'information/addRoom',
-        //     payload: roomID,
-        // });
-        // dispatch({
-        //     type: 'information/changeRoomID',
-        //     payload: roomID
-        // });
-         //Actions.GameRoom();
         addclickhttp();
     }
     function addclickhttp() {

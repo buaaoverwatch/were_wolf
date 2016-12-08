@@ -59,10 +59,23 @@ const GameRoom = (props) => {
             </View>
         );
     }
-    BackAndroid.addEventListener('hardwareBackPress',function(){
-        Toast.info("无法返回上一页！", 0.5);
-        return true;
-    });
+    function lockroom() {
+        console.log('client_id: ' + props.room.client_id);
+        console.log('owner_id: ' + props.room.owner_id);
+        if(props.room.client_id != props.room.owner_id) {
+            Toast.fail("没有权限！请等待房主锁定房间后，页面会自动跳转。", 1);
+        } else {
+            if(props.room.hassocket) {
+                let msg = JSON.stringify({
+                    type: "1",
+                    request_id: props.room.room_request_id,
+                    room_id: props.room.room_id,
+                    user_id: props.room.client_id
+                });
+                props.room.socket.send(msg);
+            }
+        }
+    }
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>
@@ -78,10 +91,10 @@ const GameRoom = (props) => {
                 <Text style={styles.headerText}>
                     房间
                 </Text>
-                <TouchableOpacity onPress={Actions.ChooseSeat}>
+                <TouchableOpacity onPress={lockroom}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>
-                            下一步
+                            锁定房间
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -147,7 +160,7 @@ const styles = StyleSheet.create({
     },
     //完成区
     completeContainer: {
-        width: PixelRatio.get() * 25,
+        width: PixelRatio.get() * 30,
         alignItems: 'center'
     },
     completeText: {

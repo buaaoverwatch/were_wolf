@@ -309,6 +309,15 @@ const Socket = (props) => {
                                 payload:m,
                             });
                         }
+                        else if(msg.type === '18')
+                        {
+                            if(msg.result == true) {
+                                Toast.success("锁定房间成功！", 1);
+                                Actions.Chooseseat();
+                            } else {
+                                Toast.fail("锁定房间失败，请重新锁定！", 1);
+                            }
+                        }
                     }
                 }
             }

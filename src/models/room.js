@@ -14,11 +14,12 @@ export default {
     state: {
         //登录->创建或加入->玩家列表->选座->设置->开始游戏
         client_id:'a2',
+        nickname: '',
         username: "",
         //
         room_id: "1",
         room_name: '',
-        owner_id: 'djsdka',
+        owner_id: 'a2',
         //
 
         player_nick: {"a1": "lalal", "a2": "hahha", "a3": "ldldl", "a4": "ddddd"},
@@ -304,11 +305,14 @@ export default {
         setuserinfo(state, action) {
             console.log("id: " + action.payload.userID);
             console.log("name: " + action.payload.username);
-            return { ...state, client_id: action.payload.userID, username: action.payload.username};
+            console.log('nickname: ' + action.payload.nickname);
+            return { ...state, client_id: action.payload.userID, username: action.payload.username, nickname: action.payload.nickname};
         },
         createRoomSuccess(state, action) {
+            let player_nick = {};
+            player_nick[state.client_id] = state.nickname;
             return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName
-                , owner_id: action.payload.ownerID};
+                , owner_id: state.client_id, player_nick: player_nick};
         },
         addRoomSuccess(state, action) {
             return { ...state, room_id: action.payload.roomID, room_name: action.payload.roomName

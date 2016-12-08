@@ -21,6 +21,7 @@ import InputItem from 'antd-mobile/lib/input-item';
 import Toast from 'antd-mobile/lib/toast';
 import { createForm } from 'rc-form';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
+import IP from '../consts/ip';
 
 var nickname;
 var password;
@@ -35,7 +36,7 @@ var EditInfo = (props) => {
             return;
         }
         //密码是否符合规则
-        if(password.length < 6 || password > 12) {
+        if(password.length < 6 || password.length > 12) {
             Toast.fail("密码长度错误！", 1);
             return;
         }

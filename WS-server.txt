@@ -94,7 +94,7 @@ object_id
 type = 7
 room_request_id
 change	{'id1':alive1}	谁变了
-role	wolf / witch / guard
+role	wolf / witch / guard //守卫和下面冲突了TODO
 
 
 9. 竞选警长人名单
@@ -158,3 +158,8 @@ room_request_id
 result 				true / false 平票是false
 sheriff_id 			被选中的玩家id，客服端要判断他是不是情侣，要不要死两个人；或者服务端再发个type7说明一下
 list {'id':object_id,..}	投票人：投票对象表
+
+20. 锁定房间结果
+type = 18
+room_request_id
+result true/false
