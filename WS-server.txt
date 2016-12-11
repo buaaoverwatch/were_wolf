@@ -88,13 +88,14 @@ room_request_id
 action 			0 狼人选人， 1狼人杀人
 wolf_id 					
 object_id
+result true/false 狼人杀人是否成功
 
 
 8.	角色存活状态变化
 type = 7
 room_request_id
-change	{'id1':alive1}	谁变了
-role	wolf / witch / guard //守卫和下面冲突了TODO
+change	{'id1':true/false}	谁变了
+role	wolf / witch
 
 
 9. 竞选警长人名单
