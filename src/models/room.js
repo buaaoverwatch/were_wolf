@@ -62,7 +62,8 @@ export default {
         player_selectedid:"",
         player_selectedid2:"",
         player_selectedid_wolf:"",
-        wolf_lastkill:"",//狼人杀死的人id
+        wolf_lastkill:"",//狼人杀死的人id-用来确认请求的
+        last_wolf: "", //狼人确定杀死的人
         last_guard: "",//守卫守的人id
         last_witch_save: "",//女巫救的人id
         last_witch_kill: "",//女巫毒的人id
@@ -164,7 +165,7 @@ export default {
         },
         setLoverID(state,action)//TODO:在这里加情侣ID
         {
-            return{...state,lover_id1:action.payload,lover_id2:action.payload};
+            return{...state,lover_id1:action.payload.lover_id1,lover_id2:action.payload.lover_id2};
         },
 
         changeselid(state,action)//这是点选Grid内内容后，切换当前选择玩家的reducer，丘比特因为要选两个人有特殊的判断
@@ -223,9 +224,9 @@ export default {
         },
         setsherifflist(state,action)
         {
-            return{...state,sherifflist:action.payload};
+            return{...state,sheriff_list:action.payload};
         },
-        setalastvote(state,action)
+        setlastvote(state,action)
         {
             return{...state,lastvote:action.payload};
         },
@@ -321,6 +322,9 @@ export default {
         setrolealive(state, action) {
             return { ...state, role_alive: action.payload};
         },
+        setlastwolf(state, action) {
+            return { ...state, last_wolf: action.payload};
+        },
         setlastguard(state, action) {
             return { ...state, last_guard: action.payload};
         },
@@ -341,10 +345,30 @@ export default {
             } else {
                 alive[state.wolf_lastkill] = false;
                 lastwordlist.push(state.wolf_lastkill);
+                if(state.wolf_lastkill == state.lover_id1) {
+                    alive[state.lover_id2] = false;
+                    lastwordlist.push(state.lover_id2);
+                } else if(state.wolf_lastkill == state.lover_id2) {
+                    alive[state.lover_id1] = false;
+                    lastwordlist.push(state.lover_id1);
+                }
             }
             if(state.last_witch_kill != "") {
-                alive[state.last_witch_kill] = false;
-                lastwordlist.push(state.last_witch_kill);
+                if(lastwordlist.indexOf(state.last_witch_kill) == -1) {
+                    lastwordlist.push(state.last_witch_kill);
+                    alive[state.last_witch_kill] = false;
+                }
+                if(state.last_witch_kill == state.lover_id1) {
+                    if(lastwordlist.indexOf(state.lover_id2) == -1) {
+                        lastwordlist.push(state.lover_id2);
+                        alive[state.lover_id2] = false;
+                    }
+                } else if(state.last_witch_kill == state.lover_id2) {
+                    if(lastwordlist.indexOf(state.lover_id1) == -1) {
+                        lastwordlist.push(state.lover_id1);
+                        alive[state.lover_id1] = false;
+                    }
+                }
             }
             return { ...state, last_witch_save: "", last_witch_kill: "",
                 player_alive: alive, lastwordlist: lastwordlist};
@@ -360,7 +384,6 @@ export default {
                 state.socket.send(msg);
             } else {
                 console.log("websocket error!");
-                alert("websocket error!");
             }
         },
         joinroom(state, action) {
