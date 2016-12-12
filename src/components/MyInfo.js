@@ -17,11 +17,49 @@ import { connect } from 'dva/mobile';
 import {
     Actions
 } from 'react-native-router-flux';
+import IP from '../consts/ip';
+import Button from 'antd-mobile/lib/button';
+import Toast from 'antd-mobile/lib/toast';
 
 const MyInfo = (props) => {
     const { dispatch, information } = props;
     function onPress() {
         console.log('press');
+    }
+    function exit() {
+        fetch(IP.ip+':8000/logout/', {
+            method: 'POST',
+            headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body:JSON.stringify({
+                user_name: information.user_name
+            })
+        })
+            .then(function(data){
+                return data.json();
+            })
+            .then((responseText) => {
+                console.log(responseText);
+                if(responseText.result == 1) {
+                    Toast.fail("退出登录失败！", 1);
+                    return responseText;
+                } else if (responseText.result == 0) {
+                    Toast.success("退出登录成功！", 1);
+                    while(1) {
+                        Actions.pop();
+                    }
+                    return responseText;
+                } else {
+                    console.log("error");
+                    return responseText;
+                }
+            })
+            .catch((error) => {
+                Toast.fail("网络错误！", 1);
+                console.warn(error);
+            });
     }
     return (
         <View style={styles.container}>
@@ -80,6 +118,10 @@ const MyInfo = (props) => {
                     </Text>
                 </View>
             </TouchableOpacity>
+            <Button type="primary" onClick={exit} style={{marginTop: PixelRatio.get() * 5,
+                backgroundColor: '#000000', borderColor: '#ffffff'}}>
+                退出登录
+            </Button>
         </View>
     );
 };
