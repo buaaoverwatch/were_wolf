@@ -122,7 +122,7 @@ class Register extends Component {
                             }
                         })}
                         clear
-                        maxLength="12"
+                        maxLength={12}
                         placeholder="6-12位字母或数字"
                     >用户名</InputItem>
                     <InputItem
@@ -132,7 +132,7 @@ class Register extends Component {
                                 nickname = value;
                             }
                         })}
-                        maxLength="10"
+                        maxLength={10}
                         clear
                         placeholder="不超过10个字符"
                     >昵称</InputItem>
@@ -154,7 +154,7 @@ class Register extends Component {
                                 introduce = value;
                             }
                         })}
-                        maxLength="20"
+                        maxLength={20}
                         clear
                         placeholder="不超过20个字符"
                     >简介</InputItem>

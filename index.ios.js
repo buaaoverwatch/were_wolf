@@ -63,14 +63,14 @@ class App extends Component {
           <StatusBar barStyle="light-content" />
           <Router>
             <Scene key="root">
-              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === true} hideNavBar/>
+              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
               <Scene
                   key="tabbar"
                   tabs
                   tabBarStyle={styles.tabBarStyle}
                   tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                  initial={infoModel.state.ifLogin === false}
+                  initial={infoModel.state.ifLogin === true}
               >
                 <Scene
                     key="RoomPage"

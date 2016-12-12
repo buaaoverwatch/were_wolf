@@ -134,7 +134,7 @@ var EditInfo = (props) => {
                             nickname=value;
                         }
                     })}
-                    maxLength="10"
+                    maxLength={10}
                     clear={true}
                     placeholder={information.nickname}
                 >昵称</InputItem>
@@ -146,7 +146,7 @@ var EditInfo = (props) => {
                         }
                     })}
                     type="password"
-                    maxLength="12"
+                    maxLength={12}
                     clear={true}
                     placeholder="输入新密码,6-12位字母或数字"
                 >密码</InputItem>
@@ -157,7 +157,7 @@ var EditInfo = (props) => {
                             introduce=value;
                         }
                     })}
-                    maxLength="20"
+                    maxLength={20}
                     clear={true}
                     placeholder={information.introduce}
                 >简介</InputItem>

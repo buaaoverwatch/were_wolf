@@ -54,7 +54,7 @@ const Socket = (props) => {
                 {
                     console.log("1111");
                     sendcomfirm(msg);
-                    if(msg.room_request_id==room.room_request_id)
+                    if(msg.room_request_id>=room.room_request_id)
                     {
                         //修改当前回调函数中的局部值
                         room.room_request_id=msg.room_request_id;

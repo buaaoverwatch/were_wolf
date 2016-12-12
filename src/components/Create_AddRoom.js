@@ -252,7 +252,7 @@ var CARoom = (props) => {
                             roomName=value;
                         }
                     })}
-                    maxLength="20"
+                    maxLength={20}
                     clear
                     placeholder="起个名字吧"
                 >房间名</InputItem>
@@ -269,7 +269,7 @@ var CARoom = (props) => {
                         }
                     })}
                     type="number"
-                    maxLength="4"
+                    maxLength={4}
                     clear
                     placeholder="请输入一至四位房间号码"
                 >房间号</InputItem>
