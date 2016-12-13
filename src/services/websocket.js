@@ -135,106 +135,8 @@ const Socket = (props) => {
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
                             });
-                            dispatch({
-                                type: 'room/setrolealive',
-                                payload: msg.role_alive
-                            });
-                            let list = msg.request_content;
-                            let temp;
-                            for(let i = 0; i < list.length; i++) {
-                                temp = list[i];
-                                if(!(temp.type == 6 || temp.type == 7
-                                    || temp.type == 8 || temp.type == 9)) {
-                                    console.log("invalid type: " + temp.type);
-                                    continue;
-                                }
-                                switch (temp.type) {
-                                    case 6: //狼人选人、杀人
-                                        if(temp.action == 0 || msg.room_state != state.witch || laststate != state.wolf) {
-                                            break;//狼人选人信息不处理 若状态不是狼人到女巫也不处理
-                                        }
-                                        dispatch({
-                                            type: 'room/setkillid_wolf',
-                                            payload: temp.object_id
-                                        });
-                                        break;
-                                    case 7: //角色存活状态变化
-                                        if(laststate == state.guard && msg.room_state == state.wolf && temp.role == "guard") {
-                                            for(let key in temp.change) {
-                                                if(change[key] == true) {
-                                                    dispatch({
-                                                        type: 'room/setlastguard',
-                                                        payload: key
-                                                    });
-                                                    console.log("守卫守人id：" + key);
-                                                } else {
-                                                    console.log("守卫把人守死了？");
-                                                }
-                                            }
-                                        } else if(laststate == state.wolf && msg.room_state == state.witch && temp.role == "wolf") {
-                                            for(let key in temp.change) {
-                                                if(change[key] == false) {
-                                                    dispatch({
-                                                        type: 'room/setkillid_wolf',
-                                                        payload: key
-                                                    });
-                                                    console.log("狼人杀人id：" + key);
-                                                } else {
-                                                    console.log("狼人把人救活了？");
-                                                }
-                                            }
-                                        } else if(laststate == state.witch && msg.room_state == state.seer && temp.role == "witch") {
-                                            for(let key in temp.change) {
-                                                if(change[key] == true) {
-                                                    dispatch({
-                                                        type: 'room/setlastwitchsave',
-                                                        payload: key
-                                                    });
-                                                    console.log("女巫救人id:" + key);
-                                                } else if(change[key] == false) {
-                                                    dispatch({
-                                                        type: 'room/setlastwitchkill',
-                                                        payload: key
-                                                    });
-                                                    console.log("女巫毒人id：" + key);
-                                                } else {
-                                                    console.log("格式不是bool型");
-                                                }
-                                            }
-                                        } else {
-                                            console.log("这个阶段不应该有角色存活转变");
-                                        }
-                                        break;
-                                    case 8: //竞选警长名单
-                                        if(laststate == state.sheriffchoose && msg.room_state == state.sherifftalk) {
-                                            dispatch({
-                                                type: 'room/setjoinsheriff',
-                                                payload: temp.list
-                                            });
-                                        } else {
-                                            console.log("此时不应该有竞选警长名单");
-                                        }
-                                        break;
-                                    case 9: //投票结果
-                                        if((msg.room_state == state.daytalk && laststate == state.sheriffvote)
-                                            || (msg.room_state == state.hunter && (laststate == state.sheriffvote || laststate == state.dayvote))
-                                            || (msg.room_state == state.lastword && (laststate == state.sheriffvote || laststate == state.dayvote))) {
-                                            //TODO：这里应该根据temp.result是否为false做一些处理
-                                            dispatch({
-                                                type: 'room/setalastvote',
-                                                payload: temp.list
-                                            });
-                                            alert("请在下方投票栏中查看投票结果");
-                                        }
-                                        break;
-                                    default: //错误情况
-                                        console.log("error type: " + temp.type);
-                                        break;
-                                }
-                            }
                             if(msg.room_state == state.daytalk) {
                                 //白天发言阶段 将之前的保存的存活状态更新
-                                //TODO：加上情侣
                                 dispatch({
                                     type: 'room/updatealive'
                                 });
@@ -270,36 +172,70 @@ const Socket = (props) => {
 
 
                         }
-                        else if(msg.type==='7')//不再实时接收
+                        else if(msg.type==='7')//角色存活状态变化
                         {
-                            dispatch({
-                                type: 'room/setalive' ,
-                                payload:msg.change,
-                            });
+                            if(msg.role == "wolf") {
+                                for(let key in msg.change) {
+                                    if(msg.change[key] != false) {
+                                        console.log("狼人把人救活了？？？");
+                                        break;
+                                    }
+                                    dispatch({
+                                        type: 'room/setlastwolf',
+                                        payload: key
+                                    });
+                                    break;
+                                }
+                            } else if(msg.role == 'witch') {
+                                for(let key in msg.change) {
+                                    if(msg.change[key] == true) {
+                                        console.log("女巫救了：" + key);
+                                        dispatch({
+                                            type: 'room/setlastwitchsave',
+                                            payload: key
+                                        });
+                                    } else if(msg.change[key] == false) {
+                                        console.log("女巫毒了：" + key);
+                                        dispatch({
+                                            type: 'room/setlastwitchkill',
+                                            payload: key
+                                        });
+                                    } else {
+                                        console.log("角色改变错误：" + msg.changg[key]);
+                                    }
+                                }
+                            } else {
+                                console.log("出现了未知角色：" + msg.role);
+                            }
                         }
-                        else if(msg.type==='8')//不再实时接收
+                        else if(msg.type==='8')//参与警长竞选人员表
                         {
                             dispatch({
-                                type: 'room/setsherifflist' ,
+                                type: 'room/setjoinsheriff',
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type==='9')//不再实时接收
+                        else if(msg.type==='9')//警长投票结果
                         {
                             dispatch({
-                                type: 'room/setlastvote' ,
+                                type: 'room/setlastvote',
                                 payload:msg.list,
                             });
                         }
-                        else if(msg.type==='10')//不再实时接收
+                        else if(msg.type==='10')//警徽归属
                         {
                             dispatch({
                                 type: 'room/setsheriff' ,
                                 payload:msg.list,
                             });
+                        } else if(msg.type == '11') { //断线重连 获取房间信息
+
+                        } else if(msg.type == '12') { //游戏结束
+
+                        } else if(msg.type == '13') { //离开房间
+
                         }
-                        else if(msg.type==='14')
-                        {
+                        else if(msg.type==='14') { //狼人聊天
                             let m={
                                 user_id:msg.user_id,
                                 content:msg.content,
@@ -308,9 +244,31 @@ const Socket = (props) => {
                                 type: 'room/setWolfMsg' ,
                                 payload:m,
                             });
-                        }
-                        else if(msg.type === '18')
-                        {
+                        } else if(msg.type == '15') { //守卫
+                            dispatch({
+                                type: 'room/setlastguard',
+                                payload: msg.user_id
+                            });
+                        } else if(msg.type == '16') { //情侣
+                            dispatch({
+                                type: 'room/setLoverID',
+                                payload:{
+                                    lover_id1: msg.user1_id,
+                                    lover_id2: msg.user2_id
+                                }
+                            });
+                        } else if(msg.type == '17') { //白天投票结果
+                            if(msg.result == true) {
+                                dispatch({
+                                    type: 'room/setlastvote',
+                                    payload: msg.list
+                                });
+                            } else if(msg.result == false) {
+                                //TODO: 平票的话，提示玩家重新投票
+                            } else {
+                                console.log("error");
+                            }
+                        } else if(msg.type === '18') {
                             if(msg.result == true) {
                                 Toast.success("锁定房间成功！", 1);
                                 Actions.Chooseseat();

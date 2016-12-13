@@ -29,7 +29,9 @@ export default class Next extends Component {
     };
 
     onPress() {
-        if(this.props.curstate != StateConst.witch && this.props.nextstep === false) {
+        if(this.props.curstate != StateConst.witch &&
+            this.props.curstate != StateConst.lover &&
+            this.props.nextstep === false) {
             this.showModal();
             return;
         }
