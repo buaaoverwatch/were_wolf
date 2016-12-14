@@ -149,6 +149,14 @@ const Socket = (props) => {
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
                             });
+                            if(laststate == state.checkrole && msg.room_state == state.cupid) {
+                                dispatch({
+                                    type:'room/changeloading',
+                                    payload:false,
+                                });
+                                Toast.success("进入黑夜！", 1);
+                                Actions.Test1();
+                            }
                             if(msg.room_state == state.daytalk) {
                                 //白天发言阶段 将之前的保存的存活状态更新
                                 dispatch({

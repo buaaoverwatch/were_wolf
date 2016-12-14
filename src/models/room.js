@@ -257,6 +257,7 @@ export default {
         //当服务端返回为true时，ws会调用第二个reducer
         changeloading(state,action)
         {
+            console.log("*****************" + action.payload);
             return {...state,loading:action.payload};
         },
         changeplayerindex(state)

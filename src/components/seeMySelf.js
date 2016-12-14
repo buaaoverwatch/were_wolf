@@ -67,9 +67,25 @@ const seeMySelf = (props) => {
 
     function  getCharacter() {
         return room.player_role[room.client_id];
+    }
 
-
-
+    function nextstep() {
+        console.log('in nextstep');
+        if(props.room.hassocket) {
+            dispatch({
+                type:'room/changeloading',
+                payload:true,
+            });
+            let msg = JSON.stringify({
+                type: "4",
+                request_id: props.room.user_request_id.toString(),
+                room_id: props.room.room_id.toString(),
+                user_id: props.room.client_id
+            });
+            console.log('next step send msg: ');
+            console.log(msg);
+            props.room.socket.send(msg);
+        }
     }
 
     return(
@@ -78,7 +94,7 @@ const seeMySelf = (props) => {
                 <Text style={styles.headerText}>
                     我的角色是：
                 </Text>
-                <TouchableOpacity onPress={Actions.Test1}>
+                <TouchableOpacity onPress={nextstep}>
                     <View style={styles.completeContainer}>
                         <Text style={styles.completeText}>确定
                         </Text>
