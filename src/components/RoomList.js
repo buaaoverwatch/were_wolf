@@ -106,14 +106,14 @@ const RoomList = (props) => {
 
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{flex:1,backgroundColor: '#ebebeb'}}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>
                     当前正在游戏的房间
                 </Text>
             </View>
             <Button onClick={refreshlist}>刷新房间列表</Button>
-            <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f9' }}
+            <ScrollView style={styles.RoomList}
                         automaticallyAdjustContentInsets={false}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}>
@@ -170,7 +170,10 @@ const styles = StyleSheet.create({
     completeText: {
         fontSize: 18,
         color: '#ffffff'
-    }
+    },
+    RoomList:{
+        marginBottom: PixelRatio.get() * 26,
+    },
 });
 
 

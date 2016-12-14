@@ -33,41 +33,95 @@ import Socket from '../services/websocket';
 const seeMySelf = (props) => {
     const {dispatch, room} = props;
 
-    const wolf = require('../images/were_wolf.jpg');
-    const vill = require('../images/villager.jpg');
-    const cupid = require('../images/cupid.jpg');
-    const hunter = require('../images/hunter.jpg');
-    const guard = require('../images/guard.jpg');
-    const witch = require('../images/witch.jpg');
-    const seer = require('../images/seer.jpg');
-
-    function  getChaPic() {
+    function  _renderChaPic() {
         if(room.player_role[room.client_id]==="wolf"){
-            return wolf;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/were_wolf.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
-        else if(room.player_role[room.client_id]==="vill"){
-            return vill;
+        else if(room.player_role[room.client_id]==="village"){
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/villager.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
         else if(room.player_role[room.client_id]==="witch"){
-            return witch;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/witch.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
         else if(room.player_role[room.client_id]==="cupid"){
-            return cupid;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/cupid.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
         else if(room.player_role[room.client_id]==="hunter"){
-            return hunter;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/hunter.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
         else if(room.player_role[room.client_id]==="guard"){
-            return guard;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/guard.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
         else if(room.player_role[room.client_id]==="seer"){
-            return seer;
+            return (
+                <View style={styles.PicView}>
+                    <Image source ={require('../images/seer.jpg')}
+                           style={styles.PicSize}
+                    />
+                </View>
+            );
         }
 
     }
 
     function  getCharacter() {
-        return room.player_role[room.client_id];
+        if(room.player_role[room.client_id]==="wolf"){
+            return "狼人";
+        }
+        else if(room.player_role[room.client_id]==="village"){
+            return "村民";
+        }
+        else if(room.player_role[room.client_id]==="witch"){
+            return "女巫";
+        }
+        else if(room.player_role[room.client_id]==="cupid"){
+            return "丘比特";
+        }
+        else if(room.player_role[room.client_id]==="hunter"){
+            return "猎人";
+        }
+        else if(room.player_role[room.client_id]==="guard"){
+            return "守卫";
+        }
+        else if(room.player_role[room.client_id]==="seer"){
+            return "预言家";
+        }
     }
 
     function nextstep() {
@@ -90,22 +144,19 @@ const seeMySelf = (props) => {
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View style={styles.wholeView}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    我的角色是：
+                    查看角色
                 </Text>
-                <TouchableOpacity onPress={nextstep}>
-                    <View style={styles.completeContainer}>
-                        <Text style={styles.completeText}>确定
-                        </Text>
-                    </View>
-                </TouchableOpacity>
             </View>
-            <Image style ={ styles.Character}
-            source ={getChaPic}
-            />
-            <Text>{getCharacter()}</Text>
+            {_renderChaPic()}
+            <Text style={styles.RoleText}>
+                {getCharacter()}
+            </Text>
+            <Button type="primary" onClick={nextstep} style={styles.confirmButton}>
+                确认
+            </Button>
             <ActivityIndicator
                 toast
                 text="等待服务器"
@@ -115,6 +166,10 @@ const seeMySelf = (props) => {
     );
 }
 const styles = StyleSheet.create({
+    wholeView:{
+        flex: 1,
+        alignItems: 'center',
+    },
     //标题
     header: {
         flexDirection: 'row',
@@ -123,46 +178,30 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         alignItems: 'center',
         backgroundColor: '#393a3f',//#0033ff
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     //标题文本
     headerText: {
         color: '#ffffff',
         fontSize: 18,
     },
-    //返回区
-    backContainer: {
-        flexDirection: 'row',
-        marginLeft: PixelRatio.get() * 5,
-        width: PixelRatio.get() * 40,
+    PicView:{
         alignItems: 'center',
-        justifyContent:'flex-start',
     },
-    //返回图标
-    backIcon: {
-        height: PixelRatio.get() * 5,
-        width: PixelRatio.get() * 5,
+    PicSize:{
+        marginTop:Dimensions.get('window').height*0.15,
+        height: Dimensions.get('window').width*0.6,
+        width: Dimensions.get('window').width*0.6,
     },
-    //返回文本
-    backText: {
-        fontSize: 18,
-        color: '#ffffff',
-        marginLeft: PixelRatio.get() * 2
+    RoleText: {
+        marginTop:PixelRatio.get() * 10,
+        color: '#393a3f',
+        fontSize: 36,
     },
-    //完成区
-    completeContainer: {
-        flexDirection: 'row',
-        marginRight: PixelRatio.get() * 5,
-        width: PixelRatio.get() * 40,
-        alignItems: 'center',
-        justifyContent:'flex-end',
-
+    confirmButton:{
+        marginTop:PixelRatio.get() * 20,
+        width: Dimensions.get('window').width*0.8,
     },
-    completeText: {
-        fontSize: 18,
-        color: '#ffffff'
-    },
-
     });
 
 export default connect(room => room)(seeMySelf);

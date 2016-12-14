@@ -49,9 +49,6 @@ const Socket = (props) => {
                         dispatch({
                             type: 'room/hideLoading',
                         });
-                        dispatch({
-                            type: 'room/changeselid_wolf',
-                        });
 
                         //TODO:loading置false
                     }
@@ -65,7 +62,8 @@ const Socket = (props) => {
                     if(msg.room_request_id>=room.room_request_id)
                     {
                         //修改当前回调函数中的局部值
-                        room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
+                        //room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
+                        room.room_request_id=msg.room_request_id;
                         //修改room model中的值
                         dispatch({
                             type: 'room/setRoomRequestID',

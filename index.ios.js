@@ -90,11 +90,11 @@ class App extends Component {
                 >
                   <Scene key="GameTab" hideNavBar>
                     <Scene key="CARoom" component={CARoom}/>
-                    <Scene key="GameRoom" component={GameRoom} hideTabBar/>
-                    <Scene key="GameSetting" component={GameSetting} hideTabBar/>
-                    <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
-                    <Scene key="seeMySelf" component={seeMySelf} hideTabBar/>
-                    <Scene key="Test1" component={Test1} hideTabBar/>
+                    <Scene key="GameRoom" component={GameRoom} />
+                    <Scene key="GameSetting" component={GameSetting} />
+                    <Scene key="ChooseSeat" component={ChooseSeat} />
+                    <Scene key="seeMySelf" component={seeMySelf} />
+                    <Scene key="Test1" component={Test1} />
                   </Scene>
                 </Scene>
                 <Scene

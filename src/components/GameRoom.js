@@ -124,7 +124,9 @@ const GameRoom = (props) => {
                 </View>
                 {members()}
             </ScrollView>
-            <Socket/>
+            <View style={styles.socketButton}>
+                <Socket/>
+            </View>
         </View>
     );
 };
@@ -176,6 +178,9 @@ const styles = StyleSheet.create({
     completeText: {
         fontSize: 18,
         color: '#ffffff'
+    },
+    socketButton:{
+        marginBottom: PixelRatio.get() * 30,
     },
     //提示信息
     toastContainer: {
