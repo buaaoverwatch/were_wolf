@@ -94,7 +94,7 @@ class App extends Component {
                     <Scene key="GameSetting" component={GameSetting} hideTabBar/>
                     <Scene key="ChooseSeat" component={ChooseSeat} hideTabBar/>
                     <Scene key="seeMySelf" component={seeMySelf} hideTabBar/>
-                    <Scene key="Test1" component={Test1} hideTabBar initial={true}/>
+                    <Scene key="Test1" component={Test1} hideTabBar/>
                   </Scene>
                 </Scene>
                 <Scene

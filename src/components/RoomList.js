@@ -8,7 +8,8 @@ import {
     PixelRatio,
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Platform,
 } from 'react-native';
 
 import { List, ListItem } from 'react-native-elements';
@@ -131,7 +132,8 @@ const styles = StyleSheet.create({
     //标题
     header: {
         flexDirection: 'row',
-        height: PixelRatio.get() * 16,
+        paddingTop: Platform.OS === 'ios' ? 10 : 0,
+        height: Platform.OS === 'ios' ? PixelRatio.get() * 26 : PixelRatio.get() * 16,
         width: Dimensions.get('window').width,
         alignItems: 'center',
         backgroundColor: '#393a3f',//#0033ff

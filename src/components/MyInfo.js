@@ -10,7 +10,8 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    Image
+    Image,
+    Platform,
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -131,7 +132,9 @@ const styles = StyleSheet.create({
     },
     //标题
     header: {
-        height: PixelRatio.get() * 16,
+        flexDirection: 'row',
+        paddingTop: Platform.OS === 'ios' ? 10 : 0,
+        height: Platform.OS === 'ios' ? PixelRatio.get() * 26 : PixelRatio.get() * 16,
         width: Dimensions.get('window').width,
         alignItems: 'center',
         justifyContent: 'center',

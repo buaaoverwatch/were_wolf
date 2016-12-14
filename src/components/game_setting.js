@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform,
 } from 'react-native';
 
 
@@ -225,7 +226,8 @@ const styles = StyleSheet.create({
     //标题
     header: {
         flexDirection: 'row',
-        height: PixelRatio.get() * 16,
+        paddingTop: Platform.OS === 'ios' ? 10 : 0,
+        height: Platform.OS === 'ios' ? PixelRatio.get() * 26 : PixelRatio.get() * 16,
         width: Dimensions.get('window').width,
         alignItems: 'center',
         backgroundColor: '#393a3f',//#0033ff
@@ -238,15 +240,16 @@ const styles = StyleSheet.create({
     },
     //返回区
     backContainer: {
-        width: PixelRatio.get() * 23,
         flexDirection: 'row',
-        alignItems: 'center'
+        marginLeft: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 40,
+        alignItems: 'center',
+        justifyContent:'flex-start',
     },
     //返回图标
     backIcon: {
         height: PixelRatio.get() * 5,
         width: PixelRatio.get() * 5,
-        marginLeft: PixelRatio.get() * 2
     },
     //返回文本
     backText: {
@@ -256,8 +259,12 @@ const styles = StyleSheet.create({
     },
     //完成区
     completeContainer: {
-        width: PixelRatio.get() * 25,
-        alignItems: 'center'
+        flexDirection: 'row',
+        marginRight: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 40,
+        alignItems: 'center',
+        justifyContent:'flex-end',
+
     },
     completeText: {
         fontSize: 18,

@@ -9,7 +9,8 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    Image
+    Image,
+    Platform,
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -26,7 +27,7 @@ const Launch = (props) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    欢迎来到Werewolf
+                    欢迎来到来浪助手
                 </Text>
             </View>
             <ScrollableTabView>
@@ -44,13 +45,16 @@ const styles = StyleSheet.create({
     },
     //标题
     header: {
-        height: PixelRatio.get() * 16,
+        flexDirection: 'row',
+        paddingTop: Platform.OS === 'ios' ? 10 : 0,
+        height: Platform.OS === 'ios' ? PixelRatio.get() * 26 : PixelRatio.get() * 16,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#393a3f',
     },
     //标题文本
     headerText: {
+        alignItems: 'center',
         justifyContent: 'center',
         color: '#ffffff',
         fontSize: 18
