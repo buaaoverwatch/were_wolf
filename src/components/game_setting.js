@@ -90,7 +90,8 @@ const GameSetting = (props) => {
 
     function CheckSetting(){
         if(room.Werewolf+room.Villager+room.Cupid+room.Seer+room.Witch+room.Hunter+room.Guard===room.player_num) {
-                   sendsetting();
+            console.log('lalalalallaalal');
+            sendsetting();
         }
         else {
             Alert.alert(
@@ -105,8 +106,9 @@ const GameSetting = (props) => {
     function sendsetting(){
         dispatch({
             type:'room/changeloading',
-            payload:'true',//此处发送消息，等待服务端返回
-        })
+            payload:true,//此处发送消息，等待服务端返回
+        });
+        console.log('asdaaaaaaaa');
         if(room.hassocket)
         {
             let msg=JSON.stringify({
@@ -132,7 +134,7 @@ const GameSetting = (props) => {
                 alertMessage,[
                     {text: '好的', onPress: () => console.log('OK Pressed!')},
 
-                ])
+                ]);
             dispatch({
                 type:'room/changeloading',
                 payload:false,

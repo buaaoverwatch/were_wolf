@@ -400,7 +400,7 @@ export default {
             console.log("room:");
             console.log(action.payload);
             return {...state, player_nick: action.payload, player_index: player_index,
-                index_player: index_player, player_id: player_id, player_num: action.payload.length};
+                index_player: index_player, player_id: player_id, player_num: i - 1};
         },
 
 
@@ -411,20 +411,32 @@ export default {
         },
         setplayerindex(state,action){
             let i = action.payload.u_id;
-            let m = paseInt(action.payload.seat);
-            return {...state,player_index:Object.assign(state.player_index,{i:m})};
+            let m = parseInt(action.payload.seat);
+            let list = state.player_index;
+            list[i] = m;
+            console.log('room.player_index:');
+            console.log(list);
+            return {...state,player_index:list};
         },
         playerindex2indexplayer(state,action){
             let i =action.payload.u_id;
             let m = action.payload.seat;
-            return {...state,index_player:Object.assign(state.index_player,{m,i})};
+            let list = state.index_player;
+            list[m] = i;
+            console.log('room.index_player:');
+            console.log(list);
+            return {...state,index_player:list};
         },
-        set_index_id(state,action){
+        set_index_id(state){
             let list = [];
-            for(let i = 0;i<action.payload.size();i++)
+            let list1= state.index_player;
+
+            for(let i = 1;i<=state.player_num;i++)
             {
-                list.push(action.payload[i+1]);
+                list.push(list1[i]);
             }
+            console.log("index-id");
+            console.log(list);
             return {...state,index_id:list};
         },
     }

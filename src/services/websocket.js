@@ -8,6 +8,7 @@ import Button from 'antd-mobile/lib/button';
 import {Actions} from 'react-native-router-flux';
 import state from '../consts/roomstate';
 import IP from '../consts/ip';
+import Toast from 'antd-mobile/lib/toast';
 
 
 const Socket = (props) => {
@@ -27,18 +28,23 @@ const Socket = (props) => {
 
         ws.onmessage = (e) => {
             // a message was received
+            console.log('onmessage data:');
             console.log(e.data);
+            console.log('msg:');
+            msg=JSON.parse(e.data);
             if(e.data)
             {
-                msg=JSON.parse(e.data);
                 if(msg.type==='0')
                 {
-                    console.log(room.user_request_id);
-                    if(msg.user_request_id==room.user_request_id.toString())//收到了发送消息的确认消息
+
+                    if(msg.user_request_id===room.user_request_id.toString())//收到了发送消息的确认消息
                     {
+                        console.log('add request id');
+                        console.log(msg);
                         dispatch({
                             type: 'room/addUserRequestID',
                         });
+
                         room.user_request_id=room.user_request_id+1;
                         dispatch({
                             type: 'room/hideLoading',
@@ -52,12 +58,14 @@ const Socket = (props) => {
                 }
                 else
                 {
-                    console.log("1111");
+                    console.log("start");
+                    console.log('room.room_request_id: ' + room.room_request_id);
+                    console.log('msg.room_request_id: ' + msg.room_request_id);
                     sendcomfirm(msg);
                     if(msg.room_request_id>=room.room_request_id)
                     {
                         //修改当前回调函数中的局部值
-                        room.room_request_id=msg.room_request_id;
+                        room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
                         //修改room model中的值
                         dispatch({
                             type: 'room/setRoomRequestID',
@@ -74,6 +82,8 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='3') {//这里要改的是index_player不是player_index
                             if(msg.result=="true") {
+                                console.log('choose seat result:');
+                                console.log(msg);
                                 dispatch({
                                     type:'room/setplayerindex',
                                     payload:{
@@ -81,13 +91,15 @@ const Socket = (props) => {
                                         seat:msg.seat,
                                     },
                                 });
+
                                 dispatch({
                                     type:'room/playerindex2indexplayer',
                                     payload:{
                                         u_id:msg.user_id,
-                                        seat:paseInt(msg.seat),
+                                        seat:parseInt(msg.seat),
                                     },
                                 });
+
                                 if(msg.user_id===room.client_id) {
                                     dispatch({
                                         type: 'room/changeloading',
@@ -117,14 +129,16 @@ const Socket = (props) => {
                                 type:'room/changeloading',
                                 payload:false,
                             });
+                            console.log("4564545644");
                             dispatch({
                                 type:'room/setrolelist',
                                 payload:msg.list,
                             });
+                            console.log("4564545644sf");
                             dispatch({
                                 type:'room/set_index_id',
-                                payload:room.index_player,
                             });
+                            console.log("456454564sdfdsf4");
                             Actions.seeMySelf();
 
                         }
@@ -142,7 +156,7 @@ const Socket = (props) => {
                                 });
                             }
                             //TODO：根据角色是否存活来决定下一步操作
-                            if(msg.role_alive == false && (msg.room_state == state.guard ||
+                            if(msg.role_alive == 'false' && (msg.room_state == state.guard ||
                                 msg.room_state == state.witch || msg.room_state == state.seer)){
                                 dispatch({
                                     type: 'room/timerstate'
@@ -176,7 +190,7 @@ const Socket = (props) => {
                         {
                             if(msg.role == "wolf") {
                                 for(let key in msg.change) {
-                                    if(msg.change[key] != false) {
+                                    if(msg.change[key] != 'false') {
                                         console.log("狼人把人救活了？？？");
                                         break;
                                     }
@@ -188,13 +202,13 @@ const Socket = (props) => {
                                 }
                             } else if(msg.role == 'witch') {
                                 for(let key in msg.change) {
-                                    if(msg.change[key] == true) {
+                                    if(msg.change[key] == 'true') {
                                         console.log("女巫救了：" + key);
                                         dispatch({
                                             type: 'room/setlastwitchsave',
                                             payload: key
                                         });
-                                    } else if(msg.change[key] == false) {
+                                    } else if(msg.change[key] == 'false') {
                                         console.log("女巫毒了：" + key);
                                         dispatch({
                                             type: 'room/setlastwitchkill',
@@ -258,20 +272,20 @@ const Socket = (props) => {
                                 }
                             });
                         } else if(msg.type == '17') { //白天投票结果
-                            if(msg.result == true) {
+                            if(msg.result == 'true') {
                                 dispatch({
                                     type: 'room/setlastvote',
                                     payload: msg.list
                                 });
-                            } else if(msg.result == false) {
+                            } else if(msg.result == 'false') {
                                 //TODO: 平票的话，提示玩家重新投票
                             } else {
                                 console.log("error");
                             }
                         } else if(msg.type === '18') {
-                            if(msg.result == true) {
+                            if(msg.result == 'true') {
                                 Toast.success("锁定房间成功！", 1);
-                                Actions.Chooseseat();
+                                Actions.ChooseSeat();
                             } else {
                                 Toast.fail("锁定房间失败，请重新锁定！", 1);
                             }
@@ -304,7 +318,7 @@ const Socket = (props) => {
         {
             msg1=JSON.stringify({
                 type:100,
-                request_id:room.user_request_id,
+                request_id:room.user_request_id.toString(),
                 room_id:room.room_id,
                 user_id:room.client_id,
                 seat:100,
@@ -323,12 +337,13 @@ const Socket = (props) => {
             console.log("room_id: " + props.room.room_id);
             msg1=JSON.stringify({
                 type: '0',
-                room_id:props.room.room_id,
+                room_id:props.room.room_id.toString(),
                 user_id:props.room.client_id,
-                room_request_id:data.room_request_id,
+                room_request_id:data.room_request_id.toString(),
             });
-            ws.send(msg1);
-
+            console.log('send confirm msg:');
+            console.log(msg1);
+            ws.send(msg1) ;
         }
     }
     return (

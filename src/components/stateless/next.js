@@ -43,8 +43,8 @@ export default class Next extends Component {
         if(this.props.room.hassocket) {
             let msg = JSON.stringify({
                 type: "4",
-                request_id: this.props.room.user_request_id,
-                room_id: this.props.room.room_id,
+                request_id: this.props.room.user_request_id.toString(),
+                room_id: this.props.room.room_id.toString(),
                 user_id: this.props.room.client_id
             });
             this.props.room.socket.send(msg);

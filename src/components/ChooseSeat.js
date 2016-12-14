@@ -30,7 +30,8 @@ import Socket from  '../services/websocket';
 
 var alertMessage = '请选择您的座位！';
 var alertMessage1 = '服务器连接失败';
-var alertMessage2 = '请提醒他们选择自己的座位！'
+var alertMessage2 = '请提醒他们选择自己的座位！';
+var alertMessage3 = '请不要选择其他座位';
 const ChooseSeat = (props) => {
     const {dispatch,room} = props;
     const p1 = require('../images/head_portrait.jpg');
@@ -45,15 +46,15 @@ const ChooseSeat = (props) => {
     //
     function addRow(n){
         var row = [];
-
+        console.log("addrow be called:"+n);
         for(let i = n;i<n+4&&i<room.player_num;i++){
 
             row.push(
                 <TouchableOpacity key={i} onPress = {() => setMySeat(i+1)}>
                     <View  style={styles.single} >
-                        <Image source={() =>getPlayerAvatar(i)} style={styles.portrait} />
+                        <Image source={require('../images/person.png')} style={styles.portrait} />
                         <Text style={styles.portraitText}>
-                            {getPlayerNick(i)}
+                            {getPlayerNick(i+1)}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -69,6 +70,7 @@ const ChooseSeat = (props) => {
     }
     //youdianwenti
     function getPlayerAvatar(i){
+
         if(i===0)
             return p1;//一个存了房主照片的文件
         else
@@ -81,7 +83,12 @@ const ChooseSeat = (props) => {
         }
     }
     function getPlayerNick(i){
-        if(i===0)
+        console.log('p_in');
+        console.log(room.player_index);
+
+        console.log('in_p');
+        console.log(room.index_player);
+        if(i===1)
             return room.player_nick[room.owner_id];
         else
         {
@@ -95,8 +102,15 @@ const ChooseSeat = (props) => {
     //这个是用来存放所有用户头像的东西，这个倒是没有什么问题
     function Seats(){
         Views = [];
+        console.log('room.player_num:'+room.player_num);
+        console.log('room.index_player:'+room.index_player);
+        console.log(room.index_player);
+        console.log('room.player_nick:'+room.player_nick);
+        console.log(room.player_nick);
         for(let i = 0; i < room.player_num; i = i+4){
+            console.log('addrow:'+i);
             Views.push(addRow(i));
+
         }
         return (
             <View style={styles.portraitContainer}>
@@ -106,9 +120,19 @@ const ChooseSeat = (props) => {
 
     }
     function setMySeat(n) {
-        if(n===0||n===1)
+        if(n===1)
         {
             //alert
+            return ;
+        }
+        if(room.client_id===room.owner_id)
+        {
+            Alert.alert('房主默认一号位置',
+                alertMessage3,
+                [
+                    {text: '好的', onPress: () => console.log('OK Pressed!')},
+
+                ]);
             return ;
         }
         dispatch({
@@ -140,21 +164,44 @@ const ChooseSeat = (props) => {
         }
     }
     function checkSeat(){
+
+            dispatch({
+                type:'room/setplayerindex',
+                payload:{
+                    u_id:room.owner_id,
+                    seat:'1',
+                },
+            });
+
+            dispatch({
+                type:'room/playerindex2indexplayer',
+                payload:{
+                    u_id:room.owner_id,
+                    seat:1,
+                },
+            });
+
         if(room.player_index[room.client_id]!=null)//如果已经选座
         {
-            if(room.client_id==room.owner_id)//如果是房主
+            if(room.client_id===room.owner_id)//如果是房主
             {
                 //todo 判断是否所有人都选了座位
-                let i = 0;
-                for(;i<room.player_index.size();i++)
+                let i = 1;
+                console.log('leght:');
+                console.log(room.player_index.length);
+                for(;i<=room.player_num;i++)
                 {
-                    if(room.player_index[room.player_id[i]]==null)
+                    console.log('i:::::'+i);
+                    console.log(room.player_index[room.player_id[i-1]]);
+                    if(room.index_player[i]==="")
                     {
                         break;
                     }
 
                 }
-                if(i == room.player_index.size())
+                console.log(i);
+
+                if(i === room.player_num+1)
                     Actions.GameSetting();
                 else
                 {

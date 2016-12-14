@@ -68,10 +68,13 @@ const GameRoom = (props) => {
             if(props.room.hassocket) {
                 let msg = JSON.stringify({
                     type: "1",
-                    request_id: props.room.room_request_id,
-                    room_id: props.room.room_id,
+             //       request_id: props.room.room_request_id.toString(),
+                    request_id: props.room.user_request_id.toString(),
+                    room_id: props.room.room_id.toString(),
                     user_id: props.room.client_id
                 });
+                console.log('lock room send msg: ');
+                console.log(msg);
                 props.room.socket.send(msg);
             }
         }
