@@ -1,4 +1,4 @@
-package com.were_wolf;
+package com.lailang.werewolf;
 
 import android.app.Application;
 import android.util.Log;

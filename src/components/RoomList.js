@@ -53,17 +53,10 @@ const RoomList = (props) => {
                 });
                 Toast.success("获取了当前所有房间！",1);
                 console.log(responseText);
-                for(let i = 0;i<responseText.length;i++)
-                {
-                    dispatch({
-                        type:'ALLROOM/setRoomList',
-                        payload:{
-                            room_id:responseText[i].id,
-                            room_name:responseText[i].name,
-                            owner_name:responseText[i].owner_name
-                        }
-                    });
-                }
+                dispatch({
+                    type:'ALLROOM/setRoomList',
+                    payload:responseText
+                });
                 return responseText;
             })
             .catch((error)=>{
@@ -87,8 +80,8 @@ const RoomList = (props) => {
     }
 
     function getRoom(i) {//todo 把card修改为list
-        var roomname = i.room_name;
-        var roomid = "NO."+i.room_id;
+        var roomname = i.name;
+        var roomid = "NO."+i.id;
         var roomownernick = i.owner_name+"的房间";
 
         return (

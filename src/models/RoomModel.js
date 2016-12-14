@@ -22,8 +22,7 @@ export default{
             return {...state, loading:true};
         },
         setRoomList(state,action){
-            let list = state.roomlist;
-            list.push(action.payload);
+            let list = action.payload;
             console.log(action.payload);
             return {...state,roomlist:list};
         }

@@ -34,7 +34,7 @@ const MyInfo = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_name: information.user_name
+                user_name: information.username
             })
         })
             .then(function(data){
@@ -42,14 +42,11 @@ const MyInfo = (props) => {
             })
             .then((responseText) => {
                 console.log(responseText);
-                if(responseText.result == 1) {
+                if(responseText[0].result == '1') {
                     Toast.fail("退出登录失败！", 1);
                     return responseText;
-                } else if (responseText.result == 0) {
+                } else if (responseText[0].result == '0') {
                     Toast.success("退出登录成功！", 1);
-                    while(1) {
-                        Actions.pop();
-                    }
                     return responseText;
                 } else {
                     console.log("error");
