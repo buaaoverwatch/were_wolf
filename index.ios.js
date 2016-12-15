@@ -29,7 +29,7 @@ import Launch from './src/components/Launch';
 import TabIcon from './src/components/TabIcon';
 
 //房间
-import RoomList from './src/components/RoomList';
+import RoomList from './src/components/RoomList1';
 //游戏
 import CARoom from './src/components/Create_AddRoom';
 import GameRoom from './src/components/GameRoom';

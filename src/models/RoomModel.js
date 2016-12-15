@@ -5,6 +5,7 @@ export default{
 
         ],
         loading:false,
+        refreshing:false,
     },
     subscriptions: {
         //setup({ dispatch, history }) {
@@ -20,6 +21,12 @@ export default{
         },
         showloading(state){
             return {...state, loading:true};
+        },
+        hiderefreshing(state){
+            return {...state, refreshing: false};
+        },
+        showrefreshing(state){
+            return {...state, refreshing:true};
         },
         setRoomList(state,action){
             let list = action.payload;
