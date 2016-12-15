@@ -69,7 +69,7 @@ export default {
         last_witch_kill: "",//女巫毒的人id
         wolf_msg:[],
         round: 1,
-        curstate: StateConst.cupid,
+        curstate: StateConst.roomblock,
         laststate: StateConst.guard,
 
         room_request_id:'0',
@@ -408,7 +408,11 @@ export default {
         //已经写了修改角色列表的东西，and已经做了设置playindex的东西
 
         setrolelist(state,action){
-            return {...state,player_role:action.payload};
+            let list = {};
+            for(let key in action.payload) {
+                list[key] = true;
+            }
+            return {...state,player_role:action.payload, player_alive: list};
         },
         setplayerindex(state,action){
             let i = action.payload.u_id;

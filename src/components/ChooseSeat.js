@@ -94,7 +94,7 @@ const ChooseSeat = (props) => {
         else
         {
             if(room.index_player[i]==="")
-                return "这个座位没有人";
+                return "待选座";
             else
                 return room.player_nick[room.index_player[i]];
         }

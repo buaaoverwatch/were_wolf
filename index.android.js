@@ -101,10 +101,10 @@ class App extends Component {
               >
                 <Scene key="MineTab" hideNavBar>
                   <Scene key="MyInfo" component={MyInfo} />
-                  <Scene key="EditInfo" component={EditInfo} hideTabBar/>
-                  <Scene key="MyFriend" component={MyFriend} hideTabBar/>
-                  <Scene key="MyRecord" component={MyRecord} hideTabBar/>
-                  <Scene key="Setting" component={Setting} hideTabBar/>
+                  <Scene key="EditInfo" component={EditInfo} />
+                  <Scene key="MyFriend" component={MyFriend} />
+                  <Scene key="MyRecord" component={MyRecord} />
+                  <Scene key="Setting" component={Setting} />
                 </Scene>
               </Scene>
             </Scene>

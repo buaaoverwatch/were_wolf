@@ -63,11 +63,11 @@ const Socket = (props) => {
                     {
                         //修改当前回调函数中的局部值
                         //room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
-                        room.room_request_id=msg.room_request_id;
+                        room.room_request_id=(parseInt(msg.room_request_id) + 1).toString();
                         //修改room model中的值
                         dispatch({
                             type: 'room/setRoomRequestID',
-                            payload: msg.room_request_id,
+                            payload: room.room_request_id,
                         });
                         if(msg.type==='2')
                         {
@@ -138,7 +138,6 @@ const Socket = (props) => {
                             });
                             console.log("456454564sdfdsf4");
                             Actions.seeMySelf();
-
                         }
                         else if(msg.type==='5')//房间状态改变
                         {
@@ -147,7 +146,8 @@ const Socket = (props) => {
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
                             });
-                            if(laststate == state.checkrole && msg.room_state == state.cupid) {
+                            room.curstate = msg.room_state;
+                            if(laststate == state.checkrole) {
                                 dispatch({
                                     type:'room/changeloading',
                                     payload:false,
@@ -289,6 +289,10 @@ const Socket = (props) => {
                                 console.log("error");
                             }
                         } else if(msg.type === '18') {
+                            dispatch({
+                                type:'room/changeloading',
+                                payload:false,
+                            });
                             if(msg.result == 'true') {
                                 Toast.success("锁定房间成功！", 1);
                                 Actions.ChooseSeat();
@@ -352,13 +356,12 @@ const Socket = (props) => {
             ws.send(msg1) ;
         }
     }
+    if(props.room.hassocket == false) {
+        handlesocket();
+        console.log('socket success', 1);
+    }
     return (
-        <View>
-            <Button onClick={handleclick}>send</Button>
-            <Button onClick={()=>{dispatch({
-                type: 'room/addstate' ,
-            });}}>add</Button>
-            <Button onClick={handlesocket}>start</Button>
+        <View style={{flex: 1, height: 0}}>
         </View>
     );
 };

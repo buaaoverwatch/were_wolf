@@ -22,6 +22,7 @@ import {
 import Toast from 'antd-mobile/lib/toast';
 import List from 'antd-mobile/lib/list';
 import Socket from '../services/websocket';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 const GameRoom = (props) => {
     const { dispatch, room } = props;
@@ -67,6 +68,10 @@ const GameRoom = (props) => {
             Toast.fail("没有权限！请等待房主锁定房间后，页面会自动跳转。", 1);
         } else {
             if(props.room.hassocket) {
+                dispatch({
+                    type:'room/changeloading',
+                    payload:true,
+                });
                 let msg = JSON.stringify({
                     type: "1",
              //       request_id: props.room.room_request_id.toString(),
@@ -127,6 +132,11 @@ const GameRoom = (props) => {
             <View style={styles.socketButton}>
                 <Socket/>
             </View>
+            <ActivityIndicator
+                toast
+                text="等待服务器"
+                animating={room.loading}
+            />
         </View>
     );
 };
@@ -180,7 +190,7 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     socketButton:{
-        marginBottom: PixelRatio.get() * 30,
+        backgroundColor: 'transparent'
     },
     //提示信息
     toastContainer: {

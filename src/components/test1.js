@@ -154,7 +154,7 @@ const Test1 = (props) => {
     }
     const usergriddata=genusergriddata();
     return (
-        <View style={{flex:1}}>
+        <View style={{flex:1, paddingBottom: PixelRatio.get() * 26}}>
             <ParallaxScrollView
                 headerBackgroundColor="#333"
                 stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
