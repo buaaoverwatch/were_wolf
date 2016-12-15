@@ -138,6 +138,21 @@ export default{
                 , userID: action.payload.userID};
         },
         editSuccess(state, action) {
+            AsyncStorage.setItem('nickname', action.payload.nickname, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('password', action.payload.password, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
+            AsyncStorage.setItem('introduce', action.payload.introduce, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
             return { ...state, nickname: action.payload.nickname,
                 password: action.payload.password, introduce: action.payload.introduce};
         },

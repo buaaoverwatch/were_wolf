@@ -35,7 +35,8 @@ const MyInfo = (props) => {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_name: information.username
+                user_name: information.username,
+                user_id: information.userID
             })
         })
             .then(function(data){

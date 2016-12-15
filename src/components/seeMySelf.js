@@ -13,7 +13,6 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    ActivityIndicator,
     Platform,
 } from 'react-native';
 
@@ -28,6 +27,7 @@ import {
 import List from 'antd-mobile/lib/list';
 import Button from 'antd-mobile/lib/button'
 import Socket from '../services/websocket';
+import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 
 
 const seeMySelf = (props) => {
