@@ -94,7 +94,7 @@ export default class Tabview extends Component {
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.wolf_lastkill,
-                            action:0,
+                            action:7,
                             content:'',
                         });
                         this.props.room.socket.send(msg);
