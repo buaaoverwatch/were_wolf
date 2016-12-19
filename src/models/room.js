@@ -72,7 +72,7 @@ export default {
         curstate: StateConst.roomblock,
         laststate: StateConst.guard,
 
-        room_request_id:'0',
+        room_request_id:'-1',
         user_request_id:0,
 
         lastvote: {"a1": 'a3', "a2":'a4', "a3":'a4', "a4": 'a4'},
