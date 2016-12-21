@@ -163,7 +163,8 @@ const Test1 = (props) => {
 
                 renderBackground={() => (
                     <View key="background">
-                        <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
+                        <Image source={require("../images/bg.jpg")}
+                               style={{
                             width: window.width,
                             height: PARALLAX_HEADER_HEIGHT}}/>
                         <View style={{position: 'absolute',

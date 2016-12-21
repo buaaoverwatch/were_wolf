@@ -174,12 +174,12 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:5,
-                            request_id:this.props.room.user_request_id,
+                            type:'5',
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.client_id,
-                            action:5,
+                            action:'5',
                             content:'',
                         });
                         this.props.room.socket.send(msg);
@@ -222,12 +222,12 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:5,
-                            request_id:this.props.room.user_request_id,
+                            type:'5',
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.player_selectedid,
-                            action:0,
+                            action:'0',
                             content:'',
                         });
                         this.props.room.socket.send(msg);
@@ -276,12 +276,12 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:5,
-                            request_id:this.props.room.user_request_id,
+                            type:'5',
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.player_selectedid,
-                            action:1,
+                            action:'1',
                             content:'',
                         });
                         this.props.room.socket.send(msg);
@@ -330,12 +330,12 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:5,
-                            request_id:this.props.room.user_request_id,
+                            type:'5',
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.player_selectedid,
-                            action:0,
+                            action:'0',
                             content:'',
                         });
                         this.props.room.socket.send(msg);
@@ -378,8 +378,8 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:9,
-                            request_id:this.props.room.user_request_id,
+                            type:'9',
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object1_id:this.props.room.player_selectedid,
@@ -483,14 +483,17 @@ export default class Tabview extends Component {
 
     }
     _renderPicker(list){
-        return list.map((item, i) => {
+        let res = [];
+        res = list.map((item, i) => {
             return (
                 <Picker.Item key={i} label={`${i+1}号玩家`} value={`${i+1}号玩家`}/>
             )
         });
+        return res;
     };
     _renderMsg(list){
-        return list.map((item, i) => {
+        let res = [];
+        res = list.map((item, i) => {
             return (
                 <ListItem
                     key={item.key}
@@ -500,14 +503,15 @@ export default class Tabview extends Component {
                 />
             )
         });
+        return res;
     };
     sendWolfMsg(data)
     {
         if(this.props.room.hassocket)
         {
             msg=JSON.stringify({
-                type:5,
-                request_id:this.props.room.user_request_id,
+                type:'5',
+                request_id:this.props.room.user_request_id.toString(),
                 room_id:this.props.room.room_id,
                 user_id:this.props.room.client_id,
                 object_id:this.props.room.client_id,

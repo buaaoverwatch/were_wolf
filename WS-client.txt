@@ -8,6 +8,8 @@ user_name
 nick_name
 password
 introduce
+question 	默认：你的名字
+answer 	默认：用户名
 
 http://host:8000/login/
 2. 登录
@@ -41,8 +43,13 @@ http://host:8000/getRoomInfo/
 8.	获取单个房间信息
 room_id
 
-http://host:8000/login/
+http://host:8000/logout/
 9. 登出
+user_id
+user_name
+
+http://host:8000/findPassword/
+10. 找回密码
 user_name
 
 /*****************************************************************/
@@ -83,6 +90,9 @@ witch_num 	女巫
 cupid_num 	丘比特
 guard_num 	守卫
 rule 	结束游戏条件：0 杀光所有人； 1  杀光村民或非村民
+
+
+/**********      角色分配之后，服务器自动进入查看手牌阶段       ***********/
 
 
 5. 下一步(收到指定人下一步之后，房间进入下一个状态)

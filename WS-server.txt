@@ -19,6 +19,7 @@ number		房间号
 result		0/1/2/3  0进入成功，1房间不存在，2房间已锁定，3未知错误
 room_name
 owner_id
+id_nick 	一个昵称列表
 
 5. 战绩
 解析后的json字符串，[{'win':win,'lose':lose},{'role':role,'result':result,'other_person':{....}},{},...]  返回昵称
@@ -27,7 +28,7 @@ owner_id
 result 	0 成功， 1 失败
 
 7. 获取房间列表
-房间号+房间名列表 [{'id':id,'name':name,'owner_name':owner_name},{},..]
+房间号+房间名列表 [{'id':id,'name':name,'owner_name':owner_name,'player_num':player_num,'state':state},{},..]
 
 8. 获取单个房间信息
 {'room_id':room_id,'room_name':room_name,'owner_name':nick_name}
@@ -35,6 +36,12 @@ result 	0 成功， 1 失败
 9. 登出
 result 0 成功， 1 失败
 
+10. 找回密码
+
+result 0用户存在 1 用户不存在
+question
+answer
+password 
 
 /*****************************************************************/
 Websocket
@@ -88,14 +95,13 @@ room_request_id
 action 			0 狼人选人， 1狼人杀人
 wolf_id 					
 object_id
-result true/false 狼人杀人是否成功
 
 
 8.	角色存活状态变化
 type = 7
 room_request_id
-change	{'id1':true/false}	谁变了
-role	wolf / witch
+change	{'id1':alive1}	谁变了
+role	wolf / witch / guard
 
 
 9. 竞选警长人名单
@@ -160,7 +166,13 @@ result 				true / false 平票是false
 sheriff_id 			被选中的玩家id，客服端要判断他是不是情侣，要不要死两个人；或者服务端再发个type7说明一下
 list {'id':object_id,..}	投票人：投票对象表
 
-20. 锁定房间结果
+
+20。锁定房间结果
 type = 18
 room_request_id
-result true/false
+result		true / false
+
+21. 有人没收到请求，掉线
+type = 20
+room_request_id
+id_list   []  掉线人的id，是一个数组
