@@ -7,6 +7,7 @@ import {
     View,
     StyleSheet,
     Dimensions,
+    PixelRatio,
 } from 'react-native';
 
 import Toast from 'antd-mobile/lib/toast';
@@ -135,6 +136,7 @@ class Login extends Component {
                         ref='input'
                         textInputRef='user'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(username) => this.setState({username})}
                         value={this.state.username}
                         placeholder="输入你注册时的用户名"
@@ -155,6 +157,7 @@ class Login extends Component {
                         ref='input'
                         textInputRef='pass'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(password) => {
                             this.setState({password});
                             if(this.state.username!='' && password!='')
@@ -211,13 +214,17 @@ class Login extends Component {
 const styles = StyleSheet.create({
     Container: {
         alignItems: 'center',
+        height:300,
     },
     Label: {
-        fontSize: 30,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(15) ,
         color: '#272727',
     },
     Tex: {
-        fontSize: 20,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
+    },
+    conStyle: {
+        height: PixelRatio.getPixelSizeForLayoutSize(18),
     },
     But: {
         width: Dimensions.get('window').width*0.9,

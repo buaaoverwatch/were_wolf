@@ -8,6 +8,7 @@ import {
     ScrollView,
     StyleSheet,
     Dimensions,
+    PixelRatio,
 } from 'react-native';
 
 import Toast from 'antd-mobile/lib/toast';
@@ -140,9 +141,11 @@ class Register extends Component {
                         ref='test'
                         textInputRef='a'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(username) => this.setState({username})}
                         value={this.state.username}
                         placeholder="6-12位字母或数字"
+                        maxLength={12}
                         returnKeyType="next"
                         clearTextOnFocus={true}
                         keyboardType="email-address"
@@ -160,9 +163,11 @@ class Register extends Component {
                         ref='test'
                         textInputRef='b'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(nickname) => this.setState({nickname})}
                         value={this.state.nickname}
                         placeholder="不超过十个字符,可以是中文"
+                        maxLength={10}
                         returnKeyType="next"
                         clearTextOnFocus={true}
                         autoCorrect={false}
@@ -179,9 +184,11 @@ class Register extends Component {
                         ref='form'
                         textInputRef='c'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(password) => this.setState({password})}
                         value={this.state.password}
                         placeholder="6-12位字母或数字"
+                        maxLength={12}
                         returnKeyType="next"
                         clearTextOnFocus={true}
                         secureTextEntry={true}
@@ -199,6 +206,7 @@ class Register extends Component {
                         ref='input'
                         textInputRef='d'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(introduce) => this.setState({introduce})}
                         value={this.state.introduce}
                         placeholder="用一句话介绍自己吧~"
@@ -218,6 +226,7 @@ class Register extends Component {
                         ref='foo'
                         textInputRef='e'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(question) => this.setState({question})}
                         value={this.state.question}
                         placeholder="用于密码找回"
@@ -237,6 +246,7 @@ class Register extends Component {
                         ref='bar'
                         textInputRef='f'
                         inputStyle={styles.Tex}
+                        containerStyle={styles.conStyle}
                         onChangeText={(answer) => this.setState({answer})}
                         value={this.state.answer}
                         placeholder="密保问题答案"
@@ -276,11 +286,14 @@ const styles = StyleSheet.create({
         height:300,
     },
     Label: {
-        fontSize: 30,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(15) ,
         color: '#272727',
     },
     Tex: {
-        fontSize: 20,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
+    },
+    conStyle: {
+        height: PixelRatio.getPixelSizeForLayoutSize(18),
     },
     But: {
         width: Dimensions.get('window').width*0.9,
