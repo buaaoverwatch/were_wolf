@@ -271,6 +271,8 @@ const Socket = (props) => {
                                 payload: msg.user_id
                             });
                         } else if(msg.type == '16') { //情侣
+                            console.log("lover1_id: " + msg.user1_id);
+                            console.log("lover2_id: " + msg.user2_id);
                             dispatch({
                                 type: 'room/setLoverID',
                                 payload:{

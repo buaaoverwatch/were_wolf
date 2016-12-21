@@ -38,7 +38,7 @@ export default class Next extends Component {
         let role = this.props.room.player_role[client_id];
         let owner_id = this.props.room.owner_id;
         if((curstate == StateConst.cupid && role != 'cupid') ||
-            (curstate == StateConst.lover && this.props.room.lover_id1 != client_id && this.props.room.lover_id2 != client.id) ||
+            (curstate == StateConst.lover && this.props.room.lover_id1 != client_id && this.props.room.lover_id2 != client_id) ||
             (curstate == StateConst.wolf && role != 'wolf') ||
             (curstate == StateConst.witch && role != 'witch') ||
             (curstate == StateConst.seer && role != 'seer') ||

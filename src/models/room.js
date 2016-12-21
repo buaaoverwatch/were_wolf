@@ -165,6 +165,9 @@ export default {
         },
         setLoverID(state,action)//TODO:在这里加情侣ID
         {
+            console.log("in");
+            console.log("lover1_id: " + msg.user1_id);
+            console.log("lover2_id: " + msg.user2_id);
             return{...state,lover_id1:action.payload.lover_id1,lover_id2:action.payload.lover_id2};
         },
 

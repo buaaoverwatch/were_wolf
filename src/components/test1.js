@@ -68,7 +68,7 @@ const Test1 = (props) => {
                     index: i+1,
                     userid:item,
                     username: room.player_nick[item],
-                    vote: room.player_wolfvote[item],
+                    vote:  room.curstate === state.wolf ? room.player_wolfvote[item] : 0,
                     sheriff: issheriff,
                     disabled: !room.player_alive[item],
                     selected: issel,
