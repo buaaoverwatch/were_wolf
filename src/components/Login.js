@@ -200,12 +200,12 @@ class Login extends Component {
                         backgroundColor='#fd661b'
                         raised={true}
                     />
-                    <ActivityIndicator
-                        toast
-                        text="正在加载"
-                        animating={this.props.loading}
-                    />
                 </View>
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={this.props.loading}
+                />
             </View>
         );
     }

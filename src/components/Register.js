@@ -269,12 +269,12 @@ class Register extends Component {
                         backgroundColor='#2db7f5'
                         raised={true}
                     />
-                    <ActivityIndicator
-                        toast
-                        text="正在加载"
-                        animating={this.props.loading}
-                    />
                 </View>
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={this.props.loading}
+                />
             </ScrollView>
         );
     }

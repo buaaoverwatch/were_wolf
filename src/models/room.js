@@ -422,6 +422,13 @@ export default {
             let i = action.payload.u_id;
             let m = parseInt(action.payload.seat);
             let list = state.player_index;
+            for(let key in list) {
+                if(list[key] == '1')
+                    continue;
+                if(key == i) {
+                    list[key] = null;
+                }
+            }
             list[i] = m;
             console.log('room.player_index:');
             console.log(list);
@@ -431,6 +438,13 @@ export default {
             let i =action.payload.u_id;
             let m = action.payload.seat;
             let list = state.index_player;
+            for(let key in list) {
+                if(key == 1)
+                    continue;
+                if(list[key] == i) {
+                    list[key] = "";
+                }
+            }
             list[m] = i;
             console.log('room.index_player:');
             console.log(list);
