@@ -48,7 +48,9 @@ export default{
             "11",
             "12"
         ],
-        ifOwner: false
+        ifOwner: false,
+        ForgetPassQ:0,
+        ForgetPassA:"",
     },
     subscriptions: {
         setup({ dispatch, history }) {
@@ -103,9 +105,19 @@ export default{
                     console.log(error);
                 }
             });
+            AsyncStorage.setItem('ForgetPassQ', action.payload.ForgetPassQ, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });AsyncStorage.setItem('ForgetPassA', action.payload.ForgetPassA, function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
           return { ...state, username: action.payload.username, nickname: action.payload.nickname
               , password: action.payload.password, introduce: action.payload.introduce
-                , userID: action.payload.userID};
+                , userID: action.payload.userID,ForgetPassA:action.payload.ForgetPassA,
+              ForgetPassQ:action.payload.ForgetPassQ};
         },
         loginSuccess(state, action) {
             AsyncStorage.setItem('username', action.payload.username, function (error) {

@@ -162,6 +162,12 @@ var EditInfo = (props) => {
                     clear={true}
                     placeholder={information.introduce}
                 >简介</InputItem>
+
+
+
+
+
+
             </List>
             <ActivityIndicator
                 toast
