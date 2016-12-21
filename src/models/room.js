@@ -201,7 +201,7 @@ export default {
         {
             if(state.curstate==StateConst.wolf)
             {
-                return{...state,player_selectedid_wolf:action.payload};
+                return{...state,player_selectedid_wolf:action.payload,player_selectedid:action.payload};
             }
             else
                 return state;

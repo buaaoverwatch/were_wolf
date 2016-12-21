@@ -609,7 +609,7 @@ export default class Tabview extends Component {
                             title='发送'
                             backgroundColor='#fd661b'
                             buttonStyle={{marginTop:15,width:150}}
-                            onPress={()=>this.sendWolfMsg(this.state.msg2_1+this.state.msg2_2+this.state.msg2_3)}
+                            onPress={()=>this.sendWolfMsg(this.state.msg2_1+this.state.msg2_2)}
                         />
                     </View>
                 </View>

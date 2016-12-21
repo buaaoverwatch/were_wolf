@@ -7,6 +7,7 @@ import {
 
 import Modal from 'antd-mobile/lib/modal';
 import StateConst from '../../consts/roomstate';
+import Toast from 'antd-mobile/lib/toast';
 
 export default class Next extends Component {
     constructor(props) {
@@ -32,8 +33,25 @@ export default class Next extends Component {
         console.log('next step');
         console.log('curstate: ' + this.props.curstate);
         console.log('nextstep: ' + this.props.nextstep);
-        if(this.props.room.curstate != StateConst.witch &&
-            this.props.room.curstate != StateConst.lover &&
+        let curstate = this.props.room.curstate;
+        let client_id = this.props.room.client_id;
+        let role = this.props.room.player_role[client_id];
+        let owner_id = this.props.room.owner_id;
+        if((curstate == StateConst.cupid && role != 'cupid') ||
+            (curstate == StateConst.lover && this.props.room.lover_id1 != client_id && this.props.room.lover_id2 != client.id) ||
+            (curstate == StateConst.wolf && role != 'wolf') ||
+            (curstate == StateConst.witch && role != 'witch') ||
+            (curstate == StateConst.seer && role != 'seer') ||
+            (curstate == StateConst.sherifftalk && client_id != owner_id) ||
+            (curstate == StateConst.sheriffvote) ||
+            (curstate == StateConst.daytalk && client_id == owner_id) ||
+            (curstate == StateConst.dayvote) ||
+            (curstate == StateConst.hunter && role != 'hunter')) {
+            Toast.fail("没有下一步的权限！", 1);
+            return;
+        }
+        if(curstate != StateConst.witch &&
+            curstate != StateConst.lover &&
             this.props.room.nextstep === false) {
             this.showModal();
             return;
