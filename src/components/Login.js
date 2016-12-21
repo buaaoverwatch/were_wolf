@@ -4,16 +4,14 @@
 import React, { Component } from 'react';
 import {
     Text,
-    View
+    View,
+    StyleSheet,
+    Dimensions,
 } from 'react-native';
-import Button from 'antd-mobile/lib/button';
-import WhiteSpace from 'antd-mobile/lib/white-space';
-import List from 'antd-mobile/lib/list';
-import InputItem from 'antd-mobile/lib/input-item';
-import WingBlank from 'antd-mobile/lib/wing-blank';
+
 import Toast from 'antd-mobile/lib/toast';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
-import { createForm } from 'rc-form';
+import { FormLabel, FormInput , Button} from 'react-native-elements'
 
 import IP from '../consts/ip';
 
@@ -21,29 +19,41 @@ import {
     Actions
 } from 'react-native-router-flux';
 
-var username, password;
 class Login extends Component {
+    constructor(props) {
+        // 继承父类的this对象和传入的外部属性
+        super(props);
+        // 设置初始状态
+        const {dispatch} = props;
+        this.state = {
+            username:"",
+            password:"",
+            en_login:false,
+        };
+        //this.getList = this.getList.bind(this);
+    }
+
     onClick(){
         var Regx = /(^[A-Za-z0-9]+$)/;
-        if(!(username && password)) {
+        if(!(this.state.username && this.state.password)) {
             Toast.fail("信息填写不完整！", 1);
             return;
         }
         //用户名是否符合规则
-        if(username.length < 6 || username.length > 12) {
+        if(this.state.username.length < 6 || this.state.username.length > 12) {
             Toast.fail("用户名长度错误！", 1);
             return;
         }
-        if(Regx.test(username) == false) {
+        if(Regx.test(this.state.username) == false) {
             Toast.fail("用户名格式错误!", 1);
             return;
         }
         //密码是否符合规则
-        if(password.length < 6 || password.length > 12) {
+        if(this.state.password.length < 6 || this.state.password.length > 12) {
             Toast.fail("密码长度错误！", 1);
             return;
         }
-        if(Regx.test(password) == false) {
+        if(Regx.test(this.state.password) == false) {
             Toast.fail("密码格式错误！", 1);
             return;
         }
@@ -63,8 +73,8 @@ class Login extends Component {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_name: username,
-                password: password
+                user_name: this.state.username,
+                password: this.state.password
             })
         })
             .then(function(data){
@@ -89,9 +99,9 @@ class Login extends Component {
                 _this.props.dispatch({
                     type: 'information/loginSuccess',
                     payload: {
-                        username: username,
+                        username: this.state.username,
                         nickname: responseText[0].nick,
-                        password: password,
+                        password: this.state.password,
                         introduce: responseText[0].intro,
                         userID: responseText[0].id
                     }
@@ -109,52 +119,110 @@ class Login extends Component {
                 console.warn(error);
             });
     }
+    focusNextField = (nextField) => {
+        this.refs.input.refs[nextField].focus();
+    };
     render() {
-        const {getFieldProps} = this.props.form;
         return (
-            <View style={{flex: 1}}>
-                <List>
-                    <InputItem
-                        {...getFieldProps('loginusername', {
-                            initialValue: '',
-                            onChange(value){
-                                username=value;
-                            }
-                        })}
-                        clear
+            <View>
+                <View>
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        用户名
+                    </FormLabel>
+                    <FormInput
+                        ref='input'
+                        textInputRef='user'
+                        inputStyle={styles.Tex}
+                        onChangeText={(username) => this.setState({username})}
+                        value={this.state.username}
                         placeholder="输入你注册时的用户名"
-                    >用户名</InputItem>
-                    <InputItem
-                        {...getFieldProps('loginpassword', {
-                            initialValue: '',
-                            onChange(value){
-                                password=value;
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        keyboardType="email-address"
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.focusNextField('pass')}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        密码
+                    </FormLabel>
+                    <FormInput
+                        ref='input'
+                        textInputRef='pass'
+                        inputStyle={styles.Tex}
+                        onChangeText={(password) => {
+                            this.setState({password});
+                            if(this.state.username!='' && password!='')
+                            {
+                                this.setState({en_login:true});
                             }
-                        })}
-                        type="password"
-                        clear
+                            else
+                            {
+                                this.setState({en_login:false});
+                            }
+                        }}
+                        value={this.state.password}
                         placeholder="输入你注册时的密码"
-                    >密码</InputItem>
-                </List>
-                <WhiteSpace size="lg"/>
-                <WingBlank>
-                    <Button type="default" onClick={this.onClick.bind(this)}>登录</Button>
-                </WingBlank>
-                <WhiteSpace size="lg"/>
-                <WingBlank>
-
-                    <Button type="default" >忘记密码</Button>
-                </WingBlank>
-                <WhiteSpace size="lg"/>
-                <ActivityIndicator
-                    toast
-                    text="正在加载"
-                    animating={this.props.loading}
-                />
+                        returnKeyType="done"
+                        clearTextOnFocus={true}
+                        secureTextEntry={true}
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.onClick()}
+                    />
+                </View>
+                <View style={styles.Container}>
+                    <Button
+                        buttonStyle={styles.But}
+                        large
+                        iconRight
+                        icon={{name: 'check'}}
+                        title='登录'
+                        onPress={()=>this.onClick()}
+                        backgroundColor='#2db7f5'
+                        disabled={!this.state.en_login}
+                        raised={true}
+                    />
+                    <Button
+                        buttonStyle={styles.But}
+                        large
+                        iconRight
+                        icon={{name: 'edit'}}
+                        title='忘记密码'
+                        onPress={()=>this.onClick()}
+                        backgroundColor='#fd661b'
+                        raised={true}
+                    />
+                    <ActivityIndicator
+                        toast
+                        text="正在加载"
+                        animating={this.props.loading}
+                    />
+                </View>
             </View>
         );
     }
 }
 
-Login = createForm()(Login);
-module.exports = Login;
+const styles = StyleSheet.create({
+    Container: {
+        alignItems: 'center',
+    },
+    Label: {
+        fontSize: 30,
+        color: '#272727',
+    },
+    Tex: {
+        fontSize: 20,
+    },
+    But: {
+        width: Dimensions.get('window').width*0.9,
+        marginTop: 20,
+    },
+});
+
+export default Login;

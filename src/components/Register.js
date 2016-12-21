@@ -5,24 +5,36 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
-    Image
+    ScrollView,
+    StyleSheet,
+    Dimensions,
 } from 'react-native';
-import Button from 'antd-mobile/lib/button';
-import WhiteSpace from 'antd-mobile/lib/white-space';
-import List from 'antd-mobile/lib/list';
-import InputItem from 'antd-mobile/lib/input-item';
-import WingBlank from 'antd-mobile/lib/wing-blank';
+
 import Toast from 'antd-mobile/lib/toast';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
-import { createForm } from 'rc-form';
+import { FormLabel, FormInput , Button} from 'react-native-elements'
+
+import IP from '../consts/ip';
+
 import {
     Actions
 } from 'react-native-router-flux';
-import IP from '../consts/ip';
 
-
-var username, nickname, password, introduce;
 class Register extends Component {
+    constructor(props) {
+        // 继承父类的this对象和传入的外部属性
+        super(props);
+        // 设置初始状态
+        this.state = {
+            username:"",
+            nickname:"",
+            password:"",
+            introduce:"",
+            question:"",
+            answer:"",
+        };
+        //this.getList = this.getList.bind(this);
+    }
     clickhttp(_this) {
         _this.props.dispatch({
             type: 'information/loadingTrue'
@@ -34,10 +46,12 @@ class Register extends Component {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_name: username,
-                nick_name: nickname,
-                password: password,
-                introduce: introduce
+                user_name: this.state.username,
+                nick_name: this.state.nickname,
+                password: this.state.password,
+                introduce: this.state.introduce,
+                question: this.state.question,
+                answer: this.state.answer,
             })
         })
             .then(function(data) {
@@ -60,10 +74,10 @@ class Register extends Component {
                 _this.props.dispatch({
                     type: 'information/registerSuccess',
                     payload: {
-                        username: username,
-                        nickname: nickname,
-                        password: password,
-                        introduce: introduce,
+                        username: this.state.username,
+                        nickname: this.state.nickname,
+                        password: this.state.password,
+                        introduce: this.state.introduce,
                         userID: responseText[0].id
                     }
                 });
@@ -81,25 +95,25 @@ class Register extends Component {
     }
     onClick(){
         var Regx = /(^[A-Za-z0-9]+$)/;
-        if(!(username && nickname && password && introduce)) {
+        if(!(this.state.username && this.state.nickname && this.state.password && this.state.introduce && this.state.question && this.state.answer)) {
             Toast.fail("信息填写不完整！", 1);
             return;
         }
         //用户名是否符合规则
-        if(username.length < 6 || username.length > 12) {
+        if(this.state.username.length < 6 || this.state.username.length > 12) {
             Toast.fail("用户名长度错误！", 1);
             return;
         }
-        if(Regx.test(username) == false) {
+        if(Regx.test(this.state.username) == false) {
             Toast.fail("用户名格式错误!", 1);
             return;
         }
         //密码是否符合规则
-        if(password.length < 6 || password.length > 12) {
+        if(this.state.password.length < 6 || this.state.password.length > 12) {
             Toast.fail("密码长度错误！", 1);
             return;
         }
-        if(Regx.test(password) == false) {
+        if(Regx.test(this.state.password) == false) {
             Toast.fail("密码格式错误！", 1);
             return;
         }
@@ -109,70 +123,169 @@ class Register extends Component {
         //direct
         //Actions.tabbar();
     }
+
+    focusNextField = (nextField) => {
+        this.refs.input.refs[nextField].focus();
+    };
     render() {
-        const {getFieldProps} = this.props.form;
         return (
-            <View style={{flex: 1}}>
-                <List>
-                    <InputItem
-                        {...getFieldProps('registerusername', {
-                            initialValue: '',
-                            onChange(value) {
-                                username = value;
-                            }
-                        })}
-                        clear
-                        maxLength={12}
+            <ScrollView >
+                <View>
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        用户名
+                    </FormLabel>
+                    <FormInput
+                        ref='test'
+                        textInputRef='a'
+                        inputStyle={styles.Tex}
+                        onChangeText={(username) => this.setState({username})}
+                        value={this.state.username}
                         placeholder="6-12位字母或数字"
-                    >用户名</InputItem>
-                    <InputItem
-                        {...getFieldProps('registernickname', {
-                            initialValue: '',
-                            onChange(value) {
-                                nickname = value;
-                            }
-                        })}
-                        maxLength={10}
-                        clear
-                        placeholder="不超过10个字符"
-                    >昵称</InputItem>
-                    <InputItem
-                        {...getFieldProps('registerpassword', {
-                            initialValue: '',
-                            onChange(value) {
-                                password = value;
-                            }
-                        })}
-                        type="password"
-                        clear
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        keyboardType="email-address"
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.refs.test.refs.b.focus()}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        昵称
+                    </FormLabel>
+                    <FormInput
+                        ref='test'
+                        textInputRef='b'
+                        inputStyle={styles.Tex}
+                        onChangeText={(nickname) => this.setState({nickname})}
+                        value={this.state.nickname}
+                        placeholder="不超过十个字符,可以是中文"
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.refs.form.refs.c.focus()}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        密码
+                    </FormLabel>
+                    <FormInput
+                        ref='form'
+                        textInputRef='c'
+                        inputStyle={styles.Tex}
+                        onChangeText={(password) => this.setState({password})}
+                        value={this.state.password}
                         placeholder="6-12位字母或数字"
-                    >密码</InputItem>
-                    <InputItem
-                        {...getFieldProps('registerintroduce', {
-                            initialValue: '',
-                            onChange(value) {
-                                introduce = value;
-                            }
-                        })}
-                        maxLength={20}
-                        clear
-                        placeholder="不超过20个字符"
-                    >简介</InputItem>
-                </List>
-                <WhiteSpace size="lg"/>
-                <WingBlank>
-                    <Button type="default" color="'#000000" onClick={this.onClick.bind(this)}>注册</Button>
-                </WingBlank>
-                <WhiteSpace size="lg"/>
-                <ActivityIndicator
-                    toast
-                    text="正在加载"
-                    animating={this.props.loading}
-                />
-            </View>
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        secureTextEntry={true}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.focusNextField('d')}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        个人简介
+                    </FormLabel>
+                    <FormInput
+                        ref='input'
+                        textInputRef='d'
+                        inputStyle={styles.Tex}
+                        onChangeText={(introduce) => this.setState({introduce})}
+                        value={this.state.introduce}
+                        placeholder="用一句话介绍自己吧~"
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.refs.foo.refs.e.focus()}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        密保问题
+                    </FormLabel>
+                    <FormInput
+                        ref='foo'
+                        textInputRef='e'
+                        inputStyle={styles.Tex}
+                        onChangeText={(question) => this.setState({question})}
+                        value={this.state.question}
+                        placeholder="用于密码找回"
+                        returnKeyType="next"
+                        clearTextOnFocus={true}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.refs.bar.refs.f.focus()}
+                    />
+                    <FormLabel
+                        labelStyle={styles.Label}
+                    >
+                        问题答案
+                    </FormLabel>
+                    <FormInput
+                        ref='bar'
+                        textInputRef='f'
+                        inputStyle={styles.Tex}
+                        onChangeText={(answer) => this.setState({answer})}
+                        value={this.state.answer}
+                        placeholder="密保问题答案"
+                        returnKeyType="done"
+                        clearTextOnFocus={true}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        clearButtonMode="while-editing"
+                        onSubmitEditing={() => this.onClick()}
+                    />
+                </View>
+                <View style={styles.Container}>
+                    <Button
+                        buttonStyle={styles.But}
+                        large
+                        iconRight
+                        icon={{name: 'plus-one'}}
+                        title='注册'
+                        onPress={()=>this.onClick()}
+                        backgroundColor='#2db7f5'
+                        raised={true}
+                    />
+                    <ActivityIndicator
+                        toast
+                        text="正在加载"
+                        animating={this.props.loading}
+                    />
+                </View>
+            </ScrollView>
         );
     }
 }
 
-Register = createForm()(Register);
-module.exports = Register;
+const styles = StyleSheet.create({
+    Container: {
+        alignItems: 'center',
+        height:300,
+    },
+    Label: {
+        fontSize: 30,
+        color: '#272727',
+    },
+    Tex: {
+        fontSize: 20,
+    },
+    But: {
+        width: Dimensions.get('window').width*0.9,
+        marginTop: 20,
+    },
+});
+
+export default Register;
