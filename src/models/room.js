@@ -139,8 +139,9 @@ export default {
         },
         setWolfMsg(state,action)
         {
-            let m={key:state.wolf_msg.length,...action.payload};
-            return{...state,wolf_msg:state.wolf_msg.push(m)};
+            let list = state.wolf_msg;
+            list.push(action.payload);
+            return{...state, wolf_msg:list};
         },
         setWolfVote(state,action)//设置狼人选人ID:ID对
         {
