@@ -59,6 +59,7 @@ export default {
         list_wolfvote: {"a1":"a3", "a2": "a4"},//狼人投票列表
         sheriff_id: "a4",
         sheriff_list:[],
+        sheriff_modal:false,//警长弹框
         player_selectedid:"",
         player_selectedid2:"",
         player_selectedid_wolf:"",
@@ -241,6 +242,10 @@ export default {
                 return{...state,sheriff_id:''};
             else
                 return{...state,sheriff_id:action.payload[state.sheriff_id]};
+        },
+        setsheriffmodal(state,action)
+        {
+            return{...state,sheriff_modal:action.payload};
         },
 
 

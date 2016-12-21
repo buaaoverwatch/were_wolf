@@ -169,6 +169,13 @@ const Socket = (props) => {
                                     type: 'room/timerstate'
                                 });
                             }
+                            if(msg.room_state == state.sheriffchoose) {
+                                //选择竞选警长，弹框
+                                dispatch({
+                                    type: 'room/setsheriffmodal',
+                                    payload: true,
+                                });
+                            }
                         }
                         else if(msg.type==='6')//狼人选人 Checked!
                         {

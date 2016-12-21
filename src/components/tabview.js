@@ -55,9 +55,17 @@ export default class Tabview extends Component {
         this.state.extrafun();
         this.setState({extrafun:()=>{}});
         this.setState({visible:false});
+        this.props.dispatch({
+            type: 'room/setsheriffmodal',
+            payload: {false},
+        });
     };
     onClose(){
         this.setState({visible:false});
+        this.props.dispatch({
+            type: 'room/setsheriffmodal',
+            payload: {false},
+        });
     };
     checkandshowModal(role){
         if(role=='wolf_kill')
@@ -877,6 +885,41 @@ export default class Tabview extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',}}>
                                 {this.state.modalcontent}
+                            </Text>
+                            <View style={{flexDirection:'row',alignItems: 'center'}}>
+                                <Button
+                                    raised
+                                    icon={{name: 'done'}}
+                                    title='确认'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onConfirm}
+                                />
+                                <Button
+                                    raised
+                                    icon={{name: 'clear'}}
+                                    title='取消'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onClose}
+                                />
+                            </View>
+                        </View>
+                    </Modal>
+                    <Modal
+                        title={"提示"}
+                        closable
+                        maskClosable
+                        transparent
+                        onClose={this.onClose}
+                        visible={this.props.room.sheriff_modal}
+                        style={{height:200,width:300,alignItems: 'center'}}
+                    >
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={{marginTop:20,
+                                justifyContent: 'center',
+                                alignItems: 'center',}}>
+                                请确认是否要竞选警长
                             </Text>
                             <View style={{flexDirection:'row',alignItems: 'center'}}>
                                 <Button
