@@ -55,10 +55,6 @@ export default class Tabview extends Component {
         this.state.extrafun();
         this.setState({extrafun:()=>{}});
         this.setState({visible:false});
-        this.props.dispatch({
-            type: 'room/setsheriffmodal',
-            payload: {false},
-        });
     };
     onClose(){
         this.setState({visible:false});
@@ -97,12 +93,12 @@ export default class Tabview extends Component {
                     if(this.props.room.hassocket)
                     {
                         msg=JSON.stringify({
-                            type:5,
+                            type:'5',
                             request_id:this.props.room.user_request_id,
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.wolf_lastkill,
-                            action:7,
+                            action:'7',
                             content:'',
                         });
                         this.props.room.socket.send(msg);
@@ -140,12 +136,12 @@ export default class Tabview extends Component {
                         if(this.props.room.hassocket)
                         {
                             msg=JSON.stringify({
-                                type:5,
+                                type:'5',
                                 request_id:this.props.room.user_request_id,
                                 room_id:this.props.room.room_id,
                                 user_id:this.props.room.client_id,
                                 object_id:this.props.room.player_selectedid,
-                                action:0,
+                                action:'0',
                                 content:'',
                             });
                             this.props.room.socket.send(msg);
@@ -853,6 +849,29 @@ export default class Tabview extends Component {
         });
         return list;
     }
+    sheriffconfirm(type){
+        this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+        if(this.props.room.hassocket)
+        {
+            msg=JSON.stringify({
+                type:'6',
+                request_id:this.props.room.user_request_id,
+                room_id:this.props.room.room_id,
+                user_id:this.props.room.client_id,
+                sheriff:type,
+            });
+            this.props.room.socket.send(msg);
+            this.props.dispatch({
+                type: 'room/WebSocketsend',
+                payload: {msg},
+            });
+        }
+        this.setState({visible:false});
+        this.props.dispatch({
+            type: 'room/setsheriffmodal',
+            payload: false,
+        });
+    }
     render() {
         const window = Dimensions.get('window');
         return (
@@ -925,18 +944,18 @@ export default class Tabview extends Component {
                                 <Button
                                     raised
                                     icon={{name: 'done'}}
-                                    title='确认'
+                                    title='竞选'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
-                                    onPress={this.onConfirm}
+                                    onPress={()=>this.sheriffconfirm('true')}
                                 />
                                 <Button
                                     raised
                                     icon={{name: 'clear'}}
-                                    title='取消'
+                                    title='不竞选'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
-                                    onPress={this.onClose}
+                                    onPress={()=>this.sheriffconfirm('false')}
                                 />
                             </View>
                         </View>

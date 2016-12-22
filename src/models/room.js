@@ -245,6 +245,7 @@ export default {
         },
         setsheriffmodal(state,action)
         {
+            console.log("show_sheriff");
             return{...state,sheriff_modal:action.payload};
         },
 
