@@ -41,7 +41,6 @@ def kill(r_id,o_id):
             if (alive_list[index] == "true"):
                 kill(r_id, couples[1])
 
-
     return
 
 def save(r_id,o_id):
@@ -68,5 +67,15 @@ def save(r_id,o_id):
     role = glob.user_role[o_id]
     if role == "wolf":
         glob.room_aliver_wolf_num[r_id] = glob.room_aliver_wolf_num[r_id] + 1
+
+    couples = glob.room_couples_id[r_id]
+    if o_id in couples:
+        index = id_list.index(couples[0])
+        if (alive_list[index] == "false"):
+            save(r_id, couples[0])
+        else:
+            index = id_list.index(couples[1])
+            if (alive_list[index] == "false"):
+                save(r_id, couples[1])
 
     return

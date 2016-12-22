@@ -8,7 +8,6 @@ import app_websocket_method.glob
 from app_websocket_method import glob
 
 def create(u_id,r_name):
-    RoomInfo.objects.all().delete()
     # 获取一个未使用的房间号
     mark = False
     room_id = 0
@@ -27,25 +26,47 @@ def create(u_id,r_name):
     # 操作数据库
 
     user = UserInfo.objects.get(id = int(u_id))
+    #删除之前重复的房间
+    RoomInfo.objects.filter(room_id = str(room_id)).delete()
+    RoomInfo.objects.filter(owner_id=u_id).delete()
 
     newRoom = RoomInfo(room_id=str(room_id),room_name=r_name,owner_id=u_id,player_num=1,
                        player_id=u_id,player_nick=user.nick_name,player_alive="true",
-                       player_seat=str(0),state = 1)
+                       player_seat=str(0),state = 1,round = 1)
     newRoom.save()
 
-    #newPlayer = PlayerInfo(name=user_name,room_id=room_id,alive=True)
-    #newPlayer.save()
 
 
     # glob添加新对象
     glob.room_request_id[str(room_id)] = 0
     glob.room_player_num[str(room_id)] = 1
     glob.room_alive_num[str(room_id)] = 1
+    glob.room_aliver_wolf_num[str(room_id)] = 0
     glob.room_mark[str(room_id)] = {u_id:0}
     glob.room_open[str(room_id)] = True
     glob.room_owner_id[str(room_id)] = u_id
     glob.user_nick[u_id] = user.nick_name
     glob.user_request_id[u_id]=0
+    glob.room_player_seat[str(room_id)] = {str(u_id):1}
+    glob.room_protect_id[str(room_id)] = '-1'
+    glob.room_role_number[str(room_id)] = {}
+    glob.room_next[str(room_id)] = []
+    glob.user_alive[u_id] = 'true'
+    glob.user_role[u_id] = 'village'
+    glob.room_sheriff_list[str(room_id)] = []
+    glob.room_sheriff_select[str(room_id)] = {}
+    glob.room_sheriff_id[str(room_id)]=u_id
+    glob.room_wolf_select[str(room_id)] = {}
+    glob.room_wolf_select_num[str(room_id)] = 0
+    glob.room_day_select[str(room_id)] = {}
+    glob.room_day_select_num[str(room_id)] = 0
+    glob.room_select_num[str(room_id)] = 0
+    glob.room_request_content[str(room_id)] = []
+    glob.room_couples_id[str(room_id)] = []
+
+
+
+
 
 
     return room_id

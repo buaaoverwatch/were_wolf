@@ -35,19 +35,16 @@ import time
 def ws_message(message):
 
     jso = message.content['text']
-    print jso
+    print "client message:" + jso
     data = demjson.decode(jso)
-    print data['type']
     #确认消息只需记录一下，不用返回
     if data['type'] == '0':
         process_request.process(data)
-        print 1
     else:
         js = demjson.encode({'type': '0','user_request_id':str(data['request_id'])})
         data2 = {'text': js}
         message.reply_channel.send(data2)
-        print 2
-        #process_request.process(data)
+        process_request.process(data)
 
 
 
@@ -56,7 +53,7 @@ def ws_connect(message):
     print message.content['path']
     room = message.content['path'].strip("/")
     message.channel_session['room'] = room
-    Group("chat-%s" % room).add(message.reply_channel)
+    Group("room-%s" % room).add(message.reply_channel)
     #message.reply_channel.send('connect sucess')
 
 
@@ -64,4 +61,4 @@ def ws_connect(message):
 def ws_disconnect(message):
     print 'disconnect'
     #print message.channel_session['room']
-    Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
+    Group("room-%s" % message.channel_session['room']).discard(message.reply_channel)
