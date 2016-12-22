@@ -3,26 +3,45 @@
  */
 import React, { Component } from 'react';
 import { Alert,View } from 'react-native';
-import dva, { connect } from 'dva/mobile';
-import Button from 'antd-mobile/lib/button';
+import { connect } from 'dva/mobile';
 import {Actions} from 'react-native-router-flux';
 import state from '../consts/roomstate';
 import IP from '../consts/ip';
 import Toast from 'antd-mobile/lib/toast';
 
+class Socket extends Component {
+    constructor(props) {
+        // 继承父类的this对象和传入的外部属性
+        super(props);
+        // 设置初始状态
+        const { room,dispatch } = props;
+        this.state = {
+            laststate:state.waitngplayer,
+            connected:false,
+            dispatch:dispatch,
+            room:room,
+        };
+        this.handlesocket = this.handlesocket.bind(this);
+        this.sendcomfirm = this.sendcomfirm.bind(this);
+    }
 
-const Socket = (props) => {
-    const { dispatch,room} = props;
-    let laststate;
-    function handlesocket()
-    {
-        connected=false;
-        console.log("roomid: " + room.room_id);
-        ws = new WebSocket(IP.wsip+':8000/' + room.room_id);
+    componentWillMount() {
+        if(!this.props.room.hassocket)
+        {
+            this.handlesocket();
+            console.log("socket success");
+        }
+    }
+
+    handlesocket() {
+        this.setState({connected:false});
+        console.log("setSocket! ");
+        console.log("roomid: " + this.props.room.room_id);
+        ws = new WebSocket(IP.wsip+':8000/' + this.props.room.room_id);
         ws.onopen = () => {
             // connection opened
             console.log('OK');
-            connected=true;
+            this.setState({connected:true});
             //ws.send('something'); // send a message
         };
 
@@ -36,17 +55,17 @@ const Socket = (props) => {
             {
                 if(msg.type==='0')
                 {
-
-                    if(msg.user_request_id===room.user_request_id.toString())//收到了发送消息的确认消息
+                    this.state.
+                    if(msg.user_request_id===this.props.room.user_request_id.toString())//收到了发送消息的确认消息
                     {
                         console.log('add request id');
                         console.log(msg);
-                        dispatch({
+                        this.state.dispatch({
                             type: 'room/addUserRequestID',
                         });
 
-                        room.user_request_id=room.user_request_id+1;
-                        dispatch({
+                        //room.user_request_id=room.user_request_id+1;看一下
+                        this.state.dispatch({
                             type: 'room/hideLoading',
                         });
 
@@ -56,23 +75,23 @@ const Socket = (props) => {
                 else
                 {
                     console.log("start");
-                    console.log('room.room_request_id: ' + room.room_request_id);
+                    console.log('room.room_request_id: ' + this.props.room.room_request_id);
                     console.log('msg.room_request_id: ' + msg.room_request_id);
-                    sendcomfirm(msg);
-                    //if(msg.room_request_id>=room.room_request_id)
-                    if(parseInt(msg.room_request_id)>parseInt(room.room_request_id))
+                    this.sendcomfirm(msg);
+                    //if(msg.room_request_id>=this.props.room.room_request_id)
+                    if(parseInt(msg.room_request_id)>parseInt(this.props.room.room_request_id))
                     {
                         //修改当前回调函数中的局部值
-                        //room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
-                        room.room_request_id=msg.room_request_id;
+                        //this.props.room.room_request_id=(parseInt(msg.room_request_id)+1).toString();
+                        //room.room_request_id=msg.room_request_id;
                         //修改room model中的值
-                        dispatch({
+                        this.state.dispatch({
                             type: 'room/setRoomRequestID',
-                            payload: room.room_request_id,
+                            payload: msg.room_request_id,
                         });
                         if(msg.type==='2')
                         {
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/joinroom',
                                 payload: msg.id_nick
                             });
@@ -83,7 +102,7 @@ const Socket = (props) => {
                             if(msg.result=="true") {
                                 console.log('choose seat result:');
                                 console.log(msg);
-                                dispatch({
+                                this.state.dispatch({
                                     type:'room/setplayerindex',
                                     payload:{
                                         u_id:msg.user_id,
@@ -91,7 +110,7 @@ const Socket = (props) => {
                                     },
                                 });
 
-                                dispatch({
+                                this.state.dispatch({
                                     type:'room/playerindex2indexplayer',
                                     payload:{
                                         u_id:msg.user_id,
@@ -99,16 +118,16 @@ const Socket = (props) => {
                                     },
                                 });
 
-                                if(msg.user_id===room.client_id) {
-                                    dispatch({
+                                if(msg.user_id===this.props.room.client_id) {
+                                    this.state.dispatch({
                                         type: 'room/changeloading',
                                         payload: false,
                                     });
                                 }
                             }
                             else {
-                                if(msg.user_id===room.client_id) {
-                                    dispatch({
+                                if(msg.user_id===this.props.room.client_id) {
+                                    this.state.dispatch({
                                         type:'room/changeloading',
                                         payload:false,
                                     });
@@ -124,17 +143,17 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='4')
                         {
-                            dispatch({
+                            this.state.dispatch({
                                 type:'room/changeloading',
                                 payload:false,
                             });
                             console.log("4564545644");
-                            dispatch({
+                            this.state.dispatch({
                                 type:'room/setrolelist',
                                 payload:msg.list,
                             });
                             console.log("4564545644sf");
-                            dispatch({
+                            this.state.dispatch({
                                 type:'room/set_index_id',
                             });
                             console.log("456454564sdfdsf4");
@@ -142,14 +161,14 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='5')//房间状态改变
                         {
-                            laststate = room.curstate;
-                            dispatch({
+                            this.setState({laststate:this.props.room.curstate});
+                            this.state.dispatch({
                                 type: 'room/setroomstate',
                                 payload: msg.room_state
                             });
-                            room.curstate = msg.room_state;
-                            if(laststate == state.checkrole) {
-                                dispatch({
+                            //room.curstate = msg.room_state;
+                            if(this.state.laststate == state.checkrole) {
+                                this.state.dispatch({
                                     type:'room/changeloading',
                                     payload:false,
                                 });
@@ -158,20 +177,20 @@ const Socket = (props) => {
                             }
                             if(msg.room_state == state.daytalk) {
                                 //白天发言阶段 将之前的保存的存活状态更新
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/updatealive'
                                 });
                             }
                             //TODO：根据角色是否存活来决定下一步操作
                             if(msg.role_alive == 'false' && (msg.room_state == state.guard ||
                                 msg.room_state == state.witch || msg.room_state == state.seer)){
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/timerstate'
                                 });
                             }
                             if(msg.room_state == state.sheriffchoose) {
                                 //选择竞选警长，弹框
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/setsheriffmodal',
                                     payload: true,
                                 });
@@ -185,14 +204,14 @@ const Socket = (props) => {
                             };
                             if(msg.action=='0')//选人
                             {
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/setWolfVote' ,
                                     payload:m,
                                 });
                             }
                             else if(masg.action=='1')//杀人
                             {
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/setkillid_wolf' ,
                                     payload:msg.object_id,
                                 });
@@ -208,7 +227,7 @@ const Socket = (props) => {
                                         console.log("狼人把人救活了？？？");
                                         break;
                                     }
-                                    dispatch({
+                                    this.state.dispatch({
                                         type: 'room/setlastwolf',
                                         payload: key
                                     });
@@ -218,13 +237,13 @@ const Socket = (props) => {
                                 for(let key in msg.change) {
                                     if(msg.change[key] == 'true') {
                                         console.log("女巫救了：" + key);
-                                        dispatch({
+                                        this.state.dispatch({
                                             type: 'room/setlastwitchsave',
                                             payload: key
                                         });
                                     } else if(msg.change[key] == 'false') {
                                         console.log("女巫毒了：" + key);
-                                        dispatch({
+                                        this.state.dispatch({
                                             type: 'room/setlastwitchkill',
                                             payload: key
                                         });
@@ -238,21 +257,21 @@ const Socket = (props) => {
                         }
                         else if(msg.type==='8')//参与警长竞选人员表
                         {
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setjoinsheriff',
                                 payload:msg.list,
                             });
                         }
                         else if(msg.type==='9')//警长投票结果
                         {
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setlastvote',
                                 payload:msg.list,
                             });
                         }
                         else if(msg.type==='10')//警徽归属
                         {
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setsheriff' ,
                                 payload:msg.list,
                             });
@@ -268,19 +287,19 @@ const Socket = (props) => {
                                 user_id:msg.user_id,
                                 content:msg.content,
                             };
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setWolfMsg' ,
                                 payload:m,
                             });
                         } else if(msg.type == '15') { //守卫
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setlastguard',
                                 payload: msg.user_id
                             });
                         } else if(msg.type == '16') { //情侣
                             console.log("lover1_id: " + msg.user1_id);
                             console.log("lover2_id: " + msg.user2_id);
-                            dispatch({
+                            this.state.dispatch({
                                 type: 'room/setLoverID',
                                 payload:{
                                     lover_id1: msg.user1_id,
@@ -289,7 +308,7 @@ const Socket = (props) => {
                             });
                         } else if(msg.type == '17') { //白天投票结果
                             if(msg.result == 'true') {
-                                dispatch({
+                                this.state.dispatch({
                                     type: 'room/setlastvote',
                                     payload: msg.list
                                 });
@@ -299,7 +318,7 @@ const Socket = (props) => {
                                 console.log("error");
                             }
                         } else if(msg.type === '18') {
-                            dispatch({
+                            this.state.dispatch({
                                 type:'room/changeloading',
                                 payload:false,
                             });
@@ -327,38 +346,20 @@ const Socket = (props) => {
             console.log('ssss');
             connected=false;
         };
-        dispatch({
+        this.state.dispatch({
             type: 'room/setsocket' ,
             payload:ws,
         });
     }
-    function handleclick()
-    {
-        if(connected)
-        {
-            msg1=JSON.stringify({
-                type:100,
-                request_id:room.user_request_id.toString(),
-                room_id:room.room_id,
-                user_id:room.client_id,
-                seat:100,
-            });
-            ws.send(msg1);
-            dispatch({
-                type: 'room/WebSocketsend',
-                payload: {msg1},
-            });
-            console.log('Ol'+room.user_request_id);
-        }
-    }
-    function sendcomfirm(data) {
+
+    sendcomfirm(data){
         if (data.type!='0')
         {
-            console.log("room_id: " + props.room.room_id);
+            console.log("room_id: " + this.props.room.room_id);
             msg1=JSON.stringify({
                 type: '0',
-                room_id:props.room.room_id.toString(),
-                user_id:props.room.client_id,
+                room_id:this.props.room.room_id.toString(),
+                user_id:this.props.room.client_id,
                 room_request_id:data.room_request_id.toString(),
             });
             console.log('send confirm msg:');
@@ -366,14 +367,14 @@ const Socket = (props) => {
             ws.send(msg1) ;
         }
     }
-    if(props.room.hassocket == false) {
-        handlesocket();
-        console.log('socket success', 1);
-    }
-    return (
-        <View style={{flex: 1, height: 0}}>
-        </View>
-    );
-};
 
-export default connect(room=>room)(Socket)
+    render(){
+        return (
+            <View style={{flex: 1, height: 0}}>
+            </View>
+        );
+    }
+
+}
+
+export default connect(room => room)(Socket);
