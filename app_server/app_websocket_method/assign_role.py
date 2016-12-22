@@ -97,10 +97,10 @@ def assign(data):
     #发送信息
     message = {'type': '4', 'room_request_id': str(glob.room_request_id[r_id]), 'list': id_role}
     json = demjson.encode(message)
-    #send_message.send(r_id, json)
-    glob.room_request_content[r_id].append(json)
+    send_message.send(r_id, json)
+    #glob.room_request_content[r_id].append(json)
 
-    room_state_change.change(0,r_id)
+    #room_state_change.change(0,r_id)
 
 
     return

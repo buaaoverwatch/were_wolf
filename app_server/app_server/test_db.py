@@ -4,6 +4,7 @@ from app_db.models import RoomInfo
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from channels import Group
 
 @csrf_exempt
 def test(request):
@@ -25,11 +26,10 @@ def test(request):
     #     print i.room_id
     # print rooms
 
-    rooms = RoomInfo.objects.all().values_list('room_id', 'room_name')
-    for i in rooms:
-        print i[0]
-        print i[1]
-
-    print rooms
+    # message = "websocket success"
+    # room_id = '0'
+    # Group("room-%s" % room_id).send({
+    #     "text": message,
+    # })
 
     return HttpResponse('success')

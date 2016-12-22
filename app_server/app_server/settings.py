@@ -25,7 +25,7 @@ SECRET_KEY = 'bziwd19_uvuoir3xhwzt5_l=*g_0t0*gpw84i56w)s4(2g$x)-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_db',
     'channels',
+    'corsheaders',
+
 ]
 
 CHANNEL_LAYERS = {
@@ -49,9 +51,10 @@ CHANNEL_LAYERS = {
 }
 
 MIDDLEWARE = [
+	'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -59,6 +62,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'app_server.urls'
+# CORS Config
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
 
 TEMPLATES = [
     {

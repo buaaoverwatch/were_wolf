@@ -16,12 +16,16 @@ def join(u_id,r_id):
 
 
 
-    data = {'result':'0','room_name':'null','owner_id':'0'}
-    if glob.room_id[int(r_id)] == 0:
+    data = {'result':'0','room_name':'null','owner_id':'0','id_nick':{}}
+    if int(r_id) < len(glob.room_id):
+        if glob.room_id[int(r_id)] == 0:
+            data['result'] = '1'
+            return data
+        elif glob.room_open[r_id] == False:
+            data['result'] = '2'
+            return data
+    else:
         data['result'] = '1'
-        return data
-    elif glob.room_open[r_id] == False:
-        data['result'] = '2'
         return data
 
 
@@ -46,10 +50,11 @@ def join(u_id,r_id):
     #newPlayer.save()
 
     # 更改glob
-    glob.room_mark[r_id][u_id] = 0
+    glob.room_mark[r_id][u_id] = 1
     glob.user_request_id[u_id] = 0
     glob.user_nick[u_id] = user.nick_name
     glob.user_alive[u_id] = 'true'
+    glob.user_role[u_id] = 'village'
     glob.room_player_num[r_id] = glob.room_player_num[r_id] + 1
     glob.room_alive_num[r_id] = glob.room_alive_num[r_id] + 1
 
@@ -60,7 +65,8 @@ def join(u_id,r_id):
         id_nick[i] = glob.user_nick[i]
 
     message = {'type':'2','room_request_id':str(glob.room_request_id[r_id]),'id_nick':id_nick}
+    print message
     json = demjson.encode(message)
     send_message.send(r_id,json)
-
+    data['id_nick'] = id_nick
     return data

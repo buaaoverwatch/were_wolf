@@ -23,13 +23,14 @@ urlpatterns = [
 
     url(r'^register/', view.register),
     url(r'^login/', view.login),
+    url(r'^logout/', view.logout),
     url(r'^create/', view.createRoom),
     url(r'^join/', view.joinRoom),
     url(r'^getRecord/', view.getRecord),
     url(r'^updataInfo/', view.updataInfo),
     url(r'^getRoomList/', view.getRoomList),
     url(r'^getRoomInfo/', view.getRoomInfo),
-
+    url(r'^findPassword/', view.findPassword),
 
     url(r'^test/', test_db.test),
 ]

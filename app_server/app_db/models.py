@@ -13,6 +13,8 @@ class UserInfo(models.Model):
 	nick_name = models.CharField(max_length=30,default='nick')
 	password = models.CharField(max_length=30,default='123456')
 	introduce = models.CharField(max_length=200,default='无可奉告')
+	question = models.CharField(max_length=200,default='我的名字')
+	answer = models.CharField(max_length=200,default='玩家')
 
 class RoomInfo(models.Model):
 	room_id = models.CharField(max_length=10,default=-1)
