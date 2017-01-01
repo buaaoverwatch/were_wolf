@@ -7,14 +7,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "antd-mobile": "^0.9.8",
+    "antd-mobile": "^0.9.13",
     "dva": "^1.1.0",
     "rc-form": "^1.0.1",
     "react": "15.3.2",
     "react-dom": "^15.3.2",
     "react-native": "0.37.0",
     "react-native-animatable": "^0.6.1",
-    "react-native-elements": "^0.6.3",
+    "react-native-elements": "^0.8.2",
     "react-native-linear-gradient": "^1.5.15",
     "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
     "react-native-parallax-scroll-view": "^0.19.0",

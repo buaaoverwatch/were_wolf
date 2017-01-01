@@ -89,7 +89,9 @@ export default {
         myseat:0,
         //玩家选座的时候
 
-        role_alive: true
+        role_alive: true,
+
+        result: "", // 0-狼人胜利 1-好人胜利 2-丘比特胜利 3-房主离开
     },
 
     subscriptions: {},
@@ -415,6 +417,9 @@ export default {
             console.log(action.payload);
             return {...state, player_nick: action.payload, player_index: player_index,
                 index_player: index_player, player_id: player_id, player_num: i - 1};
+        },
+        setresult(state, action) {
+            return { ...state, result: action.payload};
         },
 
 

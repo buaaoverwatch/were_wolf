@@ -8,6 +8,7 @@ import {Actions} from 'react-native-router-flux';
 import state from '../consts/roomstate';
 import IP from '../consts/ip';
 import Toast from 'antd-mobile/lib/toast';
+import Sound from 'react-native-sound';
 
 class Socket extends Component {
     constructor(props) {
@@ -180,6 +181,7 @@ class Socket extends Component {
                                     type: 'room/updatealive'
                                 });
                             }
+                            this.playSound();
                             //TODO：根据角色是否存活来决定下一步操作
                             if(msg.role_alive == 'false' && (msg.room_state == state.guard ||
                                 msg.room_state == state.witch || msg.room_state == state.seer)){
@@ -277,7 +279,11 @@ class Socket extends Component {
                         } else if(msg.type == '11') { //断线重连 获取房间信息
 
                         } else if(msg.type == '12') { //游戏结束
-
+                            this.state.dispatch({
+                                type: 'room/setresult',
+                                payload: msg.reason
+                            });
+                            Actions.Gameover();
                         } else if(msg.type == '13') { //离开房间
 
                         }
@@ -349,6 +355,18 @@ class Socket extends Component {
             type: 'room/setsocket' ,
             payload:ws,
         });
+    }
+
+    playSound() {
+        sd = new Sound('record.mp3', Sound.MAIN_BUNDLE, (e) => {
+            if (e) {
+                console.log('error', e);
+            } else {
+                console.log('duration', sd.getDuration());
+                sd.play();
+            }
+        });
+
     }
 
     sendcomfirm(data){

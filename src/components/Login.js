@@ -228,14 +228,14 @@ const styles = StyleSheet.create({
         height:300,
     },
     Label: {
-        fontSize: PixelRatio.getPixelSizeForLayoutSize(15) ,
+        fontSize: 22,
         color: '#272727',
     },
     Tex: {
-        fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
+        fontSize: 18,
     },
     conStyle: {
-        height: PixelRatio.getPixelSizeForLayoutSize(18),
+        height: 35,
     },
     But: {
         width: Dimensions.get('window').width*0.9,

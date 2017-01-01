@@ -46,7 +46,7 @@ const Test1 = (props) => {
                         {
                             msg=JSON.stringify({
                                 type: '5',
-                                request_id:room.user_request_id,
+                                request_id:room.user_request_id.toString(),
                                 room_id:room.room_id,
                                 user_id:room.client_id,
                                 object_id:item,
