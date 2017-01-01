@@ -33,6 +33,7 @@ class Register extends Component {
             introduce:"",
             question:"",
             answer:"",
+            en_register:false,
         };
         //this.getList = this.getList.bind(this);
     }
@@ -142,7 +143,20 @@ class Register extends Component {
                         textInputRef='a'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(username) => this.setState({username})}
+                        onChangeText={(username) => {
+                            this.setState({username});
+                            if(username!='' && this.state.password!=''
+                                && this.state.nickname!='' && this.state.introduce!=''
+                                && this.state.question!='' && this.state.answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.username}
                         placeholder="6-12位字母或数字"
                         maxLength={12}
@@ -164,7 +178,20 @@ class Register extends Component {
                         textInputRef='b'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(nickname) => this.setState({nickname})}
+                        onChangeText={(nickname) => {
+                            this.setState({nickname});
+                            if(this.state.username!='' && this.state.password!=''
+                                && nickname!='' && this.state.introduce!=''
+                                && this.state.question!='' && this.state.answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.nickname}
                         placeholder="不超过十个字符,可以是中文"
                         maxLength={10}
@@ -185,7 +212,20 @@ class Register extends Component {
                         textInputRef='c'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={(password) => {
+                            this.setState({password});
+                            if(this.state.username!='' && password!=''
+                                && this.state.nickname!='' && this.state.introduce!=''
+                                && this.state.question!='' && this.state.answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.password}
                         placeholder="6-12位字母或数字"
                         maxLength={12}
@@ -207,7 +247,20 @@ class Register extends Component {
                         textInputRef='d'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(introduce) => this.setState({introduce})}
+                        onChangeText={(introduce) => {
+                            this.setState({introduce});
+                            if(this.state.username!='' && this.state.password!=''
+                                && this.state.nickname!='' && introduce!=''
+                                && this.state.question!='' && this.state.answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.introduce}
                         placeholder="用一句话介绍自己吧~"
                         returnKeyType="next"
@@ -227,7 +280,20 @@ class Register extends Component {
                         textInputRef='e'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(question) => this.setState({question})}
+                        onChangeText={(question) => {
+                            this.setState({question});
+                            if(this.state.username!='' && this.state.password!=''
+                                && this.state.nickname!='' && this.state.introduce!=''
+                                && question!='' && this.state.answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.question}
                         placeholder="用于密码找回"
                         returnKeyType="next"
@@ -247,7 +313,20 @@ class Register extends Component {
                         textInputRef='f'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(answer) => this.setState({answer})}
+                        onChangeText={(answer) => {
+                            this.setState({answer});
+                            if(this.state.username!='' && this.state.password!=''
+                                && this.state.nickname!='' && this.state.introduce!=''
+                                && this.state.question!='' && answer!=''
+                            )
+                            {
+                                this.setState({en_register:true});
+                            }
+                            else
+                            {
+                                this.setState({en_register:false});
+                            }
+                        }}
                         value={this.state.answer}
                         placeholder="密保问题答案"
                         returnKeyType="done"
@@ -268,6 +347,7 @@ class Register extends Component {
                         onPress={()=>this.onClick()}
                         backgroundColor='#2db7f5'
                         raised={true}
+                        disabled={!this.state.en_register}
                     />
                 </View>
                 <ActivityIndicator

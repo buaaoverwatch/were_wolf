@@ -16,6 +16,7 @@ import { FormLabel, FormInput , Button} from 'react-native-elements'
 
 import IP from '../consts/ip';
 
+
 import {
     Actions
 } from 'react-native-router-flux';
@@ -137,7 +138,17 @@ class Login extends Component {
                         textInputRef='user'
                         inputStyle={styles.Tex}
                         containerStyle={styles.conStyle}
-                        onChangeText={(username) => this.setState({username})}
+                        onChangeText={(username) => {
+                            this.setState({username});
+                            if(username!='' && this.state.password!='')
+                            {
+                                this.setState({en_login:true});
+                            }
+                            else
+                            {
+                                this.setState({en_login:false});
+                            }
+                        }}
                         value={this.state.username}
                         placeholder="输入你注册时的用户名"
                         returnKeyType="next"

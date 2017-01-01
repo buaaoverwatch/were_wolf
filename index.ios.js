@@ -94,7 +94,7 @@ class App extends Component {
                     <Scene key="GameSetting" component={GameSetting} />
                     <Scene key="ChooseSeat" component={ChooseSeat} />
                     <Scene key="seeMySelf" component={seeMySelf} />
-                    <Scene key="Test1" component={Test1} />
+                    <Scene key="Test1" component={Test1}/>
                   </Scene>
                 </Scene>
                 <Scene

@@ -16,6 +16,7 @@
     "react-native-animatable": "^0.6.1",
     "react-native-elements": "^0.6.3",
     "react-native-linear-gradient": "^1.5.15",
+    "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
     "react-native-parallax-scroll-view": "^0.19.0",
     "react-native-router-flux": "^3.37.0",
     "react-native-scrollable-tab-view": "^0.6.0",

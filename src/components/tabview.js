@@ -8,6 +8,7 @@ import {
     Alert,
     ScrollView,
     Picker,
+    PixelRatio,
 } from 'react-native';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -930,21 +931,21 @@ export default class Tabview extends Component {
                         closable
                         maskClosable
                         transparent
-                        onClose={this.onClose}
+                        onClose={()=>this.sheriffconfirm('false')}
                         visible={this.props.room.sheriff_modal}
                         style={{height:200,width:300,alignItems: 'center'}}
                     >
                         <View style={{alignItems: 'center'}}>
                             <Text style={{marginTop:20,
                                 justifyContent: 'center',
-                                alignItems: 'center',}}>
+                                alignItems: 'center',fontSize: PixelRatio.getPixelSizeForLayoutSize(10) ,}}>
                                 请确认是否要竞选警长
                             </Text>
                             <View style={{flexDirection:'row',alignItems: 'center'}}>
                                 <Button
                                     raised
                                     icon={{name: 'done'}}
-                                    title='竞选'
+                                    title='是'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
                                     onPress={()=>this.sheriffconfirm('true')}
@@ -952,7 +953,7 @@ export default class Tabview extends Component {
                                 <Button
                                     raised
                                     icon={{name: 'clear'}}
-                                    title='不竞选'
+                                    title='否'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
                                     onPress={()=>this.sheriffconfirm('false')}

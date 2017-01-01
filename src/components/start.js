@@ -12,6 +12,7 @@ import {
     Actions
 } from 'react-native-router-flux';
 import Button from 'antd-mobile/lib/button';
+import Orientation from 'react-native-orientation';
 
 export default class Start extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ export default class Start extends Component {
                 duration: 1000
             },           // Configuration
         ).start();                // Don't forget start!
+        Orientation.lockToPortrait();
     }
     render() {
         return (

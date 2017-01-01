@@ -55,7 +55,6 @@ class Socket extends Component {
             {
                 if(msg.type==='0')
                 {
-                    this.state.
                     if(msg.user_request_id===this.props.room.user_request_id.toString())//收到了发送消息的确认消息
                     {
                         console.log('add request id');
@@ -370,7 +369,7 @@ class Socket extends Component {
 
     render(){
         return (
-            <View style={{flex: 1, height: 0}}>
+            <View style={{height: 0}}>
             </View>
         );
     }

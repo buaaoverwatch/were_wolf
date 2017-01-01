@@ -119,7 +119,6 @@ var CARoom = (props) => {
                     }
                 });
                 //这里应该有一个界面跳转
-                console.log("jump suc");
                 Actions.GameRoom();
                 console.log(responseText);
                 return responseText;
