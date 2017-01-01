@@ -83,8 +83,17 @@ class RoomList extends Component {
                 this.setState({
                     refreshing: false,
                 });
-                Toast.success("获取了当前所有房间！",1);
                 console.log(responseText);
+                if(responseText.length==0)
+                {
+                    Toast.fail("当前没有房间！",1);
+                    responseText=[{'id':"-1",'name':"",'owner_name':"",'player_num':"",'state':""}]
+                }
+                else
+                {
+                    Toast.success("获取了当前所有房间！",1);
+                    console.log(responseText);
+                }
                 this.setState({
                     dataList: responseText,
                 });
@@ -102,6 +111,14 @@ class RoomList extends Component {
     // 遍历的部分可以写成子渲染函数
     renderRow(rowData,sectionID,rowID) {
         console.log(rowData);
+        if(rowData.id=='-1')
+        {
+            return(
+                <View style={styles.EmptyList}>
+                    <Text>当前没有房间，快去创建一个吧！</Text>
+                </View>
+            );
+        }
         let state_num=parseInt(rowData.state);
         let icons=<Text><Icon name="ios-people" size={50}/>  {rowData.player_num}</Text>;
         let head=<Text><Icon name="ios-home" size={40}/>  {rowData.name}</Text>;
@@ -271,6 +288,12 @@ const styles = StyleSheet.create({
     },
     RoomList:{
         marginBottom: PixelRatio.get() * 26,
+    },
+    EmptyList:{
+        height: Dimensions.get('window').height*0.75,
+        width:Dimensions.get('window').width,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 

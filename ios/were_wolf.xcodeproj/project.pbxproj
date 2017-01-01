@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -31,6 +32,8 @@
 		A5EBCE275D184E2898BE0B46 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2111538D010C40D2A038E9BC /* FontAwesome.ttf */; };
 		BDD9A071B55C4B12A02FDA07 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3C07BC770C40D9906F480A /* SimpleLineIcons.ttf */; };
 		C952AC4AD760433A929F86F3 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68CC65CA1756427687BA2E15 /* Octicons.ttf */; };
+		D26956BC1E195CB200181666 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D26956BA1E195C7500181666 /* libRNSound.a */; };
+		D26956BE1E195DE900181666 /* record.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D26956BD1E195DE900181666 /* record.mp3 */; };
 		D6C0F48ACFC640B49B44694E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28A8E5F5152943D793A12E74 /* Ionicons.ttf */; };
 		E2466338AC73495BB31BEAFB /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 970C2B5F6F914C9D93B4A755 /* libRCTOrientation.a */; };
 		F442F01C5E3C45E4985D31D3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C5A712FF5ED45A080690345 /* libBVLinearGradient.a */; };
@@ -120,6 +123,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
+		};
+		D26956B91E195C7500181666 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D26956A21E195C7500181666 /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
 		};
 		D2FFC5F01DD982200053D0B8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -222,6 +232,8 @@
 		A358E0B3EB7341C19B9A058F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		B045B96E603C4FD29F063B7D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		B7E8F65BD01C465A9476B128 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		D26956A21E195C7500181666 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		D26956BD1E195DE900181666 /* record.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = record.mp3; sourceTree = "<group>"; };
 		FD12C7B83B724F21B75A9487 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,6 +250,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26956BC1E195CB200181666 /* libRNSound.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -360,6 +373,7 @@
 		65D7C7B4CBEE421CA56DF35A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D26956BD1E195DE900181666 /* record.mp3 */,
 				9A90C207A5C040CA85E0C40E /* Entypo.ttf */,
 				A358E0B3EB7341C19B9A058F /* EvilIcons.ttf */,
 				2111538D010C40D2A038E9BC /* FontAwesome.ttf */,
@@ -385,6 +399,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D26956A21E195C7500181666 /* RNSound.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -437,6 +452,14 @@
 			isa = PBXGroup;
 			children = (
 				D269568A1E18FEDA00181666 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D26956A31E195C7500181666 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D26956BA1E195C7500181666 /* libRNSound.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -578,6 +601,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = D26956A31E195C7500181666 /* Products */;
+					ProjectRef = D26956A21E195C7500181666 /* RNSound.xcodeproj */;
+				},
+				{
 					ProductGroup = D2FFC5EB1DD982200053D0B8 /* Products */;
 					ProjectRef = B045B96E603C4FD29F063B7D /* RNVectorIcons.xcodeproj */;
 				},
@@ -668,6 +695,13 @@
 			remoteRef = D26956891E18FEDA00181666 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		D26956BA1E195C7500181666 /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = D26956B91E195C7500181666 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D2FFC5F11DD982200053D0B8 /* libBVLinearGradient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -752,6 +786,7 @@
 				A5EBCE275D184E2898BE0B46 /* FontAwesome.ttf in Resources */,
 				21F228FCC4E947FBB93CC75B /* Foundation.ttf in Resources */,
 				D6C0F48ACFC640B49B44694E /* Ionicons.ttf in Resources */,
+				D26956BE1E195DE900181666 /* record.mp3 in Resources */,
 				7925381747DB410C89C11473 /* MaterialIcons.ttf in Resources */,
 				C952AC4AD760433A929F86F3 /* Octicons.ttf in Resources */,
 				BDD9A071B55C4B12A02FDA07 /* SimpleLineIcons.ttf in Resources */,
