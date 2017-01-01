@@ -22,6 +22,8 @@ const UserButton = (props) => {
     const dispatch=props.dispatch;
     let content;
     let icon;
+    console.log('userbutton');
+    console.log(props.data);
     if(sheriff===true)
         icon=<Image source={{uri:'https://ooo.0o0.ooo/2016/11/02/5819a922b13e2.png'}}
                     style={styles.icon}/>;

@@ -225,6 +225,7 @@ export default {
         },
         setalive(state,action)
         {
+            console.log('setalive');
             return{...state,player_alive:Object.assign(state.player_alive,action.payload)};
         },
         setsherifflist(state,action)
@@ -381,6 +382,8 @@ export default {
                     }
                 }
             }
+            console.log('update alive');
+            console.log(alive);
             return { ...state, last_witch_save: "", last_witch_kill: "",
                 player_alive: alive, lastwordlist: lastwordlist};
         },
@@ -422,6 +425,8 @@ export default {
             for(let key in action.payload) {
                 list[key] = true;
             }
+            console.log('setrole alive');
+            console.log(list);
             return {...state,player_role:action.payload, player_alive: list};
         },
         setplayerindex(state,action){
