@@ -30,7 +30,7 @@ const Launch = (props) => {
                     欢迎来到来浪助手
                 </Text>
             </View>
-            <ScrollableTabView>
+            <ScrollableTabView initialPage={1}>
                 <Register tabLabel="注册" dispatch={props.dispatch} loading={props.information.loading}/>
                 <Login tabLabel="登录" dispatch={props.dispatch} loading={props.information.loading}/>
             </ScrollableTabView>

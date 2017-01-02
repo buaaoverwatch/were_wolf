@@ -23,6 +23,7 @@ class Start extends Component {
         super(props);
         this.state = {
             fadeAnim: new Animated.Value(0), // init opacity 0
+            login:false,
         };
         this.login = this.login.bind(this);
     }
@@ -83,8 +84,7 @@ class Start extends Component {
                     Toast.fail("用户已登录！", 1);//TODO：这里做登录处理
                     return responseText;
                 }
-                Toast.success("登录成功！",1);
-                //TODO:这里服务器应该返回昵称和简介
+                //Toast.success("登录成功！",1);
                 this.props.dispatch({
                     type: 'information/loginSuccess',
                     payload: {
@@ -95,8 +95,14 @@ class Start extends Component {
                         userID: responseText[0].id
                     }
                 });
+                this.setState({
+                    login: true,
+                });
                 //这里应该有一个界面跳转
-                Actions.tabbar();
+                this.timer = setTimeout(
+                    () => { Actions.tabbar(); },
+                    800
+                );
                 console.log(responseText);
                 return responseText;
             })
@@ -108,12 +114,28 @@ class Start extends Component {
                 console.warn(error);
             });
     }
+    componentWillUnmount() {
+        // 如果存在this.timer，则使用clearTimeout清空。
+        // 如果你使用多个timer，那么用多个变量，或者用个数组来保存引用，然后逐个clear
+        this.timer && clearTimeout(this.timer);
+    }
+    _renderbutton()
+    {
+        if(!this.state.login)
+        {
+            return(
+                <Button type="primary" onClick={Actions.Launch} style={styles.button}>注册/登录</Button>
+            );
+        }
+        else
+            return;
+    }
     render() {
         return (
             <View style={styles.container}>
                 <Animated.Image
                     source={require('../images/background.jpg')} style={[styles.img, {opacity: this.state.fadeAnim}]}>
-                    <Button type="primary" onClick={Actions.Launch} style={styles.button}>注册/登录</Button>
+                    {this._renderbutton()}
                 </Animated.Image>
             </View>
         );
