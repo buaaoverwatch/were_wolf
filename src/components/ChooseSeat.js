@@ -237,7 +237,6 @@ const ChooseSeat = (props) => {
     }
 
 
-
     return (
         <View style={{flex: 1}}>
             <View style={styles.header}>

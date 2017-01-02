@@ -11,6 +11,8 @@ import UserButton from './userbutton';
 
 
 function UserGrid(props) {
+    console.log("user grid button");
+    console.log(props);
     return (
         <View style={styles.container}>
             {

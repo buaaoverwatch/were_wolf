@@ -391,7 +391,7 @@ export default {
             if(state.hassocket) {
                 let msg = JSON.stringify({
                     type: "4",
-                    request_id: state.user_request_id,
+                    request_id: state.user_request_id.toString(),
                     room_id: state.props.room.room_id,
                     user_id: state.props.room.client_id
                 });
@@ -404,17 +404,24 @@ export default {
             let player_index = {};
             let index_player = {};
             let player_id = [];
+            let alive = {};
             let i = 1;
             for(let key in action.payload) {
                 player_id.push(key);
                 index_player[i] = "";
                 player_index[key] = null;
+                alive[key] = true;
+                if(key == state.owner_id) {
+                    player_index[key] = 1;
+                    index_player[1] = key;
+                }
                 i++;
             }
             console.log("room:");
             console.log(action.payload);
             return {...state, player_nick: action.payload, player_index: player_index,
-                index_player: index_player, player_id: player_id, player_num: i - 1};
+                index_player: index_player, player_id: player_id, player_num: i - 1,
+                player_alive: alive};
         },
         setresult(state, action) {
             return { ...state, result: action.payload};
@@ -425,7 +432,7 @@ export default {
 
         setrolelist(state,action){
             let list = {};
-            for(let key in action.payload) {
+                for(let key in action.payload) {
                 list[key] = true;
             }
             console.log('setrole alive');

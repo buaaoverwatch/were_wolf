@@ -99,7 +99,7 @@ export default class Tabview extends Component {
                     {
                         msg=JSON.stringify({
                             type:'5',
-                            request_id:this.props.room.user_request_id,
+                            request_id:this.props.room.user_request_id.toString(),
                             room_id:this.props.room.room_id,
                             user_id:this.props.room.client_id,
                             object_id:this.props.room.wolf_lastkill,
@@ -142,7 +142,7 @@ export default class Tabview extends Component {
                         {
                             msg=JSON.stringify({
                                 type:'5',
-                                request_id:this.props.room.user_request_id,
+                                request_id:this.props.room.user_request_id.toString(),
                                 room_id:this.props.room.room_id,
                                 user_id:this.props.room.client_id,
                                 object_id:this.props.room.player_selectedid,
@@ -878,7 +878,7 @@ export default class Tabview extends Component {
                 {
                     msg=JSON.stringify({
                         type:'7',
-                        request_id:this.props.room.user_request_id,
+                        request_id:this.props.room.user_request_id.toString(),
                         room_id:this.props.room.room_id,
                         user_id:this.props.room.client_id,
                         object_id:this.props.room.player_selectedid,
@@ -903,7 +903,7 @@ export default class Tabview extends Component {
                 {
                     msg=JSON.stringify({
                         type:'10',
-                        request_id:this.props.room.user_request_id,
+                        request_id:this.props.room.user_request_id.toString(),
                         room_id:this.props.room.room_id,
                         user_id:this.props.room.client_id,
                         object_id:this.props.room.player_selectedid,
@@ -956,7 +956,7 @@ export default class Tabview extends Component {
         {
             msg=JSON.stringify({
                 type:'6',
-                request_id:this.props.room.user_request_id,
+                request_id:this.props.room.user_request_id.toString(),
                 room_id:this.props.room.room_id,
                 user_id:this.props.room.client_id,
                 sheriff:type,

@@ -98,7 +98,8 @@ class Socket extends Component {
                             console.log("ws:");
                             console.log(msg.id_nick);
                         }
-                        else if(msg.type==='3') {//这里要改的是index_player不是player_index
+                        else if(msg.type==='3')
+                        {//这里要改的是index_player不是player_index
                             if(msg.result=="true") {
                                 console.log('choose seat result:');
                                 console.log(msg);

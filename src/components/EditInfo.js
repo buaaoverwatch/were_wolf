@@ -27,12 +27,14 @@ import IP from '../consts/ip';
 var nickname;
 var password;
 var introduce;
+var question;
+var answer;
 var EditInfo = (props) => {
     const { dispatch, information } = props;
     const {getFieldProps} = props.form;
     function click() {
         var Regx = /(^[A-Za-z0-9]+$)/;
-        if(!(nickname && password && introduce)) {
+        if(!(nickname && password && introduce && question && answer)) {
             Toast.fail("信息填写不完整！", 1);
             return;
         }
@@ -63,7 +65,9 @@ var EditInfo = (props) => {
                 user_id: information.userID,
                 nick_name: nickname,
                 password: password,
-                intro: introduce
+                intro: introduce,
+                question: question,
+                answer: answer
             })
         })
             .then(function(data){
@@ -162,12 +166,28 @@ var EditInfo = (props) => {
                     clear={true}
                     placeholder={information.introduce}
                 >简介</InputItem>
-
-
-
-
-
-
+                <InputItem
+                    {...getFieldProps('question', {
+                        initialValue: '',
+                        onChange(value){
+                            question=value;
+                        }
+                    })}
+                    maxLength={20}
+                    clear={true}
+                    placeholder="输入一个密保问题"
+                >密保问题</InputItem>
+                <InputItem
+                    {...getFieldProps('answer', {
+                        initialValue: '',
+                        onChange(value){
+                            answer=value;
+                        }
+                    })}
+                    maxLength={20}
+                    clear={true}
+                    placeholder="输入密保问题答案"
+                >密保答案</InputItem>
             </List>
             <ActivityIndicator
                 toast
