@@ -17,77 +17,32 @@ import {
 import Badge from 'antd-mobile/lib/badge';
 
 const UserButton = (props) => {
-    const { index,selected=false,vote,username,onPress,disabled,sheriff,userid} = props.data;
+    const { index,selected=false,vote,username,onPress,disabled,sheriff,userid,wolf} = props.data;
     const styleprop=props.style;
     const dispatch=props.dispatch;
     let content;
-    let icon;
-    console.log('userbutton');
-    console.log(props.data);
-    if(sheriff===true)
-        icon=<Image source={{uri:'https://ooo.0o0.ooo/2016/11/02/5819a922b13e2.png'}}
-                    style={styles.icon}/>;
-    if (disabled === true) {
-        content = (
-            <View style={styles.containerundis}>
-                <LinearGradient
-                    colors={['powderblue', 'steelblue']}
-                    style={styles.top}
-                >
-                    <Text style={styles.texttop}>
-                        {index}
-                    </Text>
-                    {icon}
-                </LinearGradient>
-                <View
-                    style={styles.bottom}>
-                    <Text style={styles.textbottom}>
-                        {username}
-                    </Text>
-                </View>
+
+    content = (
+        <View style={disabled === true ? styles.containerundis : (selected === true ? styles.containersel : styles.containerunsel)}>
+            <LinearGradient
+                colors={['powderblue', 'steelblue']}
+                style={styles.top}
+            >
+                <Text style={styles.texttop}>
+                    {index}
+                </Text>
+                {sheriff === true?<Image source={{uri:'https://ooo.0o0.ooo/2016/11/02/5819a922b13e2.png'}}
+                                         style={styles.icon}/>:<View/>}
+            </LinearGradient>
+            <View
+                style={styles.bottom}>
+                <Text style={styles.textbottom}>
+                    {username}
+                </Text>
             </View>
-        );
-    } else if (selected === true){
-        content = (
-            <View style={styles.containersel}>
-                <LinearGradient
-                    colors={['powderblue', 'steelblue']}
-                    style={styles.top}
-                >
-                    <Text style={styles.texttop}>
-                        {index}
-                    </Text>
-                    {icon}
-                </LinearGradient>
-                <View
-                    style={styles.bottom}>
-                    <Text style={styles.textbottom}>
-                        {username}
-                    </Text>
-                </View>
-            </View>
-        );
-    } else{
-        content = (
-            <View style={styles.containerunsel}>
-                <LinearGradient
-                    colors={['powderblue', 'steelblue']}
-                    style={styles.top}
-                >
-                    <Text style={styles.texttop}>
-                        {index}
-                    </Text>
-                    {icon}
-                </LinearGradient>
-                <View
-                    style={styles.bottom}>
-                    <Text style={styles.textbottom}>
-                        {username}
-                    </Text>
-                </View>
-            </View>
-        );
-    }
+            {wolf === true ? <Text style={styles.wolf}>狼</Text> : <View/>}
+        </View>
+    );
     if(disabled=== true)
     {
         return(
@@ -170,6 +125,15 @@ const styles = StyleSheet.create({
         left:5,
         backgroundColor: 'transparent',
         // borderWidth: 1 / PixelRatio.get(),
+    },
+    wolf:{
+        position:'absolute',
+        padding: 2,
+        top:0,
+        left:0,
+        fontSize:16,
+        color: 'white',
+        backgroundColor: 'transparent',
     },
     top: {
         flex: 8,

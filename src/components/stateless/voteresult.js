@@ -90,6 +90,7 @@ export default class VoteResult extends Component {
                     <ListItem
                         key={i}
                         title={`${item}号玩家`}
+                        rightIcon={{name: 'people'}}
                     />
                 )
             });
@@ -132,7 +133,7 @@ export default class VoteResult extends Component {
                     visible={modalvisible}
                     style={{height:300,width:300,}}
                 >
-                    <ScrollView style={{marginBottom:20,}}>
+                    <ScrollView style={{marginBottom:20,marginTop:10,height:250}}>
                         {this._renderModal(modalcontent)}
                     </ScrollView>
 

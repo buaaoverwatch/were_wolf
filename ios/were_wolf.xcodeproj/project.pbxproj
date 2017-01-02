@@ -33,7 +33,12 @@
 		BDD9A071B55C4B12A02FDA07 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3C07BC770C40D9906F480A /* SimpleLineIcons.ttf */; };
 		C952AC4AD760433A929F86F3 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68CC65CA1756427687BA2E15 /* Octicons.ttf */; };
 		D26956BC1E195CB200181666 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D26956BA1E195C7500181666 /* libRNSound.a */; };
-		D26956BE1E195DE900181666 /* record.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D26956BD1E195DE900181666 /* record.mp3 */; };
+		D2857ED61E1ACD7F009FF9FF /* cupid.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED01E1ACD7F009FF9FF /* cupid.mp3 */; };
+		D2857ED71E1ACD7F009FF9FF /* guard.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED11E1ACD7F009FF9FF /* guard.mp3 */; };
+		D2857ED81E1ACD7F009FF9FF /* nightbegin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED21E1ACD7F009FF9FF /* nightbegin.mp3 */; };
+		D2857ED91E1ACD7F009FF9FF /* seer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED31E1ACD7F009FF9FF /* seer.mp3 */; };
+		D2857EDA1E1ACD7F009FF9FF /* witch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED41E1ACD7F009FF9FF /* witch.mp3 */; };
+		D2857EDB1E1ACD7F009FF9FF /* wolf.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2857ED51E1ACD7F009FF9FF /* wolf.mp3 */; };
 		D6C0F48ACFC640B49B44694E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28A8E5F5152943D793A12E74 /* Ionicons.ttf */; };
 		E2466338AC73495BB31BEAFB /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 970C2B5F6F914C9D93B4A755 /* libRCTOrientation.a */; };
 		F442F01C5E3C45E4985D31D3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C5A712FF5ED45A080690345 /* libBVLinearGradient.a */; };
@@ -233,7 +238,12 @@
 		B045B96E603C4FD29F063B7D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		B7E8F65BD01C465A9476B128 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		D26956A21E195C7500181666 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
-		D26956BD1E195DE900181666 /* record.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = record.mp3; sourceTree = "<group>"; };
+		D2857ED01E1ACD7F009FF9FF /* cupid.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = cupid.mp3; sourceTree = "<group>"; };
+		D2857ED11E1ACD7F009FF9FF /* guard.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = guard.mp3; sourceTree = "<group>"; };
+		D2857ED21E1ACD7F009FF9FF /* nightbegin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nightbegin.mp3; sourceTree = "<group>"; };
+		D2857ED31E1ACD7F009FF9FF /* seer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = seer.mp3; sourceTree = "<group>"; };
+		D2857ED41E1ACD7F009FF9FF /* witch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = witch.mp3; sourceTree = "<group>"; };
+		D2857ED51E1ACD7F009FF9FF /* wolf.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wolf.mp3; sourceTree = "<group>"; };
 		FD12C7B83B724F21B75A9487 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -373,7 +383,12 @@
 		65D7C7B4CBEE421CA56DF35A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D26956BD1E195DE900181666 /* record.mp3 */,
+				D2857ED01E1ACD7F009FF9FF /* cupid.mp3 */,
+				D2857ED11E1ACD7F009FF9FF /* guard.mp3 */,
+				D2857ED21E1ACD7F009FF9FF /* nightbegin.mp3 */,
+				D2857ED31E1ACD7F009FF9FF /* seer.mp3 */,
+				D2857ED41E1ACD7F009FF9FF /* witch.mp3 */,
+				D2857ED51E1ACD7F009FF9FF /* wolf.mp3 */,
 				9A90C207A5C040CA85E0C40E /* Entypo.ttf */,
 				A358E0B3EB7341C19B9A058F /* EvilIcons.ttf */,
 				2111538D010C40D2A038E9BC /* FontAwesome.ttf */,
@@ -779,15 +794,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2857ED61E1ACD7F009FF9FF /* cupid.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				63FA6AE25F2447508EF9C744 /* Entypo.ttf in Resources */,
 				5C40D0A769A94653921A4190 /* EvilIcons.ttf in Resources */,
+				D2857EDB1E1ACD7F009FF9FF /* wolf.mp3 in Resources */,
 				A5EBCE275D184E2898BE0B46 /* FontAwesome.ttf in Resources */,
+				D2857EDA1E1ACD7F009FF9FF /* witch.mp3 in Resources */,
 				21F228FCC4E947FBB93CC75B /* Foundation.ttf in Resources */,
+				D2857ED81E1ACD7F009FF9FF /* nightbegin.mp3 in Resources */,
 				D6C0F48ACFC640B49B44694E /* Ionicons.ttf in Resources */,
-				D26956BE1E195DE900181666 /* record.mp3 in Resources */,
+				D2857ED71E1ACD7F009FF9FF /* guard.mp3 in Resources */,
 				7925381747DB410C89C11473 /* MaterialIcons.ttf in Resources */,
+				D2857ED91E1ACD7F009FF9FF /* seer.mp3 in Resources */,
 				C952AC4AD760433A929F86F3 /* Octicons.ttf in Resources */,
 				BDD9A071B55C4B12A02FDA07 /* SimpleLineIcons.ttf in Resources */,
 				25CBA0C4987345E6AA883417 /* Zocial.ttf in Resources */,

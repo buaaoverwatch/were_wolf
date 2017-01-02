@@ -39,6 +39,9 @@ const Test1 = (props) => {
                     issel=true;
                 if(item==room.player_selectedid2&&room.curstate==StateConst.cupid)
                     issel=true;
+                let iswolf=false;
+                if(room.player_role[item]=='wolf'&&room.curstate==StateConst.wolf)
+                    iswolf=true;
                 function handlePress() {
                     if(room.curstate==StateConst.wolf)
                     {
@@ -72,6 +75,7 @@ const Test1 = (props) => {
                     sheriff: issheriff,
                     disabled: !room.player_alive[item],
                     selected: issel,
+                    wolf: iswolf,
                     onPress:handlePress,
                 }
             }
