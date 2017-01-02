@@ -18,5 +18,6 @@ module.exports = {
     daytalk: 13,
     dayvote: 14,
     hunter: 15,
-    lastword: 16,
+    daylastword: 16,
+    lastword: 17,
 };

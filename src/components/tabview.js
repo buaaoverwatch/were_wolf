@@ -634,9 +634,9 @@ export default class Tabview extends Component {
             <Card
                 key={1}
                 title='救人'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/save.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
-                <Text style={{marginBottom: 10}}>
+                    <Text style={{marginBottom: 10}}>
                     您的身份是女巫，您拥有一瓶解药，可以救治一名被狼人杀死的玩家。
                 </Text>
                 <Button
@@ -652,7 +652,7 @@ export default class Tabview extends Component {
             <Card
                 key={2}
                 title='毒药'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/kill.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是女巫，您拥有一瓶毒药，可以毒死一名存活的玩家。
@@ -670,7 +670,7 @@ export default class Tabview extends Component {
             <Card
                 key={3}
                 title='查看身份'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/seer.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是预言家，您每天夜里可以查看一名玩家的身份。
@@ -688,7 +688,7 @@ export default class Tabview extends Component {
             <Card
                 key={4}
                 title='丘比特'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/cupid.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是丘比特，您可以链接两位玩家成为情侣，成为情侣之后，只要双方有一人死去，另一人也会死亡。
@@ -706,7 +706,7 @@ export default class Tabview extends Component {
             <Card
                 key={5}
                 title='开枪'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/hunter.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是猎人，在您死亡时，您可以选择开枪杀死一名玩家。
@@ -724,7 +724,7 @@ export default class Tabview extends Component {
             <Card
                 key={6}
                 title='守护'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/guard.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是守卫，您每晚可以选择守护一名玩家，这名玩家如果晚上被狼人杀死可以逃过一劫，不能连续两天守护同一位玩家。
@@ -742,7 +742,7 @@ export default class Tabview extends Component {
             <Card
                 key={7}
                 title='杀人'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/wolfkill.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是狼人，每天晚上您和您队友可以共同杀死一名玩家。
@@ -760,7 +760,7 @@ export default class Tabview extends Component {
             <Card
                 key={8}
                 title='自爆'
-                image={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                image={require('../images/skill/suicide1.png')}
                 containerStyle={{backgroundColor:'white',height:300}}>
                 <Text style={{marginBottom: 10}}>
                     您的身份是狼人，您可以选择自杀来随时结束这一轮的发言。
@@ -1150,4 +1150,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
+    image: {
+        width: 88,
+        height: 88
+    }
 });
