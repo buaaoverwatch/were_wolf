@@ -384,6 +384,15 @@ class Socket extends Component {
                     }
                 });
                 break;
+            case state.lover:
+                s = new Sound('lover.mp3', Sound.MAIN_BUNDLE, (e) => {
+                    if(e) {
+                        console.log('error', e);
+                    } else {
+                        s.play();
+                    }
+                });
+                break;
             case state.wolf:
                 if(this.state.laststate == state.checkrole) {
                     s = new Sound('nightbegin.mp3', Sound.MAIN_BUNDLE, (e) => {

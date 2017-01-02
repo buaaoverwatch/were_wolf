@@ -80,7 +80,6 @@ const Test1 = (props) => {
     function _renderSubTitle()
     {
         if((room.curstate==StateConst.cupid&&room.player_role[room.client_id]!='cupid')||
-            (room.curstate==StateConst.lover&&room.client_id!=room.lover_id1&&room.client_id!=room.lover_id2)||
             (room.curstate==StateConst.guard&&room.player_role[room.client_id]!='guard')||
             (room.curstate==StateConst.wolf&&room.player_role[room.client_id]!='wolf')||
             (room.curstate==StateConst.witch&&room.player_role[room.client_id]!='witch')||
@@ -95,7 +94,12 @@ const Test1 = (props) => {
             (room.curstate==StateConst.witch)||
             (room.curstate==StateConst.seer))
         {
-            if(room.nextstep==false)
+            if(room.curstate == StateConst.lover) {
+                if(room.client_id!=room.lover_id1&&room.client_id!=room.lover_id2)
+                    return "你不是情侣中的一人";
+                else
+                    return "你是情侣中的一人";
+            } else if(room.nextstep==false)
                 return '请行使技能';
             else
                 return '请点击\"下一步\"';
