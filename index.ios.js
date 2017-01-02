@@ -65,9 +65,9 @@ class App extends Component {
           <StatusBar barStyle="light-content" />
           <Router>
             <Scene key="root">
-              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
+              <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false}  hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
-                <Scene key="Forget" component={Forget} hideNavBar />
+              <Scene key="Forget" component={Forget} hideNavBar />
               <Scene
                   key="tabbar"
                   tabs
@@ -93,12 +93,12 @@ class App extends Component {
                 >
                   <Scene key="GameTab" hideNavBar>
                     <Scene key="CARoom" component={CARoom}/>
-                    <Scene key="GameRoom" component={GameRoom} />
-                    <Scene key="GameSetting" component={GameSetting} />
-                    <Scene key="ChooseSeat" component={ChooseSeat} />
-                    <Scene key="seeMySelf" component={seeMySelf} />
-                    <Scene key="Test1" component={Test1}/>
-                    <Scene key="Gameover" component={Gameover} />
+                    <Scene key="GameRoom" component={GameRoom} type="push" />
+                    <Scene key="ChooseSeat" component={ChooseSeat} type="push" />
+                    <Scene key="GameSetting" component={GameSetting} type="replace" />
+                    <Scene key="seeMySelf" component={seeMySelf} type="replace" />
+                    <Scene key="Test1" component={Test1} type="replace" />
+                    <Scene key="Gameover" component={Gameover} type="replace" />
                   </Scene>
                 </Scene>
                 <Scene
@@ -109,10 +109,10 @@ class App extends Component {
                 >
                   <Scene key="MineTab" hideNavBar>
                     <Scene key="MyInfo" component={MyInfo} />
-                    <Scene key="EditInfo" component={EditInfo} hideTabBar/>
-                    <Scene key="MyFriend" component={MyFriend} hideTabBar/>
-                    <Scene key="MyRecord" component={MyRecord} hideTabBar/>
-                    <Scene key="Setting" component={Setting} hideTabBar/>
+                    <Scene key="EditInfo" component={EditInfo} />
+                    <Scene key="MyFriend" component={MyFriend} />
+                    <Scene key="MyRecord" component={MyRecord} />
+                    <Scene key="Setting" component={Setting} />
                   </Scene>
                 </Scene>
               </Scene>

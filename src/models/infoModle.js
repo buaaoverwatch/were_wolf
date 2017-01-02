@@ -80,6 +80,11 @@ export default{
     },
     reducers: {
         registerSuccess(state, action) {
+            AsyncStorage.setItem('if_login','1', function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
             AsyncStorage.setItem('username', action.payload.username, function (error) {
                 if(error) {
                     console.log(error);
@@ -120,6 +125,11 @@ export default{
               ForgetPassQ:action.payload.ForgetPassQ};
         },
         loginSuccess(state, action) {
+            AsyncStorage.setItem('if_login', '1', function (error) {
+                if(error) {
+                    console.log(error);
+                }
+            });
             AsyncStorage.setItem('username', action.payload.username, function (error) {
                 if(error) {
                     console.log(error);

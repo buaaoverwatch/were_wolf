@@ -12,6 +12,7 @@ import {
     TouchableOpacity,
     Image,
     Platform,
+    AsyncStorage,
 } from 'react-native';
 
 import { connect } from 'dva/mobile';
@@ -26,6 +27,9 @@ const MyInfo = (props) => {
     const { dispatch, information } = props;
     function onPress() {
         console.log('press');
+    }
+    function handle_exit() {
+        
     }
     function exit() {
         fetch(IP.ip+':8000/logout/', {
@@ -49,7 +53,13 @@ const MyInfo = (props) => {
                     return responseText;
                 } else if (responseText[0].result == '0') {
                     Toast.success("退出登录成功！", 1);
-                    return responseText;
+                    AsyncStorage.setItem('if_login','0', function (error) {
+                        if(error) {
+                            console.log(error);
+                        }
+                        Actions.Start({type:'reset'});
+                        return responseText;
+                    });
                 } else {
                     console.log("error");
                     return responseText;
