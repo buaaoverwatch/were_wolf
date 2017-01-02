@@ -42,6 +42,7 @@ export default class Tabview extends Component {
             modaltitle:'',
             modalcontent:'',
             visible:false,
+            visible1:false,
             seercontent:'',
             seertitle:'',
             extrafun:()=>{},
@@ -49,6 +50,7 @@ export default class Tabview extends Component {
         this.onClose = this.onClose.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.checkandshowModal = this.checkandshowModal.bind(this);
+        this._rendervotebutton = this._rendervotebutton.bind(this);
         //this._renderList = this._renderList.bind(this);
         //this._renderModal = this._renderModal.bind(this);
     };
@@ -56,9 +58,11 @@ export default class Tabview extends Component {
         this.state.extrafun();
         this.setState({extrafun:()=>{}});
         this.setState({visible:false});
+        this.setState({visible1:false});
     };
     onClose(){
         this.setState({visible:false});
+        this.setState({visible1:false});
         this.props.dispatch({
             type: 'room/setsheriffmodal',
             payload: {false},
@@ -819,6 +823,102 @@ export default class Tabview extends Component {
         });
         return array;
     };
+    _rendervotebutton()
+    {
+        if(this.props.room.curstate==StateConst.sheriffvote)
+        {
+            return(
+                <View style={{marginTop:20,alignItems: 'center', justifyContent: 'center',height:60,width:Dimensions.get('window').width}}>
+                    <Button
+                        raised
+                        icon={{name: 'done'}}
+                        title='投票'
+                        backgroundColor='#fd661b'
+                        buttonStyle={{height:40,width:Dimensions.get('window').width*0.4}}
+                        onPress={()=>this.VoteOnConfirm('sheriff')}
+                    />
+                </View>
+            );
+        }
+        else if(this.props.room.curstate==StateConst.dayvote)
+        {
+            return(
+                <View style={{marginTop:20,alignItems: 'center', justifyContent: 'center',height:60,width:Dimensions.get('window').width}}>
+                    <Button
+                        raised
+                        icon={{name: 'done'}}
+                        title='投票'
+                        backgroundColor='#fd661b'
+                        buttonStyle={{height:40,width:Dimensions.get('window').width*0.4}}
+                        onPress={()=>this.VoteOnConfirm('day')}
+                    />
+                </View>
+            );
+        }
+        else
+        {
+            return(<View/>);
+        }
+    }
+    VoteOnConfirm(type){
+        if(this.props.room.player_selectedid=="")
+        {
+            this.setState({modaltitle:"出错啦"});
+            this.setState({modalcontent:"您没有选择任何玩家，请在上方点选要投票的玩家后再投票"});
+            this.setState({visible1:true});
+            return;
+        }
+        if(type=='sheriff')
+        {
+            this.setState({modaltitle:"请确认"});
+            this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家,您确认要选他当警长么?`});
+            press=()=>{
+                this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                if(this.props.room.hassocket)
+                {
+                    msg=JSON.stringify({
+                        type:'7',
+                        request_id:this.props.room.user_request_id,
+                        room_id:this.props.room.room_id,
+                        user_id:this.props.room.client_id,
+                        object_id:this.props.room.player_selectedid,
+                    });
+                    this.props.room.socket.send(msg);
+                    this.props.dispatch({
+                        type: 'room/WebSocketsend',
+                        payload: {msg},
+                    });
+                }
+            };
+            this.setState({extrafun:press});
+            this.setState({visible1:true});
+        }
+        else if(type=='day')
+        {
+            this.setState({modaltitle:"请确认"});
+            this.setState({modalcontent:`您选择的是${this.props.room.player_index[this.props.room.player_selectedid]}号玩家,您确认要投票给他么?`});
+            press=()=>{
+                this.props.dispatch({ type: 'room/changeNextStep',payload:true});
+                if(this.props.room.hassocket)
+                {
+                    msg=JSON.stringify({
+                        type:'10',
+                        request_id:this.props.room.user_request_id,
+                        room_id:this.props.room.room_id,
+                        user_id:this.props.room.client_id,
+                        object_id:this.props.room.player_selectedid,
+                    });
+                    this.props.room.socket.send(msg);
+                    this.props.dispatch({
+                        type: 'room/WebSocketsend',
+                        payload: {msg},
+                    });
+                }
+            };
+            this.setState({extrafun:press});
+            this.setState({visible1:true});
+        }
+    }
     prepend(arr, item) {
         return [item].concat(arr);
     };
@@ -873,12 +973,26 @@ export default class Tabview extends Component {
             payload: false,
         });
     }
+    initPage(){
+        if((this.props.room.curstate==StateConst.cupid&&this.props.room.player_role[this.props.room.client_id]=='cupid')||
+            (this.props.room.curstate==StateConst.guard&&this.props.room.player_role[this.props.room.client_id]=='guard')||
+            (this.props.room.curstate==StateConst.seer&&this.props.room.player_role[this.props.room.client_id]=='seer')||
+            (this.props.room.curstate==StateConst.witch&&this.props.room.player_role[this.props.room.client_id]=='witch')||
+            (this.props.room.curstate==StateConst.wolf&&this.props.room.player_role[this.props.room.client_id]=='wolf'))
+        {
+            return 0;
+        }
+        else
+            return 1;
+
+    }
     render() {
         const window = Dimensions.get('window');
         return (
+
             <ScrollableTabView
                 style={{marginTop: 0, height:1000,}}
-                initialPage={0}
+                initialPage={this.initPage()}
                 renderTabBar={() => <ScrollableTabBar />}
             >
                 <View tabLabel='技能'
@@ -909,19 +1023,19 @@ export default class Tabview extends Component {
                             <View style={{flexDirection:'row',alignItems: 'center'}}>
                                 <Button
                                     raised
-                                    icon={{name: 'done'}}
-                                    title='确认'
-                                    backgroundColor='#fd661b'
-                                    buttonStyle={{margin:40,height:40,width:100}}
-                                    onPress={this.onConfirm}
-                                />
-                                <Button
-                                    raised
                                     icon={{name: 'clear'}}
                                     title='取消'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
                                     onPress={this.onClose}
+                                />
+                                <Button
+                                    raised
+                                    icon={{name: 'done'}}
+                                    title='确认'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onConfirm}
                                 />
                             </View>
                         </View>
@@ -944,19 +1058,19 @@ export default class Tabview extends Component {
                             <View style={{flexDirection:'row',alignItems: 'center'}}>
                                 <Button
                                     raised
-                                    icon={{name: 'done'}}
-                                    title='是'
-                                    backgroundColor='#fd661b'
-                                    buttonStyle={{margin:40,height:40,width:100}}
-                                    onPress={()=>this.sheriffconfirm('true')}
-                                />
-                                <Button
-                                    raised
                                     icon={{name: 'clear'}}
                                     title='否'
                                     backgroundColor='#fd661b'
                                     buttonStyle={{margin:40,height:40,width:100}}
                                     onPress={()=>this.sheriffconfirm('false')}
+                                />
+                                <Button
+                                    raised
+                                    icon={{name: 'done'}}
+                                    title='是'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={()=>this.sheriffconfirm('true')}
                                 />
                             </View>
                         </View>
@@ -970,10 +1084,46 @@ export default class Tabview extends Component {
                           backgroundColor:'#f7f7f7',
                       }}
                 >
+                    {this._rendervotebutton()}
                     <VoteResult
                         containerStyle={{width:window.width}}
                         datasource={this.genVoteResult()}
                     />
+                    <Modal
+                        title={this.state.modaltitle}
+                        closable
+                        maskClosable
+                        transparent
+                        onClose={this.onClose}
+                        visible={this.state.visible1}
+                        style={{height:200,width:300,alignItems: 'center'}}
+                    >
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={{marginTop:20,
+                                justifyContent: 'center',
+                                alignItems: 'center',}}>
+                                {this.state.modalcontent}
+                            </Text>
+                            <View style={{flexDirection:'row',alignItems: 'center'}}>
+                                <Button
+                                    raised
+                                    icon={{name: 'clear'}}
+                                    title='取消'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onClose}
+                                />
+                                <Button
+                                    raised
+                                    icon={{name: 'done'}}
+                                    title='确认'
+                                    backgroundColor='#fd661b'
+                                    buttonStyle={{margin:40,height:40,width:100}}
+                                    onPress={this.onConfirm}
+                                />
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
                 {this._renderWolf()}
                 <View tabLabel='身份'

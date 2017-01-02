@@ -81,8 +81,6 @@ export default {
         witch_save:false,
         witch_kill:false,
 
-
-
         hassocket:false,
         socket:null,
         loading : false,
