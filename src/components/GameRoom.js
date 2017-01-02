@@ -23,6 +23,7 @@ import Toast from 'antd-mobile/lib/toast';
 import List from 'antd-mobile/lib/list';
 import Socket from '../services/websocket';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
+import Sound from 'react-native-sound';
 
 const GameRoom = (props) => {
     const { dispatch, room } = props;

@@ -176,13 +176,14 @@ class Socket extends Component {
                                 Toast.success("进入黑夜！", 1);
                                 Actions.Test1();
                             }
-                            if(msg.room_state == state.daytalk) {
+                            if((msg.room_state == state.daytalk && this.state.laststate != state.lastword) ||
+                                msg.room_state == state.lastword){
                                 //白天发言阶段 将之前的保存的存活状态更新
                                 this.state.dispatch({
                                     type: 'room/updatealive'
                                 });
                             }
-                            this.playSound();
+                            this.playSound(msg.room_state);
                             //TODO：根据角色是否存活来决定下一步操作
                             if(msg.role_alive == 'false' && (msg.room_state == state.guard ||
                                 msg.room_state == state.witch || msg.room_state == state.seer)){
@@ -358,16 +359,116 @@ class Socket extends Component {
         });
     }
 
-    playSound() {
-        sd = new Sound('record.mp3', Sound.MAIN_BUNDLE, (e) => {
-            if (e) {
-                console.log('error', e);
-            } else {
-                console.log('duration', sd.getDuration());
-                sd.play();
-            }
-        });
-
+    playSound(curstate) {
+        if(this.state.room.client_id != this.state.room.owner_id)
+            return;
+        switch (curstate) {
+            case state.cupid: s = new Sound('nightbegin.mp3', Sound.MAIN_BUNDLE, (e) => {
+                    if (e) {
+                        console.log('error', e);
+                    } else {
+                        s.play((success) => {
+                            if (success) {
+                                console.log('successfully finished playing');
+                                s1 = new Sound('cupid.mp3', Sound.MAIN_BUNDLE, (e) => {
+                                    if (e) {
+                                        console.log('error', e);
+                                    } else {
+                                        s1.play();
+                                    }
+                                });
+                            } else {
+                                console.log('playback failed due to audio decoding errors');
+                            }
+                        });
+                    }
+                });
+                break;
+            case state.wolf:
+                if(this.state.laststate == state.checkrole) {
+                    s = new Sound('nightbegin.mp3', Sound.MAIN_BUNDLE, (e) => {
+                        if (e) {
+                            console.log('error', e);
+                        } else {
+                            s.play((success) => {
+                                if (success) {
+                                    console.log('successfully finished playing');
+                                    s1 = new Sound('wolf.mp3', Sound.MAIN_BUNDLE, (e) => {
+                                        if (e) {
+                                            console.log('error', e);
+                                        } else {
+                                            s1.play();
+                                        }
+                                    });
+                                } else {
+                                    console.log('playback failed due to audio decoding errors');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    s = new Sound('wolf.mp3', Sound.MAIN_BUNDLE, (e) => {
+                        if (e) {
+                            console.log('error', e);
+                        } else {
+                            s.play();
+                        }
+                    });
+                }
+                break;
+            case state.guard:
+                if(this.state.laststate == state.checkrole) {
+                    s = new Sound('nightbegin.mp3', Sound.MAIN_BUNDLE, (e) => {
+                        if (e) {
+                            console.log('error', e);
+                        } else {
+                            s.play((success) => {
+                                if (success) {
+                                    console.log('successfully finished playing');
+                                    s1 = new Sound('guard.mp3', Sound.MAIN_BUNDLE, (e) => {
+                                        if (e) {
+                                            console.log('error', e);
+                                        } else {
+                                            s1.play();
+                                        }
+                                    });
+                                } else {
+                                    console.log('playback failed due to audio decoding errors');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    s = new Sound('guard.mp3', Sound.MAIN_BUNDLE, (e) => {
+                        if (e) {
+                            console.log('error', e);
+                        } else {
+                            s.play();
+                        }
+                    });
+                }
+                break;
+            case state.witch:
+                s = new Sound('witch.mp3', Sound.MAIN_BUNDLE, (e) => {
+                    if(e) {
+                        console.log('error', e);
+                    } else {
+                        s.play();
+                    }
+                });
+                break;
+            case state.seer:
+                s = new Sound('seer.mp3', Sound.MAIN_BUNDLE, (e) => {
+                    if(e) {
+                        console.log('error', e);
+                    } else {
+                        s.play();
+                    }
+                });
+                break;
+            default:
+                break;
+        }
     }
 
     sendcomfirm(data){

@@ -51,6 +51,22 @@ user_name
 http://host:8000/findPassword/
 10. 找回密码
 user_name
+question
+answer
+new_password
+
+http://host:8000/searchUser/
+11. 查找用户
+user_name
+
+http://host:8000/addFriend/
+12.添加朋友
+user_id
+object_id
+
+http://host:8000/getFriendList/
+13. 获取朋友列表
+user_id
 
 /*****************************************************************/
 Websocket

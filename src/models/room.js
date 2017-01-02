@@ -352,15 +352,15 @@ export default {
         updatealive(state) {
             let lastwordlist = [];
             let alive = state.player_alive;
-            if(state.wolf_lastkill == state.last_guard || state.wolf_lastkill == state.last_witch_save) {
+            if(state.last_wolf == state.last_guard || state.wolf_lastkill == state.last_witch_save) {
                 console.log("狼人杀的人没有死");
             } else {
-                alive[state.wolf_lastkill] = false;
-                lastwordlist.push(state.wolf_lastkill);
-                if(state.wolf_lastkill == state.lover_id1) {
+                alive[state.last_wolf] = false;
+                lastwordlist.push(state.last_wolf);
+                if(state.last_wolf == state.lover_id1) {
                     alive[state.lover_id2] = false;
                     lastwordlist.push(state.lover_id2);
-                } else if(state.wolf_lastkill == state.lover_id2) {
+                } else if(state.last_wolf == state.lover_id2) {
                     alive[state.lover_id1] = false;
                     lastwordlist.push(state.lover_id1);
                 }

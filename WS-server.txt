@@ -16,7 +16,7 @@ result		0/1		0创建成功，1创建失败
 number		房间号
 
 4. 加入房间
-result		0/1/2/3  0进入成功，1房间不存在，2房间已锁定，3未知错误
+result		0/1/2/3  0进入成功，1房间不存在，2房间已锁定，3用户已在房间内
 room_name
 owner_id
 id_nick 	一个昵称列表
@@ -38,10 +38,24 @@ result 0 成功， 1 失败
 
 10. 找回密码
 
-result 0用户存在 1 用户不存在
-question
-answer
-password 
+result 0用户存在 1 用户不存在 2 密保或问题不对
+
+11. 查找用户
+
+因为搜索结果可能不止一个,第一个是搜索结果个数
+search_num
+data:[{user_id':'id','user_name':'name'},]
+
+12. 添加朋友
+result 		true/false
+
+13. 获取朋友列表
+state 	0未登陆，1登陆
+inRoom 0不在房间， 1在房间
+
+friend_num朋友个数
+friend_num
+data:[{'id':'','name':'','state':'','inRoom':''},]
 
 /*****************************************************************/
 Websocket

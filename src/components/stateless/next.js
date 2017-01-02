@@ -39,6 +39,7 @@ export default class Next extends Component {
         let owner_id = this.props.room.owner_id;
         if((curstate == StateConst.cupid && role != 'cupid') ||
             (curstate == StateConst.lover && this.props.room.lover_id1 != client_id && this.props.room.lover_id2 != client_id) ||
+            (curstate == StateConst.guard && role != 'guard') ||
             (curstate == StateConst.wolf && role != 'wolf') ||
             (curstate == StateConst.witch && role != 'witch') ||
             (curstate == StateConst.seer && role != 'seer') ||
@@ -50,8 +51,11 @@ export default class Next extends Component {
             Toast.fail("没有下一步的权限！", 1);
             return;
         }
-        if(curstate != StateConst.witch &&
-            curstate != StateConst.lover &&
+
+        if(curstate == StateConst.cupid &&
+            curstate == StateConst.wolf &&
+            curstate == StateConst.seer &&
+            curstate == StateConst.guard &&
             this.props.room.nextstep === false) {
             this.showModal();
             return;
