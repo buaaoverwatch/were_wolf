@@ -24,6 +24,7 @@ import infoModel from './src/models/infoModle';
 //启动
 import Start from './src/components/start';
 import Launch from './src/components/Launch';
+import Forget from './src/components/Forget';
 //导航栏
 import TabIcon from './src/components/TabIcon';
 
@@ -61,7 +62,8 @@ class App extends Component {
         <Router>
           <Scene key="root">
             <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
-            <Scene key="Launch" component={Launch}  hideNavBar/>
+            <Scene key="Launch" component={Launch}  hideNavBar />
+            <Scene key="Forget" component={Forget} hideNavBar />
             <Scene
                 key="tabbar"
                 tabs

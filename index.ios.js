@@ -25,6 +25,7 @@ import infoModel from './src/models/infoModle';
 //启动
 import Start from './src/components/start';
 import Launch from './src/components/Launch';
+import Forget from './src/components/Forget';
 //导航栏
 import TabIcon from './src/components/TabIcon';
 
@@ -37,6 +38,7 @@ import GameSetting from './src/components/game_setting';
 import ChooseSeat from './src/components/ChooseSeat';
 import seeMySelf from './src/components/seeMySelf';
 import Test1 from './src/components/test1';
+import Gameover from './src/components/Gameover';
 //个人信息
 import MyInfo from './src/components/MyInfo';
 import EditInfo from './src/components/EditInfo';
@@ -65,6 +67,7 @@ class App extends Component {
             <Scene key="root">
               <Scene key="Start" component={Start} initial={infoModel.state.ifLogin === false} hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
+                <Scene key="Forget" component={Forget} hideNavBar />
               <Scene
                   key="tabbar"
                   tabs
@@ -95,6 +98,7 @@ class App extends Component {
                     <Scene key="ChooseSeat" component={ChooseSeat} />
                     <Scene key="seeMySelf" component={seeMySelf} />
                     <Scene key="Test1" component={Test1}/>
+                    <Scene key="Gameover" component={Gameover} />
                   </Scene>
                 </Scene>
                 <Scene

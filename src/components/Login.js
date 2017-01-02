@@ -207,7 +207,7 @@ class Login extends Component {
                         iconRight
                         icon={{name: 'edit'}}
                         title='忘记密码'
-                        onPress={()=>this.onClick()}
+                        onPress={Actions.Forget}
                         backgroundColor='#fd661b'
                         raised={true}
                     />

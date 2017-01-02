@@ -6,54 +6,67 @@ import {
     Text,
     View,
     StyleSheet,
+    TouchableOpacity,
     Dimensions,
+    Image,
+    ScrollView,
     PixelRatio,
+    Platform
 } from 'react-native';
 
+import { connect } from 'dva/mobile';
+import {
+    Actions
+} from 'react-native-router-flux';
 import Toast from 'antd-mobile/lib/toast';
 import ActivityIndicator from 'antd-mobile/lib/activity-indicator';
 import { FormLabel, FormInput , Button} from 'react-native-elements'
 
 import IP from '../consts/ip';
 
-import {
-    Actions
-} from 'react-native-router-flux';
 
 
-const Forget = (props) => {
-    const {dispatch, information} = props;
-    state = {
+
+class Forget extends Component {
+constructor(props) {
+    super(props);
+    this.state = {
         username:"",
         question:"",
         answer:"",
         newpassword:"",
-            };
-    loading = false;
-        clickhttp()
-        {
-            loading = true;
+        loading: false
+    };
+}
+
+    clickhttp(_this)
+    {
+        _this.setState({
+            loading: true
+        });
             fetch(IP.ip+':8000/findPassword/', {
                 method: 'POST',
                 headers: {
-                    //'Accept': 'application/json',
+
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 },
                 body:JSON.stringify({
-                    user_name: state.username,
-                    question: state.question,
-                    answer: state.answer,
-                    newpassword: state.newpassword,
-
+                    user_name: this.state.username,
+                    question: this.state.question,
+                    answer: this.state.answer,
+                    new_password: this.state.newpassword,
                 })
+
             })
                 .then(function(data) {
                     return data.json();
                 })
                 .then((responseText) => {
                     console.log(responseText);
-                    loading = false;
-                    const type = responseText[0].type;
+                    _this.setState({
+                        loading: false
+                    });
+                    const type = responseText.result;
                     if(type == 1) {
                         Toast.fail("用户不存在！", 1);
                         return responseText;
@@ -64,24 +77,52 @@ const Forget = (props) => {
                     Toast.success("密码修改成功！请登录。", 1);
 
                     //这里应该有一个界面跳转
-                    Actions.Start();
+                    Actions.Launch();
                     return responseText;
                 })
                 .catch((error) => {
-                    loading = false;
+                    _this.setState({
+                        loading: false
+                    });
                     Toast.fail("网络错误！", 1);
-                    console.warn(error);
+                    console.log("find password error");
+                    console.log(error);
                 });
         }
-        onClick()
-        {
-            clickhttp();
-        }
+    onClick()
+    {
+        this.clickhttp(this);
+    }
 
-        focusNextField = (nextField) => {
-            this.refs.input.refs[nextField].focus();
-        };
-            return (
+    focusNextField = (nextField) => {
+        this.refs.input.refs[nextField].focus();
+    };
+
+    render()
+    {
+        return (
+            <View style={{flex: 1}}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={Actions.pop}>
+                        <View style={styles.backContainer}>
+                            <Image style={styles.backIcon}
+                                   source={require('../images/back.png')}/>
+                            <Text style={styles.backText}>
+                                返回
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.headerText}>
+                        根据密保问题修改密码
+                    </Text>
+                    <TouchableOpacity onPress={Actions.pop}>
+                        <View style={styles.backContainer}>
+                            <Text style={styles.backContainer}>
+                                还是返回
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <ScrollView >
                     <View>
                         <FormLabel
@@ -137,11 +178,10 @@ const Forget = (props) => {
                             placeholder="请输入您之前设置的密保答案"
                             returnKeyType="next"
                             clearTextOnFocus={true}
-                            secureTextEntry={true}
                             autoCorrect={false}
                             autoCapitalize="none"
                             clearButtonMode="while-editing"
-                            onSubmitEditing={() => this.refs.i.refs.k.focus()}
+                            onSubmitEditing={() => this.focusNextField('k')}
                         />
                         <FormLabel
                             labelStyle={styles.Label}
@@ -157,6 +197,7 @@ const Forget = (props) => {
                             placeholder="请输入新的密码"
                             returnKeyType="next"
                             clearTextOnFocus={true}
+                            secureTextEntry={true}
                             autoCorrect={false}
                             autoCapitalize="none"
                             clearButtonMode="while-editing"
@@ -170,38 +211,73 @@ const Forget = (props) => {
                             iconRight
                             icon={{name: 'check'}}
                             title='确认修改'
-                            onPress={()=>this.onClick()}
+                            onPress={() => this.onClick()}
                             backgroundColor='#2db7f5'
                             raised={true}
                         />
-                        <ActivityIndicator
-                            toast
-                            text="正在加载"
-                            animating={this.loading}
-                        />
                     </View>
                 </ScrollView>
-            );
-
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={this.state.loading}
+                />
+            </View>
+        );
     }
+};
 
-    const styles = StyleSheet.create({
-        Container: {
-            alignItems: 'center',
-            height:300,
-        },
-        Label: {
-            fontSize: 30,
-            color: '#272727',
-        },
-        Tex: {
-            fontSize: 20,
-        },
-        But: {
-            width: Dimensions.get('window').width*0.9,
-            marginTop: 20,
-        },
-    });
+const styles = StyleSheet.create({
+    //标题
+    header: {
+        flexDirection: 'row',
+        paddingTop: Platform.OS === 'ios' ? 10 : 0,
+        height: Platform.OS === 'ios' ? PixelRatio.get() * 26 : PixelRatio.get() * 16,
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        backgroundColor: '#393a3f',//#0033ff
+        justifyContent: 'space-between'
+    },
+    //标题文本
+    headerText: {
+        color: '#ffffff',
+        fontSize: 18,
+    },
+    //返回区
+    backContainer: {
+        flexDirection: 'row',
+        marginLeft: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 40,
+        alignItems: 'center',
+        justifyContent:'flex-start',
+    },
+    //返回图标
+    backIcon: {
+        height: PixelRatio.get() * 5,
+        width: PixelRatio.get() * 5,
+    },
+    //返回文本
+    backText: {
+        fontSize: 18,
+        color: '#ffffff',
+        marginLeft: PixelRatio.get() * 2
+    },
+    Container: {
+        alignItems: 'center',
+        height:300,
+    },
+    Label: {
+        fontSize: 30,
+        color: '#272727',
+    },
+    Tex: {
+        fontSize: 20,
+    },
+    But: {
+        width: Dimensions.get('window').width*0.9,
+        marginTop: 20,
+    },
+});
 
 
 export default connect(information => information)(Forget);
