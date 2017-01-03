@@ -12,10 +12,10 @@ import {
     Platform,
     ActivityIndicator,
 } from 'react-native';
-
+import IP from '../consts/ip';
 import React, { Component, PropTypes, } from 'react'
 // 导入组件使用到的Native依赖模块
-import { ScrollView,View, StyleSheet, Text, Alert, TouchableOpacity,} from 'react-native'
+import { ScrollView, Alert} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import Modal from 'antd-mobile/lib/modal'
 
@@ -30,13 +30,14 @@ import {
 
 
 class MyFriend extends Component{
-    constructor(props){
+    constructor(props,information){
         super(props);
         this.state = {
             loading:false,
             FriendList:[
 
             ],
+            info : information,
 
         }
     }
@@ -56,7 +57,7 @@ class MyFriend extends Component{
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id:infoModle.userID,
+                user_id:this.state.info.userID,
             })
         })
             .then(function(data) {
@@ -101,15 +102,15 @@ class MyFriend extends Component{
         }
     }
     renderRow(){
-        if (Array.isArray(FriendList)) {
+        if (Array.isArray(this.state.FriendList)) {
             // 推荐这种写法
-            return FriendList.map((item, i) => {
+            return this.state.FriendList.map((item, i) => {
                 return (
                     <ListItem
                         roundAvatar
                         key={i}
                         title={item.name}
-                        subtitle={getFriendState(item.state)}
+                        subtitle={this.getFriendState(item.state)}
 
                     />
                 )
@@ -141,7 +142,7 @@ class MyFriend extends Component{
                                    source={require('../images/add.png')} />
                         </View>
                     </TouchableOpacity>
-                    {getFriendList()}
+                    {this.getFriendList()}
                     <ActivityIndicator
                         toast
                         text="正在加载"
@@ -206,4 +207,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(infoModle => infoModle)(MyFriend);
+export default connect(information => information)(MyFriend);

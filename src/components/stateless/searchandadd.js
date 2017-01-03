@@ -18,9 +18,9 @@ import {
     ActivityIndicator,
 } from 'react-native';
 
-import React, { Component, PropTypes, } from 'react'
+import React, { Component} from 'react'
 // 导入组件使用到的Native依赖模块
-import { ScrollView,View, StyleSheet, Text, Alert, TouchableOpacity,} from 'react-native'
+import { ScrollView,Alert,} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import Modal from 'antd-mobile/lib/modal'
 
@@ -29,10 +29,10 @@ import { connect } from 'dva/mobile';
 import {
     Actions
 } from 'react-native-router-flux';
-
+import IP from '../../consts/ip';
 
 class  SearchFriend extends Component{
-    constructor(props){
+    constructor(props,information){
         super(props);
         this.state = {
             loading:false,
@@ -40,6 +40,7 @@ class  SearchFriend extends Component{
             resultList:[
 
             ],
+            info:information,
 
         }
     }
@@ -53,11 +54,11 @@ class  SearchFriend extends Component{
         );
     }
     renderRow(){
-        if (Array.isArray(resultList)) {
+        if (Array.isArray(this.state.resultList)) {
             // 推荐这种写法
-            return resultList.map((item, i) => {
+            return this.state.resultList.map((item, i) => {
                 return (
-                    <TouchableOpacity onPress={()=>addFriend(item.user_id)}>
+                    <TouchableOpacity onPress={()=>this.addFriend(item.user_id)}>
                     <ListItem
 
                         key={i}
@@ -81,7 +82,7 @@ class  SearchFriend extends Component{
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
-                user_id:infoModle.userID,
+                user_id:this.state.info.userID,
                 object_id:object_id,
 
             })
@@ -119,7 +120,7 @@ class  SearchFriend extends Component{
         fetch(IP.ip+':8000/searchUser/', {
             method: 'GET',
             headers: {
-                //'Accept': 'application/json',
+
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body:JSON.stringify({
@@ -160,10 +161,10 @@ class  SearchFriend extends Component{
         return(
             <View style={{flex: 1}}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={Actions.pop}>
+                    <TouchableOpacity onPress={Actions.MyFriend}>
                         <View style={styles.backContainer}>
                             <Image style={styles.backIcon}
-                                   source={require('../images/back.png')} />
+                                   source={require('../../images/back.png')} />
                             <Text style={styles.backText}>
                                 返回
                             </Text>
@@ -172,25 +173,25 @@ class  SearchFriend extends Component{
                     <Text style={styles.headerText}>
                         查找好友
                     </Text>
-                    <TouchableOpacity onPress={Actions.pop}>
+                    <TouchableOpacity onPress={Actions.MyFriend}>
                         <View style={styles.completeContainer}>
                             <Text style={styles.completeText}>
                                 还是返回
                             </Text>
                             <Image style={styles.backIcon}
-                                   source={require('../images/add.png')} />
+                                   source={require('../../images/add.png')} />
                         </View>
                     </TouchableOpacity>
                     <SearchBar
                         value = {this.state.search_by}
                         onChangeText={(searchby) => {
                             this.setState({
-                                search_by:searchby,
+                                search_by:searchby
                             })
                         }}
                         placeholder='输入用户昵称...'
                         onSubmitEditing={() => this.onClick()}/>
-                    {getSearchResult()}
+                    {this.getSearchResult()}
                     <ActivityIndicator
                         toast
                         text="正在加载"
@@ -256,4 +257,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(infoModle => infoModle)(SearchFriend);
+export default connect(information => information)(SearchFriend);

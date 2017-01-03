@@ -27,7 +27,6 @@ import Launch from './src/components/Launch';
 import Forget from './src/components/Forget';
 //导航栏
 import TabIcon from './src/components/TabIcon';
-
 //房间
 import RoomList from './src/components/RoomList';
 //游戏
@@ -44,6 +43,7 @@ import EditInfo from './src/components/EditInfo';
 import MyFriend from './src/components/MyFriend';
 import MyRecord from './src/components/MyRecord';
 import Setting from './src/components/Setting';
+import SearchFriend from  './src/components/stateless/searchandadd';
 
 
 
@@ -109,6 +109,7 @@ class App extends Component {
                   <Scene key="MyFriend" component={MyFriend} />
                   <Scene key="MyRecord" component={MyRecord} />
                   <Scene key="Setting" component={Setting} />
+                  <Scene key="SearchFriend" componenet={SearchFriend}/>
                 </Scene>
               </Scene>
             </Scene>
