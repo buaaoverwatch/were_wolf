@@ -1,7 +1,6 @@
 /**
  * Created by Qingchang Han on 2016/11/1.
  */
-import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -90,8 +89,7 @@ class MyFriend extends Component{
             </List>
         );
     }
-    getFriendState(i)
-    {
+    getFriendState(i){
         if(i==0)
         {
             return ('不在线');
@@ -134,7 +132,7 @@ class MyFriend extends Component{
                     <Text style={styles.headerText}>
                         我的好友
                     </Text>
-                    <TouchableOpacity onPress={Actions.pop}>
+                    <TouchableOpacity onPress={Actions.SearchFriend}>
                         <View style={styles.completeContainer}>
                             <Text style={styles.completeText}>
                                 添加

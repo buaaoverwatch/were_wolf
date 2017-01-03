@@ -3,7 +3,9 @@
  */
 import { SearchBar } from 'react-native-elements'
 
-import React, { Component } from 'react';
+
+
+
 import {
     View,
     TouchableOpacity,
@@ -55,15 +57,59 @@ class  SearchFriend extends Component{
             // 推荐这种写法
             return resultList.map((item, i) => {
                 return (
+                    <TouchableOpacity onPress={()=>addFriend(item.user_id)}>
                     <ListItem
-                        roundAvatar
+
                         key={i}
                         title={item.user_name}
 
                     />
+                    </TouchableOpacity>
                 )
             });
         }
+    }
+    addFriend(object_id)
+    {
+        this.setState({
+            loading:true,
+        });
+        fetch(IP.ip+':8000/addFriend/', {
+            method: 'POST',
+            headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body:JSON.stringify({
+                user_id:infoModle.userID,
+                object_id:object_id,
+
+            })
+        })
+            .then(function(data){
+                return data.json();
+            })
+            .then((responseText) => {
+                this.setState({
+                    loading:false,
+                });
+                if(responseText.result == "true") {
+                    Toast.success("添加成功！",1);
+                }
+                else
+                {
+                    Toast.fail("添加失败！", 1);
+                }
+                console.log(responseText);
+                return responseText;
+            })
+            .catch((error) => {
+                this.setState({
+                    loading:false,
+                });
+                Toast.fail("网络错误！", 1);
+                console.warn(error);
+            });
     }
     onclick()
     {
@@ -92,20 +138,18 @@ class  SearchFriend extends Component{
                     return responseText;
                 }
                 Toast.success("查找成功！",1);
-                //TODO:这里服务器应该返回昵称和简介
+
                 this.setState({
                     resultList:responseText.data,
                 });
-                this.setState({
-                    loading:true,
-                });
+
 
                 console.log(responseText);
                 return responseText;
             })
             .catch((error) => {
                 this.setState({
-                    loading:true,
+                    loading:false,
                 });
                 Toast.fail("网络错误！", 1);
                 console.warn(error);
