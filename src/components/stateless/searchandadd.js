@@ -1,6 +1,8 @@
 /**
- * Created by Qingchang Han on 2016/11/1.
+ * Created by CHANGE on 2017/1/2.
  */
+import { SearchBar } from 'react-native-elements'
+
 import React, { Component } from 'react';
 import {
     View,
@@ -27,97 +29,89 @@ import {
 } from 'react-native-router-flux';
 
 
-
-
-
-class MyFriend extends Component{
+class  SearchFriend extends Component{
     constructor(props){
         super(props);
         this.state = {
             loading:false,
-            FriendList:[
+            search_by:"",
+            resultList:[
 
             ],
 
         }
     }
-    componentWillMount() {
-        this.initList();
-    }
 
-    initList()
+    getSearchResult()
     {
-        this.setState({
-            loading : true,
-        });
-        fetch(IP.ip+':8000/getFriendList/', {
-            method: 'POST',
-            headers: {
-                //'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            body:JSON.stringify({
-                user_id:infoModle.userID,
-            })
-        })
-            .then(function(data) {
-                return data.json();
-            })
-            .then((responseText) => {
-
-                console.log(responseText);
-                this.setState({
-                    loading:false,
-                });
-
-                this.setState({
-                    FriendList:responseText.data,
-                });
-                return responseText;
-            })
-            .catch((error) => {
-                this.setState({
-                    loading:false,
-                });
-                Toast.fail("网络错误！", 1);
-                console.warn(error);
-            });
-    }
-    getFriendList(){
         return(
             <List>
                 { this.renderRow() }
             </List>
         );
     }
-    getFriendState(i)
-    {
-        if(i==0)
-        {
-            return ('不在线');
-
-        }
-        else
-        {
-            return ('在线');
-        }
-    }
     renderRow(){
-        if (Array.isArray(FriendList)) {
+        if (Array.isArray(resultList)) {
             // 推荐这种写法
-            return FriendList.map((item, i) => {
+            return resultList.map((item, i) => {
                 return (
                     <ListItem
                         roundAvatar
                         key={i}
-                        title={item.name}
-                        subtitle={getFriendState(item.state)}
+                        title={item.user_name}
 
                     />
                 )
             });
         }
     }
+    onclick()
+    {
+        this.setState({
+            loading:true,
+        });
+        fetch(IP.ip+':8000/searchUser/', {
+            method: 'GET',
+            headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body:JSON.stringify({
+                user_name: this.state.search_by,
+            })
+        })
+            .then(function(data){
+                return data.json();
+            })
+            .then((responseText) => {
+                this.setState({
+                    loading:false,
+                });
+                if(responseText.search_num == 0) {
+                    Toast.fail("没有这个用户！", 1);
+                    return responseText;
+                }
+                Toast.success("查找成功！",1);
+                //TODO:这里服务器应该返回昵称和简介
+                this.setState({
+                    resultList:responseText.data,
+                });
+                this.setState({
+                    loading:true,
+                });
+
+                console.log(responseText);
+                return responseText;
+            })
+            .catch((error) => {
+                this.setState({
+                    loading:true,
+                });
+                Toast.fail("网络错误！", 1);
+                console.warn(error);
+            });
+    }
+
     render(){
         return(
             <View style={{flex: 1}}>
@@ -132,18 +126,27 @@ class MyFriend extends Component{
                         </View>
                     </TouchableOpacity>
                     <Text style={styles.headerText}>
-                        我的好友
+                        查找好友
                     </Text>
                     <TouchableOpacity onPress={Actions.pop}>
                         <View style={styles.completeContainer}>
                             <Text style={styles.completeText}>
-                                添加
+                                还是返回
                             </Text>
                             <Image style={styles.backIcon}
                                    source={require('../images/add.png')} />
                         </View>
                     </TouchableOpacity>
-                    {getFriendList()}
+                    <SearchBar
+                        value = {this.state.search_by}
+                        onChangeText={(searchby) => {
+                            this.setState({
+                                search_by:searchby,
+                            })
+                        }}
+                        placeholder='输入用户昵称...'
+                        onSubmitEditing={() => this.onClick()}/>
+                    {getSearchResult()}
                     <ActivityIndicator
                         toast
                         text="正在加载"
@@ -153,6 +156,7 @@ class MyFriend extends Component{
             </View>
         );
     }
+
 
 }
 
@@ -208,4 +212,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(infoModle => infoModle)(MyFriend);
+export default connect(infoModle => infoModle)(SearchFriend);
