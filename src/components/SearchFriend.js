@@ -3,9 +3,6 @@
  */
 import { SearchBar } from 'react-native-elements'
 
-
-
-
 import {
     View,
     TouchableOpacity,
@@ -26,12 +23,10 @@ import Modal from 'antd-mobile/lib/modal'
 
 
 import { connect } from 'dva/mobile';
-import {
-    Actions
-} from 'react-native-router-flux';
-import IP from '../../consts/ip';
+import { Actions } from 'react-native-router-flux';
+import IP from '../consts/ip';
 
-class  SearchFriend extends Component{
+class SearchFriend extends Component{
     constructor(props,information){
         super(props);
         this.state = {
@@ -41,10 +36,11 @@ class  SearchFriend extends Component{
 
             ],
             info:information,
-
         }
     }
-
+    componentWillMount() {
+        console.log("fff");
+    }
     getSearchResult()
     {
         return(
@@ -112,7 +108,7 @@ class  SearchFriend extends Component{
                 console.warn(error);
             });
     }
-    onclick()
+    onClick()
     {
         this.setState({
             loading:true,
@@ -161,10 +157,10 @@ class  SearchFriend extends Component{
         return(
             <View style={{flex: 1}}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={Actions.MyFriend}>
+                    <TouchableOpacity onPress={Actions.pop}>
                         <View style={styles.backContainer}>
                             <Image style={styles.backIcon}
-                                   source={require('../../images/back.png')} />
+                                   source={require('../images/back.png')} />
                             <Text style={styles.backText}>
                                 返回
                             </Text>
@@ -173,31 +169,31 @@ class  SearchFriend extends Component{
                     <Text style={styles.headerText}>
                         查找好友
                     </Text>
-                    <TouchableOpacity onPress={Actions.MyFriend}>
+                    <TouchableOpacity onPress={Actions.pop}>
                         <View style={styles.completeContainer}>
                             <Text style={styles.completeText}>
                                 还是返回
                             </Text>
                             <Image style={styles.backIcon}
-                                   source={require('../../images/add.png')} />
+                                   source={require('../images/add.png')} />
                         </View>
                     </TouchableOpacity>
-                    <SearchBar
-                        value = {this.state.search_by}
-                        onChangeText={(searchby) => {
-                            this.setState({
-                                search_by:searchby
-                            })
-                        }}
-                        placeholder='输入用户昵称...'
-                        onSubmitEditing={() => this.onClick()}/>
-                    {this.getSearchResult()}
-                    <ActivityIndicator
-                        toast
-                        text="正在加载"
-                        animating={this.state.loading}
-                    />
                 </View>
+                <SearchBar
+                    value = {this.state.search_by}
+                    onChangeText={(searchby) => {
+                        this.setState({
+                            search_by:searchby
+                        })
+                    }}
+                    placeholder='输入用户昵称...'
+                    onSubmitEditing={() => this.onClick()}/>
+                {this.getSearchResult()}
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={this.state.loading}
+                />
             </View>
         );
     }

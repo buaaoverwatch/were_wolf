@@ -43,7 +43,7 @@ import EditInfo from './src/components/EditInfo';
 import MyFriend from './src/components/MyFriend';
 import MyRecord from './src/components/MyRecord';
 import Setting from './src/components/Setting';
-import SearchFriend from  './src/components/stateless/searchandadd';
+import SearchFriend from  './src/components/SearchFriend';
 
 
 
@@ -105,11 +105,11 @@ class App extends Component {
               >
                 <Scene key="MineTab" hideNavBar>
                   <Scene key="MyInfo" component={MyInfo} />
+                  <Scene key="SearchFriend" componenet={SearchFriend}/>
                   <Scene key="EditInfo" component={EditInfo} />
                   <Scene key="MyFriend" component={MyFriend} />
                   <Scene key="MyRecord" component={MyRecord} />
                   <Scene key="Setting" component={Setting} />
-                  <Scene key="SearchFriend" componenet={SearchFriend}/>
                 </Scene>
               </Scene>
             </Scene>

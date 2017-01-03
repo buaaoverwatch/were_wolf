@@ -45,6 +45,7 @@ import EditInfo from './src/components/EditInfo';
 import MyFriend from './src/components/MyFriend';
 import MyRecord from './src/components/MyRecord';
 import Setting from './src/components/Setting';
+import SearchFriend from  './src/components/SearchFriend';
 
 
 
@@ -65,7 +66,7 @@ class App extends Component {
           <StatusBar barStyle="light-content" />
           <Router>
             <Scene key="root">
-              <Scene key="Start" component={Start} initial={false}  hideNavBar/>
+              <Scene key="Start" component={Start} initial={true}  hideNavBar/>
               <Scene key="Launch" component={Launch}  hideNavBar/>
               <Scene key="Forget" component={Forget} hideNavBar />
               <Scene
@@ -73,7 +74,7 @@ class App extends Component {
                   tabs
                   tabBarStyle={styles.tabBarStyle}
                   tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
-                  initial={true}
+                  initial={false}
               >
                 <Scene
                     key="RoomPage"
@@ -97,7 +98,7 @@ class App extends Component {
                     <Scene key="ChooseSeat" component={ChooseSeat} type="push" />
                     <Scene key="GameSetting" component={GameSetting} type="replace" />
                     <Scene key="seeMySelf" component={seeMySelf} type="replace" />
-                    <Scene key="Test1" component={Test1} type="replace" initial={true}/>
+                    <Scene key="Test1" component={Test1} type="replace" />
                     <Scene key="Gameover" component={Gameover} type="replace" />
                   </Scene>
                 </Scene>
@@ -109,6 +110,7 @@ class App extends Component {
                 >
                   <Scene key="MineTab" hideNavBar>
                     <Scene key="MyInfo" component={MyInfo} />
+                    <Scene key="SearchFriend" component={SearchFriend} />
                     <Scene key="EditInfo" component={EditInfo} />
                     <Scene key="MyFriend" component={MyFriend} />
                     <Scene key="MyRecord" component={MyRecord} />

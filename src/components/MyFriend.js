@@ -18,6 +18,8 @@ import React, { Component, PropTypes, } from 'react'
 import { ScrollView, Alert} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import Modal from 'antd-mobile/lib/modal'
+import Toast from 'antd-mobile/lib/toast'
+
 
 
 import { connect } from 'dva/mobile';
@@ -142,13 +144,13 @@ class MyFriend extends Component{
                                    source={require('../images/add.png')} />
                         </View>
                     </TouchableOpacity>
-                    {this.getFriendList()}
-                    <ActivityIndicator
-                        toast
-                        text="正在加载"
-                        animating={this.state.loading}
-                    />
                 </View>
+                {this.getFriendList()}
+                <ActivityIndicator
+                    toast
+                    text="正在加载"
+                    animating={this.state.loading}
+                />
             </View>
         );
     }
