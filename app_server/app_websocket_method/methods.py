@@ -101,7 +101,7 @@ def sheriff_vote(r_id,u_id,o_id):
         v = list.values()
         temp = Counter(v).most_common(2)
         #平票
-        if(temp[0][1] == temp[1][1]):
+        if(len(temp) > 1 and temp[0][1] == temp[1][1]):
             message = {'type': '9', 'room_request_id': str(glob.room_request_id[r_id]),
                         'result': 'false', 'sheriff_id': '-1', 'list': list}
             json = demjson.encode(message)
@@ -141,7 +141,7 @@ def day_vote(r_id,u_id,o_id):
         v = list.values()
         temp = Counter(v).most_common(2)
         #平票
-        if(temp[0][1] == temp[1][1]):
+        if(len(temp) > 1 and temp[0][1] == temp[1][1]):
             message = {'type': '17', 'room_request_id': str(glob.room_request_id[r_id]),
                         'result': 'false', 'sheriff_id': '-1', 'list': list}
             json = demjson.encode(message)
@@ -169,6 +169,7 @@ def leave(r_id,u_id):
     player_state_change.kill(r_id, u_id)
     #删除glob里面的记录，数据库中的可以先留着
     glob.room_player_num[r_id] = glob.room_player_num[r_id] - 1
+    glob.user_room_id[u_id] = -1
     if u_id in glob.room_mark[r_id].keys():
         del glob.room_mark[r_id][u_id]
     if u_id in glob.user_request_id.keys():

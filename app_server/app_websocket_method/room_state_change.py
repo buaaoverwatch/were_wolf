@@ -211,8 +211,11 @@ def change(type,r_id):
                     time = 'night'
                     state = 15
                 else:
-                    #猎人死跳15，不然还是16
-                    state = 16
+                    if glob.room_player_die[r_id] == False:
+                        state = 16
+                    else:
+                        glob.room_player_die[r_id] = False
+                        state = 17
             else:
                 state = state+1
     elif state == 13:
@@ -261,7 +264,6 @@ def change(type,r_id):
     room.round = round
     room.state = state
     room.save()
-
 
 
     # message = {'type':'5','room_request_id':str(glob.room_request_id[r_id]),'room_state':room.state,

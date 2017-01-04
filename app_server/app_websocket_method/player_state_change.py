@@ -41,6 +41,7 @@ def kill(r_id,o_id):
             if (alive_list[index] == "true"):
                 kill(r_id, couples[1])
 
+    glob.room_player_die[r_id] = True
     return
 
 def save(r_id,o_id):

@@ -18,7 +18,7 @@ def checkUser(_name,_password):
 	#已登录
 	if _name in glob.user_name:
 		#在房间
-		if user.id in glob.user_alive.keys():
+		if glob.user_room_id[str(user.id)] != -1:
 			return -3
 		#不在房间
 		else:
@@ -28,6 +28,7 @@ def checkUser(_name,_password):
 			glob.user_request_id[str(user.id)] = 0
 			glob.user_alive[str(user.id)] = 'true'
 			glob.user_role[str(user.id)] = 'village'
+			glob.user_room_id[str(user.id)] = -1
 			return user.id
 
 	if user.password == _password:
@@ -36,6 +37,7 @@ def checkUser(_name,_password):
 		glob.user_request_id[str(user.id)] = 0
 		glob.user_alive[str(user.id)] = 'true'
 		glob.user_role[str(user.id)] = 'village'
+		glob.user_room_id[str(user.id)] = -1
 		return user.id
 	else:
 		return -2

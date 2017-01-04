@@ -1,10 +1,9 @@
-from collections import Counter
+from app_db.models import UserInfo
+from django.core.exceptions import ObjectDoesNotExist
 
-list = ['a','b','c','a','d','b']
-v = Counter(list)
-print v
-v = Counter(list).most_common(1)
-print v
-print v[0]
-print v[0][0]
-print v[0][1]
+try:
+    users = UserInfo.objects.filter(user_name__icontains='t')
+    print users
+
+except ObjectDoesNotExist:
+    print 'none'

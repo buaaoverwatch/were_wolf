@@ -15,7 +15,7 @@ def action(r_id,u_id,o_id,act,con):
 
     if act == '0':    #杀人
         player_state_change.kill(r_id,o_id)
-        role = glob.user_role[r_id]
+        role = glob.user_role[u_id]
         message = {'type':'7','room_request_id':str(glob.room_request_id[r_id]),
                    'change':{o_id:"false"},'role':role}
         json = demjson.encode(message)
@@ -24,7 +24,7 @@ def action(r_id,u_id,o_id,act,con):
 
     elif act == '1':  #救人
         player_state_change.save(r_id,o_id)
-        role = glob.user_role[r_id]
+        role = glob.user_role[u_id]
         message = {'type': '7', 'room_request_id': str(glob.room_request_id[r_id]),
                    'change': {o_id: "true"}, 'role': role}
         json = demjson.encode(message)
@@ -58,7 +58,7 @@ def action(r_id,u_id,o_id,act,con):
     elif act == '5':  # 自爆
         player_state_change.kill(r_id, u_id)
         #player_state_change.kill(r_id, o_id)
-        role = glob.user_role[r_id]
+        role = glob.user_role[u_id]
         message = {'type': '7', 'room_request_id': str(glob.room_request_id[r_id]),
                    'change': {u_id:'false'}, 'role': role}
         json = demjson.encode(message)
