@@ -6,6 +6,7 @@ from app_db.models import UserInfo
 from django.core.exceptions import ObjectDoesNotExist
 import app_websocket_method.glob
 from app_websocket_method import glob
+from app_websocket_method import close_room
 
 def create(u_id,r_name):
     # 获取一个未使用的房间号
@@ -27,8 +28,8 @@ def create(u_id,r_name):
 
     user = UserInfo.objects.get(id = int(u_id))
     #删除之前重复的房间
-    RoomInfo.objects.filter(room_id = str(room_id)).delete()
-    RoomInfo.objects.filter(owner_id=u_id).delete()
+    close_room.close(str(room_id),-1)
+    glob.room_id[room_id] = 1
 
     newRoom = RoomInfo(room_id=str(room_id),room_name=r_name,owner_id=u_id,player_num=1,
                        player_id=u_id,player_nick=user.nick_name,player_alive="true",
@@ -45,14 +46,10 @@ def create(u_id,r_name):
     glob.room_mark[str(room_id)] = {u_id:0}
     glob.room_open[str(room_id)] = True
     glob.room_owner_id[str(room_id)] = u_id
-    glob.user_nick[u_id] = user.nick_name
-    glob.user_request_id[u_id]=0
     glob.room_player_seat[str(room_id)] = {str(u_id):1}
     glob.room_protect_id[str(room_id)] = '-1'
     glob.room_role_number[str(room_id)] = {}
     glob.room_next[str(room_id)] = []
-    glob.user_alive[u_id] = 'true'
-    glob.user_role[u_id] = 'village'
     glob.room_sheriff_list[str(room_id)] = []
     glob.room_sheriff_select[str(room_id)] = {}
     glob.room_sheriff_id[str(room_id)]=u_id
@@ -63,6 +60,15 @@ def create(u_id,r_name):
     glob.room_select_num[str(room_id)] = 0
     glob.room_request_content[str(room_id)] = []
     glob.room_couples_id[str(room_id)] = []
+    glob.room_player_die[str(room_id)] = False
+
+    glob.user_alive[u_id] = 'true'
+    glob.user_role[u_id] = 'village'
+    glob.user_nick[u_id] = user.nick_name
+    glob.user_request_id[u_id] = 0
+    glob.user_room_id[u_id] = room_id
+
+
 
 
 

@@ -27,6 +27,10 @@ def process(data):
     request_id = data['request_id']
     #判断该请求是否已被处理
     if int(request_id) < glob.user_request_id[user_id]:
+        print globlalala
+        print glob.user_request_id[user_id]
+        print reqlalala
+        print request_id
         return
     elif int(request_id) > glob.user_request_id[user_id]:
         message['type'] = '1'

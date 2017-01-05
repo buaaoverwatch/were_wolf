@@ -23,6 +23,7 @@ user_request_id = {'user_id':0,'0':0,'1':0,'2':0}		#用户id -> 用户请求id
 user_nick = {'user_id': 'null'}
 user_role = {'user_id':'village'}    #用户id -> 用户角色
 user_alive = {'user_id': 'true'}
+user_room_id = {'user_id': -1}      #用户所在房间id
 
 
 #下一步
@@ -45,6 +46,7 @@ room_sheriff_id = {'room_id':'sheriff_id'}
 #存活情况
 room_alive_num = {'room_id':0}
 room_aliver_wolf_num = {'room_id': 0}      #房间号->狼人数
+room_player_die = {'room_id':False}
 
 #房间待发送的消息
 room_request_content = {'room_id': []}      #房间号 -> [json1,json2]

@@ -32,5 +32,9 @@ urlpatterns = [
     url(r'^getRoomInfo/', view.getRoomInfo),
     url(r'^findPassword/', view.findPassword),
 
+    url(r'^searchUser/', view.searchUser),
+    url(r'^addFriend/', view.addFriend),
+    url(r'^getFriendList/', view.getFriendList),
+
     url(r'^test/', test_db.test),
 ]

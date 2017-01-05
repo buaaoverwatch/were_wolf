@@ -17,6 +17,4 @@ def logout(u_id,_name):
         for r in rooms:
             if r[1] == u_id:
                 close_room.close(r[0],-1)
-        return 0
-    else:
-        return 1
+    return 0

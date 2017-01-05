@@ -15,6 +15,7 @@ class UserInfo(models.Model):
 	introduce = models.CharField(max_length=200,default='无可奉告')
 	question = models.CharField(max_length=200,default='我的名字')
 	answer = models.CharField(max_length=200,default='玩家')
+	friends = models.CharField(max_length=200,default='')
 
 class RoomInfo(models.Model):
 	room_id = models.CharField(max_length=10,default=-1)
